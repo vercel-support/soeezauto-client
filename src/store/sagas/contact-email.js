@@ -7,7 +7,7 @@ import {
     POST_CONTACT_EMAIL_OK,
     POST_CONTACT_EMAIL_ERROR,
 } from 'store/actions';
-import { apiStd } from './functions';
+import { apiStd } from 'lib/functions';
 
 function* postContactEmail(action) {
     const url = '/contact-form';

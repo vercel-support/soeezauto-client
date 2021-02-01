@@ -7,6 +7,6 @@ module.exports = {
         return [{ source: '/(.*)', headers: createSecureHeaders() }];
     },
     images: {
-        domains: ['soeezauto-api', 'localhost'],
+        domains: ['soeezauto-api', 'localhost', 'www.soeezauto.ma'],
     },
 };

@@ -5,7 +5,7 @@ import {
     CHECK_ONLINE_STATUS_OK,
     CHECK_ONLINE_STATUS_ERROR,
 } from 'store/actions';
-import { api } from './functions';
+import { api } from 'lib/functions';
 
 function* getCheckOnlineStatus() {
     const url = `${process.env.NEXT_PUBLIC_CLIENT_HOST}/icons/icon-48x48.png`;

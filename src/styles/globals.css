@@ -1,16 +1,362 @@
-html,
+/* https://google-webfonts-helper.herokuapp.com/fonts/roboto?subsets=latin*/
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Roboto'), local('Roboto-Regular'),
+        url('/fonts/roboto-v20-latin-regular.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('/fonts/roboto-v20-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* https://google-webfonts-helper.herokuapp.com/fonts/roboto?subsets=latin*/
+/* roboto-700 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold'), local('Roboto-Bold'),
+        url('/fonts/roboto-v20-latin-700.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */ url('/fonts/roboto-v20-latin-700.woff')
+            format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700italic - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'),
+        url('/fonts/roboto-v20-latin-700italic.woff2') format('woff2'),
+        /* Chrome 26+, Opera 23+, Firefox 39+ */
+            url('/fonts/roboto-v20-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+/**
+* global styles
+*/
+/*
+https://moderncss.dev/generating-font-size-css-rules-and-creating-a-fluid-type-scale/
+*/
+
+h4,
+.h4 {
+    color: #2d5074;
+    font-size: 1.333rem;
+    line-height: calc(2px + 2ex + 2px);
+    margin-bottom: 0.65em;
+    font-size: min(max(0.5rem, 4.333vw), 0.333rem);
+}
+h3,
+.h3 {
+    color: #2d5074;
+    font-size: 1.776889rem;
+    line-height: calc(2px + 2ex + 2px);
+    margin-bottom: 0.65em;
+    font-size: min(max(0.19051563rem, 4.58637337vw), 0.776889rem);
+}
+h2,
+.h2 {
+    color: #2d5074;
+    font-size: 2.368593037rem;
+    line-height: calc(2px + 2ex + 2px);
+    margin-bottom: 0.65em;
+    font-size: min(max(0.5869573348rem, 4.7816357022vw), 1.368593037rem);
+}
+h1,
+.h1 {
+    color: #2d5074;
+    font-size: 3.1573345183rem;
+    line-height: calc(2px + 2ex + 2px);
+    margin-bottom: 0.65em;
+    font-size: min(max(1.1154141273rem, 5.041920391vw), 2.1573345183rem);
+}
+p,
+li,
+h1,
+h2,
+h3,
+h4 {
+    word-break: break-word;
+    hyphens: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+* {
+    box-sizing: border-box;
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    font-size: 1rem;
+    /*font-family: 'Roboto', sans-serif;*/
+    line-height: 1.5;
+    min-height: 100vh;
+    /*display: grid;
+	 place-content: center;*/
+    margin: 0 2rem;
+    color: #333;
+    min-width: 320px;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+    color: #3273dc;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+#activeNav,
+.activeNav {
+    color: #445565;
+    background-color: #de1b;
+    border-color: #ced4da;
+}
+
+.MuiListItem-root.activable.activeNav,
+.MuiListItem-root.activable1.activeNav {
+    color: #445565;
+    background-color: #de1b;
+    border-color: #ced4da;
+}
+/*
+body {
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+    margin: 0 auto;
+    min-width: 320px;
+}
+*/
+#__next {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.center_300 {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.icon_container {
+    cursor: pointer;
+}
+
+.main-title {
+    text-align: center;
+    color: #2d5074;
+    margin: 20px 0;
+}
+
+main {
+    min-height: 500px;
+    margin: 0 auto;
+    padding: 0 10px;
+    background-color: #fff;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.no_show {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+button span {
+    pointer-events: none;
+}
+
+.no_click {
+    pointer-events: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+.loading_indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100000;
+}
+
+.grid {
+    display: grid;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex_column {
+    flex-direction: column;
+}
+
+.flex_wrap {
+    flex-wrap: wrap;
+}
+
+/**
+* override material-ui by specificity 
+*/
+
+#noShadow {
+    box-shadow: none;
+}
+
+/**
+* form
+*/
+
+form {
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.form_input {
+    margin: 0 auto 15px;
+}
+
+.form_input div:first-child {
+    margin: 0;
+}
+
+.form_submit div:first-child {
+    justify-content: space-around;
+}
+
+.form_select div:first-child {
+    display: grid;
+}
+
+.form_error {
+    color: red;
+}
+
+input[type='radio'] {
+    margin-right: 5px;
+}
+
+.formGroup {
+    margin-right: 0;
+    justify-content: space-between;
+    line-height: 45px;
+}
+
+.passwordOk {
+    color: green;
+}
+
+/** prevent zoom on mobile form input 
+*/
+
+input[type='color'],
+input[type='date'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='email'],
+input[type='month'],
+input[type='number'],
+input[type='password'],
+input[type='search'],
+input[type='tel'],
+input[type='text'],
+input[type='time'],
+input[type='url'],
+input[type='week'],
+select:focus,
+textarea {
+    font-size: 16px;
+}
+
+/**
+* pagination
+*/
+
+#pagination.grid {
+    grid-template-columns: repeat(auto-fit, minmax(35px, auto));
+    text-align: center;
+    align-items: center;
+}
+
+#pagination.grid div:first-child {
+    justify-self: start;
+}
+
+#pagination.grid nav:last-child {
+    justify-self: end;
+}
+
+#pagination li:hover {
+    background-color: #ccc;
+}
+
+#pagination li {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#pagination li button {
+    background-color: #fff;
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
+}
+
+#pagination ul {
+    justify-content: flex-end;
+}
+
+.dialog_toolbar {
+    justify-content: flex-end;
+}
+
+.dialog_toolbar button {
+    display: block;
+}
+
+.page-link:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+#pagination .page-item.active .page-link {
+    z-index: 1;
+    background-color: #e0e0e0;
+}
+
+ul.pagination li.page-item.active a.page-link {
+    color: #445565 !important;
+    background-color: #e3e7eb !important;
+    border-color: #ced4da !important;
+}
+
+.current-page {
+    font-size: 1.5rem;
+    vertical-align: middle;
+}
+
+@media only screen and (max-width: 480px) {
+    main {
+        padding: 0;
+    }
+
+    .content {
+        flex-direction: column;
+    }
 }

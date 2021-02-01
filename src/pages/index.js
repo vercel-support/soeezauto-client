@@ -1,65 +1,274 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React from 'react';
+import Image from 'next/image';
+import Head from 'next/head';
+import { makeStyles } from '@material-ui/core/styles';
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    CardActions,
+    Button,
+    Box,
+} from '@material-ui/core';
+import PropTypes from 'prop-types';
+import getBrands from 'lib/getBrands';
+import getPosts from 'lib/getPosts';
+import getSegments from 'lib/getSegments';
+import getModels from 'lib/getModels';
+import Link from 'components/link';
+import { urlWriter } from 'tools/functions';
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+const useStyles = makeStyles({
+    root: {
+        width: 275,
+    },
+    title: {
+        fontSize: 14,
+    },
+    cardContent: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr',
+    },
+    mainContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: '10px',
+        justifyContent: 'space-around',
+        '& > div': {
+            flex: '0 0 280px',
+        },
+    },
+});
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+const Home = (props) => {
+    console.log('home props', props);
+    const classes = useStyles();
+    const { brands, segments, models, posts } = props;
+    console.log('PROMOS', models);
+    const promos = [];
+    models.forEach((model) => {
+        const promoVersions = model.versions.filter((version) => {
+            return version.prices.edges[0].node.promo;
+        });
+        if (promoVersions.length > 0) {
+            // eslint-disable-next-line no-param-reassign
+            model.versions = promoVersions;
+            promos.push(model);
+        }
+    });
+    const selected = {
+        brands: ['bmw', 'dacia', 'ford', 'peugeot', 'renault', 'volkswagen'],
+        segments: [
+            'citadine',
+            'compacte',
+            'suv compact',
+            'routiere',
+            'mini-crossover',
+            'berlines de luxe',
+        ],
+        priceRanges: ['125-150', '150-175', '175-200', '250-300', '300-400', '400-500'],
+        models: ['x3', 'focus', 'yaris', 'captur', 'logan', 'gle'],
+    };
+    const selectBrands = brands.filter((brand) => {
+        return selected.brands.includes(brand.brand);
+    });
+    const selectSegments = segments.filter((segment) => {
+        return selected.segments.includes(segment.segment);
+    });
+    const selectModels = models.filter((model) => {
+        return selected.models.includes(model.model);
+    });
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+    const randIndex = (len) => {
+        const rand = [];
+        while (rand.length < 6) {
+            const r = Math.floor(Math.random() * len) + 1;
+            if (rand.indexOf(r) === -1) rand.push(r);
+        }
+        console.log('rand', rand);
+        return rand;
+    };
+    const randMod = randIndex(19);
+    const recentModels = models.filter((model, ind) => {
+        return randMod.includes(ind);
+    });
+    const postsWithImage = posts.edges.filter((post) => {
+        return post.node.featuredImage;
+    });
+    const randProm = randIndex(promos.length);
+    const randPromos = promos.filter((model, ind) => {
+        return randProm.includes(ind);
+    });
+    console.log('PROM', randPromos);
+    return (
+        <div>
+            <Head>
+                <title>Create Next App</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            <main className={classes.mainContainer}>
+                <Card className={classes.root}>
+                    <CardHeader title="Marques" />
+                    <CardContent className={classes.cardContent}>
+                        {selectBrands.map((brand) => (
+                            <Link
+                                key={brand.brand}
+                                href={`${
+                                    process.env.NEXT_PUBLIC_CLIENT_HOST
+                                }/marques-voiture/${urlWriter(brand.brand)}`}
+                            >
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
+                                    alt={brand.brand}
+                                    width="40"
+                                    height="40"
+                                    loading="eager"
+                                    priority
+                                />
+                            </Link>
+                        ))}
+                    </CardContent>
+                    <CardActions>
+                        <Link href="/marques-voiture">
+                            <Button size="small">Toutes les marques</Button>
+                        </Link>
+                    </CardActions>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Segments" />
+                    <CardContent className={classes.cardContent}>
+                        {selectSegments.map((segment) => (
+                            <Image
+                                key={segment.segment}
+                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
+                                alt={segment.segment}
+                                width="60"
+                                height="40"
+                                loading="eager"
+                                priority
+                            />
+                        ))}
+                    </CardContent>
+                    <CardActions>
+                        <Link href="/marques-voiture">
+                            <Button size="small">Tous les segments</Button>
+                        </Link>
+                    </CardActions>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Prix" subheader="mille DH" />
+                    <CardContent className={classes.cardContent}>
+                        {selected.priceRanges.map((range) => (
+                            <Box key={range}>
+                                <p>{range}</p>
+                            </Box>
+                        ))}
+                    </CardContent>
+                    <CardActions>
+                        <Link href="/marques-voiture">
+                            <Button size="small">Tous les prix</Button>
+                        </Link>
+                    </CardActions>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Modeles" />
+                    <CardContent className={classes.cardContent}>
+                        {selectModels.map((model) => (
+                            <Image
+                                key={model.model}
+                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                alt={model.model}
+                                width="60"
+                                height="40"
+                                loading="eager"
+                                priority
+                            />
+                        ))}
+                    </CardContent>
+                    <CardActions>
+                        <Link href="/marques-voiture">
+                            <Button size="small">Tous les modeles</Button>
+                        </Link>
+                    </CardActions>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Lancements recents" />
+                    <CardContent className={classes.cardContent}>
+                        {recentModels.map((model) => (
+                            <Image
+                                key={model.model}
+                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                alt={model.model}
+                                width="60"
+                                height="40"
+                                loading="eager"
+                                priority
+                            />
+                        ))}
+                    </CardContent>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Promotions mises-en-avant" />
+                    <CardContent className={classes.cardContent}>
+                        {randPromos.map((model) => (
+                            <Image
+                                key={model.model}
+                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                alt={model.model}
+                                width="60"
+                                height="40"
+                                loading="eager"
+                                priority
+                            />
+                        ))}
+                    </CardContent>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Articles" />
+                    <CardContent>
+                        {postsWithImage.map((post) => (
+                            <Image
+                                key={post.node.slug}
+                                src={post.node.featuredImage.node.sourceUrl}
+                                alt={post.node.slug}
+                                width="300"
+                                height="200"
+                                loading="eager"
+                                priority
+                            />
+                        ))}
+                    </CardContent>
+                </Card>
+            </main>
         </div>
-      </main>
+    );
+};
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+Home.propTypes = {
+    brands: PropTypes.array.isRequired,
+    segments: PropTypes.array.isRequired,
+    models: PropTypes.array.isRequired,
+    posts: PropTypes.object.isRequired,
+};
+
+export default Home;
+
+export async function getStaticProps() {
+    let brands = await getBrands();
+    let posts = await getPosts();
+    let segments = await getSegments();
+    let models = await getModels();
+    brands = brands.data.brands;
+    segments = segments.data.segments;
+    posts = posts.data.posts;
+    models = models.data.models;
+    return {
+        props: {
+            brands,
+            posts,
+            segments,
+            models,
+        },
+    };
 }

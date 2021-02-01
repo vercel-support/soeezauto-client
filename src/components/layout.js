@@ -1,23 +1,21 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-// import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import styles from '../styles/layout.module.scss';
-// import Header from './header';
-// import SessionHander from './sessionHandler';
+import Header from './header';
 
-// const Footer = dynamic(() => import('./footer'), {});
+const Footer = dynamic(() => import('./footer'), {});
 
 const Layout = ({ children }) => {
     const router = useRouter();
     return (
         <div className={styles.container}>
             <div>
-                {/* <Header siteTitle="soeezauto.ma" router={router} /> */}
-                {/*<SessionHander router={router} /> */}
+                <Header siteTitle="soeezauto.ma" router={router} />
                 <>{children}</>
             </div>
-            {/*<Footer /> */}
+            <Footer />
         </div>
     );
 };
