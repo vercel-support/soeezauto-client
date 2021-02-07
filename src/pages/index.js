@@ -151,7 +151,7 @@ const Home = (props) => {
                         ))}
                     </CardContent>
                     <CardActions>
-                        <Link href="/marques-voiture">
+                        <Link href="/segments-automobile">
                             <Button size="small">Tous les segments</Button>
                         </Link>
                     </CardActions>
@@ -166,7 +166,7 @@ const Home = (props) => {
                         ))}
                     </CardContent>
                     <CardActions>
-                        <Link href="/marques-voiture">
+                        <Link href="/prix-voiture">
                             <Button size="small">Tous les prix</Button>
                         </Link>
                     </CardActions>
@@ -187,7 +187,7 @@ const Home = (props) => {
                         ))}
                     </CardContent>
                     <CardActions>
-                        <Link href="/marques-voiture">
+                        <Link href="/modeles-voiture">
                             <Button size="small">Tous les modeles</Button>
                         </Link>
                     </CardActions>
@@ -223,6 +223,11 @@ const Home = (props) => {
                             />
                         ))}
                     </CardContent>
+                    <CardActions>
+                        <Link href="/promotion-voiture-neuve-au-maroc">
+                            <Button size="small">Toutes les promotions</Button>
+                        </Link>
+                    </CardActions>
                 </Card>
                 <Card className={classes.root}>
                     <CardHeader title="Articles" />

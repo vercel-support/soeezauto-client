@@ -18,7 +18,27 @@ const Nav = () => {
                     </MenuItem>
                     <MenuItem disableGutters id="/">
                         <Link href="/marques-voiture" isActivable>
-                            Marques
+                            marques
+                        </Link>
+                    </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/modeles-voiture" isActivable>
+                            modeles
+                        </Link>
+                    </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/segments-automobile" isActivable>
+                            segments
+                        </Link>
+                    </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/prix-voiture" isActivable>
+                            prix
+                        </Link>
+                    </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/promotion-voiture-neuve-au-maroc" isActivable>
+                            promotions
                         </Link>
                     </MenuItem>
                 </MenuList>
