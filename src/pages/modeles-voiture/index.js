@@ -20,7 +20,7 @@ const Models = (props) => {
             <main>
                 {models.map((model) => (
                     <Link
-                        key={models.model}
+                        key={model.model}
                         href={`${
                             process.env.NEXT_PUBLIC_CLIENT_HOST
                         }/modeles-voiture/${urlWriter(model.brand.brand)}/${urlWriter(

@@ -4,3 +4,8 @@
 [id] {
   scroll-margin-top: 2ex;
 }
+
+- models page:
+  - define filter features
+  - get model ids for those filter as per /lib/getModelsWithAirCondAuto
+  - define UI (datatables??)

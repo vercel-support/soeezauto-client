@@ -1,14 +1,25 @@
 import React from 'react';
-import Image from 'next/image';
 import Head from 'next/head';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import getBrands from 'lib/getBrands';
+import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
-import Link from 'components/link';
-import { urlWriter } from 'tools/functions';
+import TreeCard from 'components/treeCard';
 
+const useStyles = makeStyles(() => ({
+    catList: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: '10px',
+        justifyContent: 'space-around',
+        '& > div': {
+            flex: '0 0 280px',
+        },
+    },
+}));
 const Brands = (props) => {
     console.log('brands', props);
+    const classes = useStyles();
     const { brands } = props;
     return (
         <div>
@@ -18,23 +29,11 @@ const Brands = (props) => {
             </Head>
 
             <main>
-                {brands.map((brand) => (
-                    <Link
-                        key={brand.brand}
-                        href={`${
-                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                        }/marques-voiture/${urlWriter(brand.brand)}`}
-                    >
-                        <Image
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
-                            alt={brand.brand}
-                            width="40"
-                            height="40"
-                            loading="eager"
-                            priority
-                        />
-                    </Link>
-                ))}
+                <div className={classes.catList}>
+                    {brands.map((brand, ind) => (
+                        <TreeCard key={brand.id} item={brand} node={ind + 1} />
+                    ))}
+                </div>
             </main>
         </div>
     );
@@ -47,7 +46,7 @@ Brands.propTypes = {
 export default Brands;
 
 export async function getStaticProps() {
-    let brands = await getBrands();
+    let brands = await getBrandsModels();
     brands = brands.data.brands;
     let posts = await getPosts();
     console.log('POSTS', posts);

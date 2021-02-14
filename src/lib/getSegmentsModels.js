@@ -1,25 +1,34 @@
 import { apiQl } from './functions';
 
 const queryQl = `query getSegments(
-  	    $isActive: Boolean!){
+  	    $isActiveModel: Boolean!
+        $imageIsFeatured: Boolean!
+        ){
     segments(_order: {segment: "ASC"}) {
         id
         segment
         image
-        models(isActive: $isActive) {
+        models(
+            isActive: $isActiveModel
+            _order: {model: "ASC"}
+        ){
             id
             model
             modelYear
-            brand {
+            images(isFeatured: $imageIsFeatured) {
+                filename
+            }
+            segment {
                 id
-                brand
+                segment
             }
         }
     }
 }`;
 
 const variables = {
-    isActive: true,
+    isActiveModel: true,
+    imageIsFeatured: true,
 };
 
 export default async function getSegmentsModels() {

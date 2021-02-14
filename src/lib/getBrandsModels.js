@@ -2,18 +2,24 @@ import { apiQl } from './functions';
 
 const queryQl = `query getBrandsModels(
   	    $isActive: Boolean!,
-		$isActiveModel: Boolean!) {
+		$isActiveModel: Boolean!
+        $imageIsFeatured: Boolean!
+        ) {
     brands(
-        isActive: $isActive) {
+        isActive: $isActive
+        _order: {brand: "ASC"}
+        ) {
 		    id
 		    brand
             image
-            models(isActive: $isActiveModel){
+            models(
+                isActive: $isActiveModel
+                _order: {model: "ASC"}
+            ){
                 id
                 model
                 modelYear
-                images {
-                    id
+                images(isFeatured: $imageIsFeatured) {
                     filename
                 }
                 segment {
@@ -27,6 +33,7 @@ const queryQl = `query getBrandsModels(
 const variables = {
     isActive: true,
     isActiveModel: true,
+    imageIsFeatured: true,
 };
 
 export default async function getBrandsModels() {
