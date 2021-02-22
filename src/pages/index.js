@@ -71,66 +71,28 @@ const useStyles = makeStyles({
     },
 });
 
+const randIndex = (len) => {
+    const rand = [];
+    while (rand.length < 6) {
+        const r = Math.floor(Math.random() * len) + 1;
+        if (rand.indexOf(r) === -1) rand.push(r);
+    }
+    return rand;
+};
+
 const Home = (props) => {
     console.log('home props', props);
     const classes = useStyles();
-    const { brands, segments, models, posts } = props;
-    console.log('PROMOS', models);
-    const promos = [];
-    models.forEach((model) => {
-        const promoVersions = model.versions.filter((version) => {
-            return version.prices.edges[0].node.promo;
-        });
-        if (promoVersions.length > 0) {
-            // eslint-disable-next-line no-param-reassign
-            model.versions = promoVersions;
-            promos.push(model);
-        }
-    });
-    const selected = {
-        brands: ['bmw', 'dacia', 'ford', 'peugeot', 'renault', 'volkswagen'],
-        segments: [
-            'citadine',
-            'compacte',
-            'suv compact',
-            'routiere',
-            'mini-crossover',
-            'berlines de luxe',
-        ],
-        priceRanges: ['125-150', '150-175', '175-200', '250-300', '300-400', '400-500'],
-        models: ['x3', 'focus', 'yaris', 'captur', 'logan', 'gle'],
-    };
-    const selectBrands = brands.filter((brand) => {
-        return selected.brands.includes(brand.brand);
-    });
-    const selectSegments = segments.filter((segment) => {
-        return selected.segments.includes(segment.segment);
-    });
-    const selectModels = models.filter((model) => {
-        return selected.models.includes(model.model);
-    });
+    const {
+        selectBrands,
+        selectSegments,
+        selectModels,
+        postsWithImage,
+        recentModels,
+        randPromos,
+        selected,
+    } = props;
 
-    const randIndex = (len) => {
-        const rand = [];
-        while (rand.length < 6) {
-            const r = Math.floor(Math.random() * len) + 1;
-            if (rand.indexOf(r) === -1) rand.push(r);
-        }
-        console.log('rand', rand);
-        return rand;
-    };
-    const randMod = randIndex(19);
-    const recentModels = models.filter((model, ind) => {
-        return randMod.includes(ind);
-    });
-    const postsWithImage = posts.edges.filter((post) => {
-        return post.node.featuredImage;
-    });
-    const randProm = randIndex(promos.length);
-    const randPromos = promos.filter((model, ind) => {
-        return randProm.includes(ind);
-    });
-    console.log('PROM', randPromos);
     return (
         <div>
             <Head>
@@ -173,9 +135,8 @@ const Home = (props) => {
                     <CardHeader title="Segments" />
                     <CardContent className={classes.cardContent}>
                         {selectSegments.map((segment) => (
-                            <Box>
+                            <Box key={segment.segment}>
                                 <Link
-                                    key={segment.segment}
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST
                                     }/segments-automobile/${urlWriter(segment.segment)}`}
@@ -238,9 +199,8 @@ const Home = (props) => {
                     <CardHeader title="Modeles" />
                     <CardContent className={classes.cardContent}>
                         {selectModels.map((model) => (
-                            <Box>
+                            <Box key={model.model}>
                                 <Link
-                                    key={model.model}
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST
                                     }/modeles-voiture/${urlWriter(
@@ -273,10 +233,9 @@ const Home = (props) => {
                 <Card className={classes.root}>
                     <CardHeader title="Lancements" />
                     <CardContent className={classes.cardContent}>
-                        {recentModels.map((model) => (
-                            <Box>
+                        {recentModels?.map((model) => (
+                            <Box key={model.model}>
                                 <Link
-                                    key={model.model}
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST
                                     }/modeles-voiture/${urlWriter(
@@ -303,10 +262,9 @@ const Home = (props) => {
                 <Card className={classes.root}>
                     <CardHeader title="Promotions" />
                     <CardContent className={classes.cardContent}>
-                        {randPromos.map((model) => (
-                            <Box>
+                        {randPromos?.map((model) => (
+                            <Box key={model.id}>
                                 <Link
-                                    key={model.model}
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST
                                     }/modeles-voiture/${urlWriter(
@@ -340,9 +298,8 @@ const Home = (props) => {
                     <CardHeader title="Articles" />
                     <CardContent>
                         {postsWithImage.map((post) => (
-                            <Box>
+                            <Box key={post.node.slug}>
                                 <Image
-                                    key={post.node.slug}
                                     src={post.node.featuredImage.node.sourceUrl}
                                     alt={post.node.slug}
                                     width="300"
@@ -360,10 +317,13 @@ const Home = (props) => {
 };
 
 Home.propTypes = {
-    brands: PropTypes.array.isRequired,
-    segments: PropTypes.array.isRequired,
-    models: PropTypes.array.isRequired,
-    posts: PropTypes.object.isRequired,
+    selected: PropTypes.object.isRequired,
+    selectBrands: PropTypes.array.isRequired,
+    selectSegments: PropTypes.array.isRequired,
+    selectModels: PropTypes.array.isRequired,
+    postsWithImage: PropTypes.array.isRequired,
+    recentModels: PropTypes.array.isRequired,
+    randPromos: PropTypes.array.isRequired,
 };
 
 export default Home;
@@ -377,12 +337,63 @@ export async function getStaticProps() {
     segments = segments.data.segments;
     posts = posts.data.posts;
     models = models.data.models;
+    const randMod = randIndex(19);
+    const recentModels = models.filter((model, ind) => {
+        return randMod.includes(ind);
+    });
+    // rand promos
+    const promos = [];
+    models.forEach((model) => {
+        const promoVersions = model.versions.filter((version) => {
+            return version.prices.promo !== null;
+        });
+        if (promoVersions.length > 0) {
+            // eslint-disable-next-line no-param-reassign
+            model.versions = promoVersions;
+            promos.push(model);
+        }
+    });
+    const randProm = randIndex(promos.length);
+    const randPromos = promos.filter((model, ind) => {
+        return randProm.includes(ind);
+    });
+
+    const selected = {
+        brands: ['bmw', 'dacia', 'ford', 'peugeot', 'renault', 'volkswagen'],
+        segments: [
+            'citadine',
+            'compacte',
+            'suv compact',
+            'routiere',
+            'mini-crossover',
+            'berlines de luxe',
+        ],
+        priceRanges: ['125-150', '150-175', '175-200', '250-300', '300-400', '400-500'],
+        models: ['x3', 'focus', 'yaris', 'captur', 'logan', 'gle'],
+    };
+    const selectBrands = brands.filter((brand) => {
+        return selected.brands.includes(brand.brand);
+    });
+    const selectSegments = segments.filter((segment) => {
+        return selected.segments.includes(segment.segment);
+    });
+    const selectModels = models.filter((model) => {
+        return selected.models.includes(model.model);
+    });
+
+    const postsWithImage = posts.edges.filter((post) => {
+        return post.node.featuredImage;
+    });
     return {
         props: {
-            brands,
-            posts,
-            segments,
-            models,
+            selected,
+            selectBrands,
+            postsWithImage,
+            selectSegments,
+            selectModels,
+            randMod,
+            recentModels,
+            randPromos,
         },
     };
 }

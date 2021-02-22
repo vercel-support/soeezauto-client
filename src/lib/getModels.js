@@ -3,6 +3,7 @@ import { apiQl } from './functions';
 const queryQl = `query getModels(
   	$isActive: Boolean!
   	$imageIsFeatured: Boolean!
+    $isActivePrice: Boolean!
 ) {
     models(
         isActive: $isActive
@@ -26,17 +27,16 @@ const queryQl = `query getModels(
             id
             version
             prices(
-                _order: {updatedAt: "DESC"}
-                first: 1
+                isActive: $isActivePrice
             ) {
-            	edges {
-                    node {
-                        id
-                        updatedAt
-                        price
-                        promo
-                    }
-                } 
+                id
+                updatedAt
+                price
+                promo
+            }
+            motor {
+                power
+                fuel
             }
         }
     }
@@ -46,6 +46,7 @@ const queryQl = `query getModels(
 const variables = {
     isActive: true,
     imageIsFeatured: true,
+    isActivePrice: true,
 };
 
 export default async function getModels() {

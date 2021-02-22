@@ -448,3 +448,14 @@ export function removeDuplicatesFromArrayOfObjects(array) {
         (v, i, a) => a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i,
     );
 }
+
+export function arrayIntersect(a, b) {
+    const setA = new Set(a);
+    const setB = new Set(b);
+    const intersection = new Set([...setA].filter((x) => setB.has(x)));
+    return Array.from(intersection);
+}
+
+export function objectToMap(o) {
+    return new Map(Object.entries(o));
+}

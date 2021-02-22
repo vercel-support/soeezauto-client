@@ -61,16 +61,11 @@ const queryQl = `query getModel(
             version
             prices(
                 _order: {updatedAt: "DESC"}
-                first: 1
             ) {
-            	edges {
-                    node {
-                        id
-                        updatedAt
-                        price
-                        promo
-                    }
-                } 
+                id
+                updatedAt
+                price
+                promo
             }
         }
     }

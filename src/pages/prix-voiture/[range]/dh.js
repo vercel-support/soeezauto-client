@@ -6,7 +6,6 @@ import { apiQl } from 'lib/functions';
 import { priceRanges } from 'parameters';
 
 const Price = (props) => {
-    console.log('price props', props);
     const { versions } = props;
     console.log('versions', versions);
     return (

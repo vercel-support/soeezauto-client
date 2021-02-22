@@ -1,11 +1,9 @@
 - price range check issue https://github.com/api-platform/core/issues/4008
-- price range add isActive to current price
 - implement content-visibility, clamp, scroll-margin-top, map
 [id] {
   scroll-margin-top: 2ex;
 }
 
 - models page:
-  - define filter features
-  - get model ids for those filter as per /lib/getModelsWithAirCondAuto
   - define UI (datatables??)
+  - animate filter ready

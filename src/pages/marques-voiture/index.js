@@ -49,7 +49,6 @@ export async function getStaticProps() {
     let brands = await getBrandsModels();
     brands = brands.data.brands;
     let posts = await getPosts();
-    console.log('POSTS', posts);
     posts = posts.data.posts;
     return {
         props: {

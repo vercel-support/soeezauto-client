@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { LANG } from 'parameters';
 
 const trans = {
-    br: {
+    fr: {
         submit: 'Enviar',
         clear: 'Apagar',
     },
