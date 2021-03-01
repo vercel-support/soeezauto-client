@@ -29,3 +29,10 @@ export const priceRanges = [
     [500001, 850000],
     [850001, 5000000],
 ];
+
+export const CONVERSION_FUEL = {
+    diesel: 'die',
+    gas: 'ess',
+    hybrid: 'hyb',
+    electric: 'ele',
+};

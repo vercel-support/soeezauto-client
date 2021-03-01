@@ -34,7 +34,7 @@ import getModelsWithPriceBetween300400 from 'lib/getModelsWithPriceBetween300400
 import getModelsWithPriceHigherThan400 from 'lib/getModelsWithPriceHigherThan400';
 import getPosts from 'lib/getPosts';
 import { objectToMap } from 'tools/functions';
-import { LANG } from 'parameters';
+import { LANG, CONVERSION_FUEL } from 'parameters';
 import Loading from 'components/loading';
 import NotifierInline from 'components/notifierInline';
 
@@ -372,15 +372,7 @@ export async function getStaticProps() {
         });
         fuels = Array.from(new Set(fuels));
         fuels.forEach((item, i) => {
-            if (item === 'diesel') {
-                fuels[i] = 'die';
-            } else if (item === 'gas') {
-                fuels[i] = 'ess';
-            } else if (item === 'hybrid') {
-                fuels[i] = 'hyb';
-            } else if (item === 'electric') {
-                fuels[i] = 'ele';
-            }
+            fuels[i] = CONVERSION_FUEL[item];
         });
         model.fuels = fuels.sort();
     });
