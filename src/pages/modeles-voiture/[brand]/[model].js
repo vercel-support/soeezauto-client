@@ -16,6 +16,7 @@ import {
     TableCell,
     Paper,
     Typography,
+    Box,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
@@ -26,6 +27,7 @@ import Link from 'components/link';
 import { CONVERSION_FUEL } from 'parameters';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
+import ModelPrices from 'components/modelPrices';
 
 const useStyles = makeStyles({
     root: {
@@ -68,7 +70,7 @@ const useStyles = makeStyles({
         padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
-            flex: '0 0 300px',
+            flex: '0 0 clamp(300px,400px,600px)',
             margin: '20px 0',
         },
     },
@@ -83,6 +85,9 @@ const useStyles = makeStyles({
         '& td': {
             fontSize: '.75rem',
         },
+    },
+    chart: {
+        height: 400,
     },
 });
 
@@ -196,6 +201,9 @@ const Model = ({ model, isPromo }) => {
                         <ModelTrims versions={model.versions} />
                     </CardContent>
                 </Card>
+                <Box className={classes.chart}>
+                    <ModelPrices model={model} />
+                </Box>
             </main>
         </div>
     );

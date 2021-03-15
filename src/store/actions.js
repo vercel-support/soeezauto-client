@@ -15,6 +15,11 @@ export const GET_MODEL_VERSIONS_WITH_TRIMS = 'GET_MODEL_VERSIONS_WITH_TRIMS';
 export const GET_MODEL_VERSIONS_WITH_TRIMS_OK = 'GET_MODEL_VERSIONS_WITH_TRIMS_OK';
 export const GET_MODEL_VERSIONS_WITH_TRIMS_ERROR = 'GET_MODEL_VERSIONS_WITH_TRIMS_ERROR';
 
+export const GET_PREVIOUS_MODELS = 'GET_PREVIOUS_MODELS';
+export const GET_PREVIOUS_MODELS_INIT = 'GET_PREVIOUS_MODELS_INIT';
+export const GET_PREVIOUS_MODELS_OK = 'GET_PREVIOUS_MODELS_OK';
+export const GET_PREVIOUS_MODELS_ERROR = 'GET_PREVIOUS_MODELS_ERROR';
+
 export const actionCheckOnlineStatus = () => ({
     type: CHECK_ONLINE_STATUS,
 });
@@ -41,6 +46,13 @@ export function actionPostContactEmail(values) {
 export function actionGetModelVersionsWithTrims(values) {
     return {
         type: GET_MODEL_VERSIONS_WITH_TRIMS,
+        values,
+    };
+}
+
+export function actionGetPreviousModels(values) {
+    return {
+        type: GET_PREVIOUS_MODELS,
         values,
     };
 }

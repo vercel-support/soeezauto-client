@@ -130,7 +130,8 @@ const ModelTrims = ({ versions }) => {
         download: false,
         filterType: 'dropdown',
         responsive: 'vertical',
-        rowsPerPage: trimList.uniqueIds.length,
+        pagination: false,
+        // rowsPerPage: trimList.uniqueIds.length,
         selectableRows: 'none',
         selectableRowsHeader: false,
     };
