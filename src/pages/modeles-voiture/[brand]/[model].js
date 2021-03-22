@@ -15,9 +15,10 @@ import {
     TableRow,
     TableCell,
     Paper,
-    Typography,
     Box,
+    Button,
 } from '@material-ui/core';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import getPosts from 'lib/getPosts';
@@ -57,11 +58,8 @@ const useStyles = makeStyles({
         '& >div': {
             textAlign: 'center',
         },
-        '& h6': {
-            textAlign: 'center',
-            backgroundColor: '#F29C12',
-            color: '#fff',
-            fontWeight: 'bold',
+        '& > a button': {
+            width: '100%',
         },
     },
     mainContainer: {
@@ -70,7 +68,7 @@ const useStyles = makeStyles({
         padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
-            flex: '0 0 clamp(300px,400px,600px)',
+            flex: '0 0 clamp(300px,100%,600px)',
             margin: '20px 0',
         },
     },
@@ -88,6 +86,9 @@ const useStyles = makeStyles({
     },
     chart: {
         height: 400,
+    },
+    isPromo: {
+        backgroundColor: '#F29C12',
     },
 });
 
@@ -132,7 +133,6 @@ const Model = ({ model, isPromo }) => {
                         }
                     />
                     <CardContent className={classes.cardContent}>
-                        {isPromo && <Typography variant="h6">PROMO</Typography>}
                         <TableContainer component={Paper}>
                             <Table
                                 className={classes.table}
@@ -176,7 +176,13 @@ const Model = ({ model, isPromo }) => {
                                                 {version.prices[0].price / 1000}
                                             </TableCell>
                                             {isPromo && (
-                                                <TableCell>
+                                                <TableCell
+                                                    className={classnames(
+                                                        version.prices[0].promo
+                                                            ? classes.isPromo
+                                                            : '',
+                                                    )}
+                                                >
                                                     {version.prices[0].promo
                                                         ? version.prices[0].promo / 1000
                                                         : '-'}
@@ -187,6 +193,22 @@ const Model = ({ model, isPromo }) => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
+                        {model.specs.length > 0 && (
+                            <Link
+                                href={`/fiche-technique-constructeur/${urlWriter(
+                                    model.brand.brand,
+                                )}/${
+                                    model.specs[0].year
+                                }/${model.specs[0].month.toString().padStart(2, '0')}/${
+                                    model.specs[0].filename
+                                }`}
+                                target="_blank"
+                            >
+                                <Button variant="outlined" color="secondary">
+                                    Fiche technique constructeur
+                                </Button>
+                            </Link>
+                        )}
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
@@ -249,6 +271,12 @@ const queryQl = `query getModel(
         segment {
             id
             segment
+        }
+        specs(_order: {year: "DESC", month: "DESC"}){
+            id
+            year
+            month
+            filename
         }
         versions(
             isActive: true

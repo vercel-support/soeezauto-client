@@ -7,3 +7,7 @@
 - models page:
   - define UI (datatables??)
   - animate filter ready
+  - price chart  
+      - change query to excluded versions mark as deleted
+      - do not mark replaced model versions as inactive and 
+      change queryGetPreviousModel to only fetch active versions

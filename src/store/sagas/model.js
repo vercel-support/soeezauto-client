@@ -72,7 +72,6 @@ function* getModelVersionsWithTrims(action) {
 function* getPreviousModels(action) {
     const queryQl = `query getPreviousModels(
         $model: String!
-        $priceUpdatedAt: String!
     ){
         models(
             isActive: false
@@ -82,7 +81,6 @@ function* getPreviousModels(action) {
             id
             model
             versions(
-                prices_updatedAt: $priceUpdatedAt
                 _order:{prices_price: "ASC"}
             ) {
                 id
@@ -102,7 +100,6 @@ function* getPreviousModels(action) {
 
     const variables = {
         model: action.values.model,
-        priceUpdatedAt: action.values.priceUpdatedAt,
     };
     try {
         yield put({

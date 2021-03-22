@@ -1,11 +1,25 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import MUIDataTable from 'mui-datatables';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Check } from '@material-ui/icons';
-import { FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
+import { Check, ExpandMore } from '@material-ui/icons';
+import {
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { objectToMap } from 'tools/functions';
+
+const useStyles = makeStyles(() => ({
+    accordion: {
+        display: 'block',
+        padding: 0,
+    },
+}));
 
 const getMuiTheme = () =>
     createMuiTheme({
@@ -52,6 +66,7 @@ const getMuiTheme = () =>
     });
 
 const ModelTrims = ({ versions }) => {
+    const classes = useStyles();
     const trimList = {
         uniqueIds: [],
         unique: [],
@@ -136,23 +151,32 @@ const ModelTrims = ({ versions }) => {
         selectableRowsHeader: false,
     };
     return (
-        <>
-            <RadioGroup
-                row
-                aria-label="difference"
-                name="trimOption"
-                value={isDiff}
-                onChange={handleInputChange}
+        <Accordion TransitionProps={{ unmountOnExit: true }}>
+            <AccordionSummary
+                expandIcon={<ExpandMore />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
             >
-                <FormControlLabel value={0} control={<Radio />} label="tous" />
-                <FormControlLabel value={1} control={<Radio />} label="differences" />
-            </RadioGroup>
-            {data && (
-                <MuiThemeProvider theme={getMuiTheme()}>
-                    <MUIDataTable data={data} columns={columns} options={options} />
-                </MuiThemeProvider>
-            )}
-        </>
+                Voir equipements
+            </AccordionSummary>
+            <AccordionDetails className={classes.accordion}>
+                <RadioGroup
+                    row
+                    aria-label="difference"
+                    name="trimOption"
+                    value={isDiff}
+                    onChange={handleInputChange}
+                >
+                    <FormControlLabel value={0} control={<Radio />} label="tous" />
+                    <FormControlLabel value={1} control={<Radio />} label="differences" />
+                </RadioGroup>
+                {data && (
+                    <MuiThemeProvider theme={getMuiTheme()}>
+                        <MUIDataTable data={data} columns={columns} options={options} />
+                    </MuiThemeProvider>
+                )}
+            </AccordionDetails>
+        </Accordion>
     );
 };
 

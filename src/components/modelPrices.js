@@ -7,7 +7,6 @@ import { actionGetPreviousModels } from 'store/actions';
 
 const MS_PER_DAY = 1000 * 60 * 60 * 24;
 const TODAY = new Date();
-const CURRENT_MONTH = TODAY.getMonth();
 const MONTHS = [
     'jan',
     'fev',
@@ -25,7 +24,6 @@ const MONTHS = [
 
 const ModelPrices = (props) => {
     const { model, dataGetPreviousModels } = props;
-    console.log('MODEl graph', model);
     const [priceData, setPriceData] = useState(null);
     const [minMaxY, setMinMaxY] = useState({
         min: null,
@@ -58,7 +56,7 @@ const ModelPrices = (props) => {
             };
         });
     };
-    const fillPriceInfo = (level, allPrices = null) => {
+    const fillInfo = (level, type, allPrices = null) => {
         let priceInfo = allPrices;
         if (!allPrices) {
             const pricesSort = [...model.versions];
@@ -68,175 +66,159 @@ const ModelPrices = (props) => {
             const whichVersion = level === 'base' ? 0 : pricesSort.length - 1;
             priceInfo = pricesSort[whichVersion].prices;
         }
-        const prices = current(priceInfo, 'price');
-        for (let i = 0; i < 12; i++) {
+        const prices = current(priceInfo, type).reverse();
+        const upperType = `${type.charAt(0).toUpperCase()}${type.slice(1)}`;
+        for (let i = 11; i > -1; i--) {
+            const now = new Date();
+            const iDate = new Date(now.setMonth(now.getMonth() - i, 1));
+            iDate.setHours(0, 0, 0);
             prices.forEach((pri) => {
-                const isMonth =
-                    new Date(pri.updatedAt).getMonth() <= CURRENT_MONTH - i + 12;
-                if (isMonth && !info[`${level}Price`][i]) {
-                    info[`${level}Price`].push({
-                        x:
-                            MONTHS[
-                                CURRENT_MONTH - i < 0
-                                    ? CURRENT_MONTH - i + 12
-                                    : CURRENT_MONTH - i
-                            ],
+                const priceDate = new Date(pri.updatedAt);
+                priceDate.setDate(1);
+                priceDate.setHours(0, 0, 0);
+                if (priceDate <= iDate) {
+                    info[`${level}${upperType}`][11 - i] = {
+                        x: MONTHS[iDate.getMonth()],
                         y: pri.price,
-                    });
+                    };
+                } else if (!info[`${level}${upperType}`][11 - i]) {
+                    info[`${level}${upperType}`][11 - i] = {
+                        x: MONTHS[iDate.getMonth()],
+                        y: null,
+                    };
                 }
             });
         }
         // populate min/max price
-        // populate min price
-        const sortedPrices = [...info[`${level}Price`]];
-        sortedPrices.sort((a, b) => {
+        const sortedPricesASC = [...info[`${level}${upperType}`]];
+        const sortedPricesDESC = [...info[`${level}${upperType}`]];
+        sortedPricesASC.sort((a, b) => {
             return a.y - b.y;
         });
-
-        if (level === 'base') {
-            info.minPrice = sortedPrices[0].y;
-        }
-        if (level === 'top') {
-            info.maxPrice = sortedPrices[sortedPrices.length - 1].y;
-        }
-    };
-    const fillPromoInfo = (level, allPrices = null) => {
-        let priceInfo = allPrices;
-        if (!allPrices) {
-            const pricesSort = [...model.versions];
-            pricesSort.sort((a, b) => {
-                return a.prices[0].price - b.prices[0].price;
-            });
-            const whichVersion = level === 'base' ? 0 : pricesSort.length - 1;
-            priceInfo = pricesSort[whichVersion].prices;
-        }
-        const promos = current(priceInfo, 'promo');
-        for (let i = 0; i < 12; i++) {
-            promos.forEach((pri) => {
-                const isMonth =
-                    new Date(pri.updatedAt).getMonth() <= CURRENT_MONTH - i + 12;
-                if (isMonth && !info[`${level}Promo`][i]) {
-                    info[`${level}Promo`].push({
-                        x:
-                            MONTHS[
-                                CURRENT_MONTH - i < 0
-                                    ? CURRENT_MONTH - i + 12
-                                    : CURRENT_MONTH - i
-                            ],
-                        y: pri.price,
-                    });
-                }
-            });
-        }
-        // populate min price
-        const sortedPromos = [...info[`${level}Promo`]];
-        sortedPromos.sort((a, b) => {
-            return a.y - b.y;
+        sortedPricesDESC.sort((a, b) => {
+            return b.y - a.y;
         });
-
-        if (level === 'base') {
+        if (level === 'base' && type === 'price') {
+            info.minPrice = sortedPricesASC[0].y;
+        }
+        if (level === 'base' && type === 'promo' && sortedPricesASC[0].y) {
             info.minPrice =
-                sortedPromos[0].y < info.minPrice ? sortedPromos[0].y : info.minPrice;
+                sortedPricesASC[0].y < info.minPrice
+                    ? sortedPricesASC[0].y
+                    : info.minPrice;
+        }
+        if (level === 'top' && type === 'price') {
+            info.maxPrice = sortedPricesDESC[0].y;
         }
     };
+
     useEffect(() => {
         const oldestUpdatedAtPrice =
             model.versions[0].prices[model.versions[0].prices.length - 1].updatedAt;
         if (Math.round((TODAY - new Date(oldestUpdatedAtPrice)) / MS_PER_DAY, 0) < 360) {
             props.actionGetPreviousModels({
                 model: model.model,
-                priceUpdatedAt: (TODAY.getFullYear() - 1).toString(),
             });
-        } else {
-            fillPriceInfo('base');
-            fillPromoInfo('base');
-            if (model.versions.length > 1) {
-                fillPriceInfo('top');
-                fillPromoInfo('top');
-            }
-            setMinMaxY({
-                min: info.minPrice,
-                max: info.maxPrice,
-            });
-            const data = [
-                {
-                    id: 'basePrice',
-                    color: 'hsl(169, 70%, 50%)',
-                    data: info.basePrice.reverse(),
-                },
-                {
-                    id: 'topPrice',
-                    color: 'hsl(193, 70%, 50%)',
-                    data: info.topPrice.reverse(),
-                },
-                {
-                    id: 'basePromo',
-                    color: 'hsl(169, 70%, 50%)',
-                    data: info.basePromo.reverse(),
-                },
-                {
-                    id: 'topPromo',
-                    color: 'hsl(193, 70%, 50%)',
-                    data: info.topPromo.reverse(),
-                },
-            ];
-            setPriceData(data);
         }
+        fillInfo('base', 'price');
+        fillInfo('base', 'promo');
+        if (model.versions.length > 1) {
+            fillInfo('top', 'price');
+            fillInfo('top', 'promo');
+        }
+        setMinMaxY({
+            min: info.minPrice,
+            max: info.maxPrice,
+        });
+        const data = [
+            {
+                id: 'Promo base',
+                color: 'hsl(169, 70%, 50%)',
+                data: info.basePromo,
+            },
+            {
+                id: 'Prix base',
+                color: 'hsl(169, 70%, 50%)',
+                data: info.basePrice,
+            },
+            {
+                id: 'Promo top',
+                color: 'hsl(193, 70%, 50%)',
+                data: info.topPromo,
+            },
+            {
+                id: 'Prix top',
+                color: 'hsl(193, 70%, 50%)',
+                data: info.topPrice,
+            },
+        ];
+        setPriceData(data);
     }, [model]);
 
     useEffect(() => {
-        if (dataGetPreviousModels) {
-            const basePrices = dataGetPreviousModels[0].versions[0].prices;
-            const topPrices =
-                dataGetPreviousModels[0].versions[
-                    dataGetPreviousModels[0].versions.length - 1
-                ].prices;
-            // sort current model prices
-            const pricesSort = [...model.versions];
-            pricesSort.sort((a, b) => {
-                return a.prices[0].price - b.prices[0].price;
+        if (
+            dataGetPreviousModels?.length > 0 &&
+            dataGetPreviousModels[0].versions.length > 0
+        ) {
+            // filter out versions with prices updated older than 2 years
+            const versions = dataGetPreviousModels[0].versions.filter((version) => {
+                const prices = version.prices.filter((price) => {
+                    return (
+                        new Date(price.updatedAt).getFullYear() > TODAY.getFullYear() - 3
+                    );
+                });
+                return prices.length > 0;
             });
-            // const whichVersion = level === 'base' ? 0 : pricesSort.length - 1;
-            // const priceInfo = pricesSort[whichVersion].prices;
+            if (versions.length > 0) {
+                const basePrices = versions[0].prices;
+                const topPrices = versions[versions.length - 1].prices;
+                // sort current model prices
+                const pricesSort = [...model.versions];
+                pricesSort.sort((a, b) => {
+                    return a.prices[0].price - b.prices[0].price;
+                });
+                // const whichVersion = level === 'base' ? 0 : pricesSort.length - 1;
+                // const priceInfo = pricesSort[whichVersion].prices;
 
-            const allPrices = {
-                base: [...pricesSort[0].prices, ...basePrices],
-                top: [...pricesSort[pricesSort.length - 1].prices, ...topPrices],
-            };
-            fillPriceInfo('base', allPrices.base);
-            fillPromoInfo('base', allPrices.base);
-            if (model.versions.length > 1) {
-                fillPriceInfo('top', allPrices.top);
-                fillPromoInfo('top', allPrices.top);
+                const allPrices = {
+                    base: [...pricesSort[0].prices, ...basePrices],
+                    top: [...pricesSort[pricesSort.length - 1].prices, ...topPrices],
+                };
+                fillInfo('base', 'price', allPrices.base);
+                fillInfo('base', 'promo', allPrices.base);
+                if (model.versions.length > 1) {
+                    fillInfo('top', 'price', allPrices.top);
+                    fillInfo('top', 'promo', allPrices.top);
+                }
+                setMinMaxY({
+                    min: info.minPrice,
+                    max: info.maxPrice,
+                });
+                setIsModelChange(true);
+                const dataAll = [
+                    {
+                        id: 'Promo base',
+                        color: 'hsl(169, 70%, 50%)',
+                        data: info.basePromo,
+                    },
+                    {
+                        id: 'Prix base',
+                        color: 'hsl(169, 70%, 50%)',
+                        data: info.basePrice,
+                    },
+                    {
+                        id: 'Promo top',
+                        color: 'hsl(193, 70%, 50%)',
+                        data: info.topPromo,
+                    },
+                    {
+                        id: 'Prix top',
+                        color: 'hsl(193, 70%, 50%)',
+                        data: info.topPrice,
+                    },
+                ];
+                setPriceData(dataAll);
             }
-            setMinMaxY({
-                min: info.minPrice,
-                max: info.maxPrice,
-            });
-            setIsModelChange(true);
-            const dataAll = [
-                {
-                    id: 'basePrice',
-                    color: 'hsl(169, 70%, 50%)',
-                    data: info.basePrice.reverse(),
-                },
-                {
-                    id: 'topPrice',
-                    color: 'hsl(193, 70%, 50%)',
-                    data: info.topPrice.reverse(),
-                },
-                {
-                    id: 'basePromo',
-                    color: 'hsl(169, 70%, 50%)',
-                    data: info.basePromo.reverse(),
-                },
-                {
-                    id: 'topPromo',
-                    color: 'hsl(193, 70%, 50%)',
-                    data: info.topPromo.reverse(),
-                },
-            ];
-            setPriceData(dataAll);
         }
     }, [dataGetPreviousModels]);
     if (priceData) {
@@ -254,8 +236,8 @@ const ModelPrices = (props) => {
                     xScale={{ type: 'point' }}
                     yScale={{
                         type: 'linear',
-                        min: minMaxY.min,
-                        max: minMaxY.max,
+                        min: minMaxY.min - 30,
+                        max: minMaxY.max + 30,
                         stacked: false,
                         reverse: false,
                     }}
