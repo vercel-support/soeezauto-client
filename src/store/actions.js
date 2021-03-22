@@ -20,6 +20,11 @@ export const GET_PREVIOUS_MODELS_INIT = 'GET_PREVIOUS_MODELS_INIT';
 export const GET_PREVIOUS_MODELS_OK = 'GET_PREVIOUS_MODELS_OK';
 export const GET_PREVIOUS_MODELS_ERROR = 'GET_PREVIOUS_MODELS_ERROR';
 
+export const GET_MODEL = 'GET_MODEL';
+export const GET_MODEL_INIT = 'GET_MODEL_INIT';
+export const GET_MODEL_OK = 'GET_MODEL_OK';
+export const GET_MODEL_ERROR = 'GET_MODEL_ERROR';
+
 export const actionCheckOnlineStatus = () => ({
     type: CHECK_ONLINE_STATUS,
 });
@@ -54,5 +59,12 @@ export function actionGetPreviousModels(values) {
     return {
         type: GET_PREVIOUS_MODELS,
         values,
+    };
+}
+
+export function actionGetModel(modelId) {
+    return {
+        type: GET_MODEL,
+        modelId,
     };
 }

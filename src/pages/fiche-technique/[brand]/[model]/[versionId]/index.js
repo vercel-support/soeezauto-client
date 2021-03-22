@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { apiQl } from 'lib/functions';
+import ModelSpecs from 'components/modelSpecs';
+import ModelTrims from 'components/modelTrims';
+import ModelVersions from 'components/modelVersions';
+import { actionGetModel } from 'store/actions';
 
-const FicheTechnique = ({ version }) => {
-    console.log('version', version);
+const FicheTechnique = (props) => {
+    const { version, dataGetModel, errorGetModel } = props;
+    console.log('version', props);
+    const [model, setModel] = useState(null);
+    const [isPromo, setIsPromo] = useState(false);
+
+    useEffect(() => {
+        if (version.model.id) {
+            props.actionGetModel(version.model.id);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (dataGetModel) {
+            setModel({ ...dataGetModel });
+            const prom = dataGetModel.versions.filter((vs) => {
+                return vs.prices[0].promo;
+            });
+            setIsPromo(prom.length > 0);
+        }
+    }, [dataGetModel, errorGetModel]);
 
     return (
         <div>
@@ -13,16 +38,40 @@ const FicheTechnique = ({ version }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main>{version.version}</main>
+            <main>
+                {version.version}
+                <ModelSpecs versions={[version]} />
+                <ModelTrims versions={[version]} />
+                {model && <ModelVersions model={model} isPromo={isPromo} />}
+            </main>
         </div>
     );
 };
 
 FicheTechnique.propTypes = {
     version: PropTypes.object.isRequired,
+    dataGetModel: PropTypes.any,
+    errorGetModel: PropTypes.any,
+    actionGetModel: PropTypes.func.isRequired,
 };
 
-export default FicheTechnique;
+const mapStateToProps = (state) => {
+    return {
+        dataGetModel: state.model.dataGetModel,
+        errorGetModel: state.model.errorGetModel,
+    };
+};
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(
+        {
+            actionGetModel,
+        },
+        dispatch,
+    );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FicheTechnique);
 
 const queryQl = `query getVersion(
   	$id: ID!
@@ -32,6 +81,10 @@ const queryQl = `query getVersion(
     ){
         id
         version
+        model {
+            id
+            model
+        }
         bodyType
         taxLuxe
         matricule
@@ -84,6 +137,7 @@ const queryQl = `query getVersion(
             mileageMix
         }
         trims {
+            id
             trim
             trimType
         }

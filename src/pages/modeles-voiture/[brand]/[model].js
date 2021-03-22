@@ -4,31 +4,16 @@ import Head from 'next/head';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    Table,
-    TableBody,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TableCell,
-    Paper,
-    Box,
-    Button,
-} from '@material-ui/core';
-import classnames from 'classnames';
+import { Card, CardHeader, CardContent, Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import getPosts from 'lib/getPosts';
 import { urlWriter } from 'tools/functions';
 import { apiQl } from 'lib/functions';
-import Link from 'components/link';
-import { CONVERSION_FUEL } from 'parameters';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import ModelPrices from 'components/modelPrices';
+import ModelVersions from 'components/modelVersions';
 
 const useStyles = makeStyles({
     root: {
@@ -114,103 +99,7 @@ const Model = ({ model, isPromo }) => {
                         priority
                     />
                 </div>
-                <Card className={classes.root}>
-                    <CardHeader
-                        title={model.model}
-                        avatar={
-                            <Link
-                                href={`/marques-voiture/${urlWriter(model.brand.brand)}`}
-                            >
-                                <Image
-                                    src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${model.brand.image}`}
-                                    alt={model.brand.brand}
-                                    width="60"
-                                    height="60"
-                                    loading="eager"
-                                    priority
-                                />
-                            </Link>
-                        }
-                    />
-                    <CardContent className={classes.cardContent}>
-                        <TableContainer component={Paper}>
-                            <Table
-                                className={classes.table}
-                                aria-label="fiches techniques"
-                            >
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Version</TableCell>
-                                        <TableCell>Carb</TableCell>
-                                        <TableCell>ch</TableCell>
-                                        {!isPromo && <TableCell>CF</TableCell>}
-                                        <TableCell>Prix</TableCell>
-                                        {isPromo && <TableCell>Promo</TableCell>}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {model.versions.map((version) => (
-                                        <TableRow key={version.id}>
-                                            <TableCell>
-                                                <Link
-                                                    href={`/fiche-technique/${urlWriter(
-                                                        model.brand.brand,
-                                                    )}/${urlWriter(
-                                                        model.model,
-                                                    )}/${version.id.replace(
-                                                        '/api/versions/',
-                                                        '',
-                                                    )}`}
-                                                >
-                                                    {version.version}
-                                                </Link>
-                                            </TableCell>
-                                            <TableCell>
-                                                {CONVERSION_FUEL[version.motor.fuel]}
-                                            </TableCell>
-                                            <TableCell>{version.motor.power}</TableCell>
-                                            {!isPromo && (
-                                                <TableCell>{version.CF.CF}</TableCell>
-                                            )}
-                                            <TableCell>
-                                                {version.prices[0].price / 1000}
-                                            </TableCell>
-                                            {isPromo && (
-                                                <TableCell
-                                                    className={classnames(
-                                                        version.prices[0].promo
-                                                            ? classes.isPromo
-                                                            : '',
-                                                    )}
-                                                >
-                                                    {version.prices[0].promo
-                                                        ? version.prices[0].promo / 1000
-                                                        : '-'}
-                                                </TableCell>
-                                            )}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        {model.specs.length > 0 && (
-                            <Link
-                                href={`/fiche-technique-constructeur/${urlWriter(
-                                    model.brand.brand,
-                                )}/${
-                                    model.specs[0].year
-                                }/${model.specs[0].month.toString().padStart(2, '0')}/${
-                                    model.specs[0].filename
-                                }`}
-                                target="_blank"
-                            >
-                                <Button variant="outlined" color="secondary">
-                                    Fiche technique constructeur
-                                </Button>
-                            </Link>
-                        )}
-                    </CardContent>
-                </Card>
+                <ModelVersions model={model} isPromo={isPromo} />
                 <Card className={classes.root}>
                     <CardHeader title="Caracteristiques techniques" />
                     <CardContent className={classes.cardContent}>

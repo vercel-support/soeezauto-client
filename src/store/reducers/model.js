@@ -5,6 +5,9 @@ import {
     GET_PREVIOUS_MODELS_INIT,
     GET_PREVIOUS_MODELS_OK,
     GET_PREVIOUS_MODELS_ERROR,
+    GET_MODEL_INIT,
+    GET_MODEL_OK,
+    GET_MODEL_ERROR,
 } from '../actions';
 
 const initialState = {
@@ -12,6 +15,8 @@ const initialState = {
     errorGetModelVersionsWithTrims: null,
     dataGetPreviousModels: null,
     errorGetPreviousModels: null,
+    dataGetModel: null,
+    errorGetModel: null,
     isLoading: false,
 };
 
@@ -48,6 +53,22 @@ const model = (state = initialState, action) => {
             return {
                 ...state,
                 errorGetPreviousModels: action.data,
+            };
+        case GET_MODEL_INIT:
+            return {
+                ...state,
+                dataGetModel: null,
+                errorGetModel: null,
+            };
+        case GET_MODEL_OK:
+            return {
+                ...state,
+                dataGetModel: action.data,
+            };
+        case GET_MODEL_ERROR:
+            return {
+                ...state,
+                errorGetModel: action.data,
             };
         default:
             return state;

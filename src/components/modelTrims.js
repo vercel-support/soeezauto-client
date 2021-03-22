@@ -71,6 +71,7 @@ const ModelTrims = ({ versions }) => {
         uniqueIds: [],
         unique: [],
     };
+    console.log('versions', versions);
     versions.forEach((vs) => {
         vs.trims.forEach((trim) => {
             if (!trimList.uniqueIds.includes(trim.id)) {
@@ -79,7 +80,7 @@ const ModelTrims = ({ versions }) => {
             }
         });
     });
-
+    console.log('trimlist', trimList);
     const dataAll = [];
     trimList.unique.forEach((trim, ind) => {
         dataAll.push({
@@ -150,6 +151,7 @@ const ModelTrims = ({ versions }) => {
         selectableRows: 'none',
         selectableRowsHeader: false,
     };
+    console.log('DATA', data);
     return (
         <Accordion TransitionProps={{ unmountOnExit: true }}>
             <AccordionSummary
@@ -160,16 +162,22 @@ const ModelTrims = ({ versions }) => {
                 Voir equipements
             </AccordionSummary>
             <AccordionDetails className={classes.accordion}>
-                <RadioGroup
-                    row
-                    aria-label="difference"
-                    name="trimOption"
-                    value={isDiff}
-                    onChange={handleInputChange}
-                >
-                    <FormControlLabel value={0} control={<Radio />} label="tous" />
-                    <FormControlLabel value={1} control={<Radio />} label="differences" />
-                </RadioGroup>
+                {versions.length > 1 && (
+                    <RadioGroup
+                        row
+                        aria-label="difference"
+                        name="trimOption"
+                        value={isDiff}
+                        onChange={handleInputChange}
+                    >
+                        <FormControlLabel value={0} control={<Radio />} label="tous" />
+                        <FormControlLabel
+                            value={1}
+                            control={<Radio />}
+                            label="differences"
+                        />
+                    </RadioGroup>
+                )}
                 {data && (
                     <MuiThemeProvider theme={getMuiTheme()}>
                         <MUIDataTable data={data} columns={columns} options={options} />
