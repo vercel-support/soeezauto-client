@@ -16,7 +16,7 @@ export const REDIRECT_TIMER = 4000; // 4 seconds
 
 export const ITEMS_PER_PAGE = 10;
 
-export const priceRanges = [
+export const PRICE_RANGES = [
     [1, 125000],
     [125001, 150000],
     [150001, 175000],
@@ -26,8 +26,9 @@ export const priceRanges = [
     [250001, 300000],
     [300001, 400000],
     [400001, 500000],
-    [500001, 850000],
-    [850001, 5000000],
+    [500001, 800000],
+    [800001, 1100000],
+    [1100001, 5000000],
 ];
 
 export const CONVERSION_FUEL = {

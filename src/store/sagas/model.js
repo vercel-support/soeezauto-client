@@ -146,7 +146,6 @@ function* getPreviousModels(action) {
 }
 
 function* getModel(action) {
-    console.log('action', action);
     const queryQl = `query getModel(
         $id: ID!
     ) {
