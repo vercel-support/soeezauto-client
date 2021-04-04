@@ -90,7 +90,6 @@ const Home = (props) => {
         postsWithImage,
         recentModels,
         randPromos,
-        selected,
     } = props;
 
     return (
@@ -160,37 +159,6 @@ const Home = (props) => {
                         <Link href="/segments-automobile">
                             <Button variant="outlined" color="primary" size="small">
                                 Tous les segments
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Prix" />
-                    <CardContent className={classes.cardContent}>
-                        {selected.priceRanges.map((range) => (
-                            <Box key={range}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/prix-voiture/${range.split('-')[0] * 1000 + 1}-${
-                                        range.split('-')[1] * 1000
-                                    }/dh`}
-                                >
-                                    <Button
-                                        className={classes.range}
-                                        variant="contained"
-                                        color="primary"
-                                    >
-                                        {range}
-                                    </Button>
-                                </Link>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <Link href="/prix-voiture">
-                            <Button variant="outlined" color="primary" size="small">
-                                Tous les prix
                             </Button>
                         </Link>
                     </CardActions>
@@ -317,7 +285,6 @@ const Home = (props) => {
 };
 
 Home.propTypes = {
-    selected: PropTypes.object.isRequired,
     selectBrands: PropTypes.array.isRequired,
     selectSegments: PropTypes.array.isRequired,
     selectModels: PropTypes.array.isRequired,
@@ -368,7 +335,6 @@ export async function getStaticProps() {
             'mini-crossover',
             'berlines de luxe',
         ],
-        priceRanges: ['125-150', '150-175', '175-200', '250-300', '300-400', '400-500'],
         models: ['x3', 'focus', 'yaris', 'captur', 'logan', 'gle'],
     };
     const selectBrands = brands.filter((brand) => {
@@ -386,7 +352,6 @@ export async function getStaticProps() {
     });
     return {
         props: {
-            selected,
             selectBrands,
             postsWithImage,
             selectSegments,

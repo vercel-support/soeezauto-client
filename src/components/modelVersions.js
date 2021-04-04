@@ -77,14 +77,9 @@ const ModelVersions = ({ model, isPromo }) => {
                                 <TableRow key={version.id}>
                                     <TableCell>
                                         <Link
-                                            href={`/fiche-technique/${urlWriter(
+                                            href={`/fiche-technique-prix/${urlWriter(
                                                 model.brand.brand,
-                                            )}/${urlWriter(
-                                                model.model,
-                                            )}/${version.id.replace(
-                                                '/api/versions/',
-                                                '',
-                                            )}`}
+                                            )}/${urlWriter(model.model)}`}
                                         >
                                             {version.version}
                                         </Link>
@@ -119,11 +114,7 @@ const ModelVersions = ({ model, isPromo }) => {
                     <Link
                         href={`/fiche-technique-constructeur/${urlWriter(
                             model.brand.brand,
-                        )}/${
-                            model.specs[0].year
-                        }/${model.specs[0].month.toString().padStart(2, '0')}/${
-                            model.specs[0].filename
-                        }`}
+                        )}`}
                         target="_blank"
                     >
                         <Button variant="outlined" color="secondary">

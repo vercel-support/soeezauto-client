@@ -19,42 +19,42 @@ export default class MyDocument extends Document {
                         as="font"
                         type="font/woff"
                         href="/fonts/roboto-v20-latin-700.woff"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="preload"
                         as="font"
                         type="font/woff2"
                         href="/fonts/roboto-v20-latin-700.woff2"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="preload"
                         as="font"
                         type="font/woff"
                         href="/fonts/roboto-v20-latin-700italic.woff"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="preload"
                         as="font"
                         type="font/woff2"
                         href="/fonts/roboto-v20-latin-700italic.woff2"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="preload"
                         as="font"
                         type="font/woff"
                         href="/fonts/roboto-v20-latin-regular.woff"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="preload"
                         as="font"
                         type="font/woff2"
                         href="/fonts/roboto-v20-latin-regular.woff2"
-                        crossOrigin="true"
+                        // crossOrigin="true"
                     />
                     <link
                         rel="apple-touch-icon"

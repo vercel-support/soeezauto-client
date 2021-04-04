@@ -1,6 +1,6 @@
 import { apiQl } from './functions';
 
-const queryQl = `query getBrandsModels(
+const queryQl = `query getBrands(
   	    $isActive: Boolean!) {
     brands(
         isActive: $isActive) {

@@ -9,4 +9,5 @@ module.exports = {
     images: {
         domains: ['soeezauto-api', 'localhost', 'www.soeezauto.ma'],
     },
+    crossOrigin: 'anonymous',
 };

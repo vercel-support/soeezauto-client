@@ -13,7 +13,7 @@ const Promotions = (props) => {
     const promos = [];
     models.forEach((model) => {
         const promoVersions = model.versions.filter((version) => {
-            return version.prices.edges[0].node.promo;
+            return version.prices[0].promo;
         });
         if (promoVersions.length > 0) {
             // eslint-disable-next-line no-param-reassign

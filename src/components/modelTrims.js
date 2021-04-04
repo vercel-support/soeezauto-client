@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
 import { Check, ExpandMore } from '@material-ui/icons';
@@ -67,48 +67,55 @@ const getMuiTheme = () =>
 
 const ModelTrims = ({ versions }) => {
     const classes = useStyles();
-    const trimList = {
-        uniqueIds: [],
-        unique: [],
-    };
     console.log('versions', versions);
-    versions.forEach((vs) => {
-        vs.trims.forEach((trim) => {
-            if (!trimList.uniqueIds.includes(trim.id)) {
-                trimList.uniqueIds.push(trim.id);
-                trimList.unique.push(trim);
-            }
-        });
-    });
-    console.log('trimlist', trimList);
-    const dataAll = [];
-    trimList.unique.forEach((trim, ind) => {
-        dataAll.push({
-            trim: trim.trim,
-            trimType: trim.trimType,
-        });
+    const [isDiff, setIsDiff] = useState(0);
+    const [dataDiff, setDataDiff] = useState(null);
+    const [dataAll, setDataAll] = useState(null);
+    const [data, setData] = useState(null);
 
+    useEffect(() => {
+        const trimList = {
+            uniqueIds: [],
+            unique: [],
+        };
         versions.forEach((vs) => {
-            dataAll[ind][vs.version] = 0;
-            vs.trims.forEach((tri) => {
-                if (tri.id === trim.id) {
-                    dataAll[ind][vs.version] = 1;
+            vs.trims.forEach((trim) => {
+                if (!trimList.uniqueIds.includes(trim.id)) {
+                    trimList.uniqueIds.push(trim.id);
+                    trimList.unique.push(trim);
                 }
             });
         });
-    });
-    const dataDiff = dataAll.filter((line) => {
-        const lineMap = objectToMap(line);
-        let sum = 0;
-        for (const value of lineMap.values()) {
-            if (typeof value === 'number') {
-                sum += value;
+        const all = [];
+        trimList.unique.forEach((trim, ind) => {
+            all.push({
+                trim: trim.trim,
+                trimType: trim.trimType,
+            });
+
+            versions.forEach((vs) => {
+                all[ind][vs.version] = 0;
+                vs.trims.forEach((tri) => {
+                    if (tri.id === trim.id) {
+                        all[ind][vs.version] = 1;
+                    }
+                });
+            });
+        });
+        const diff = all.filter((line) => {
+            const lineMap = objectToMap(line);
+            let sum = 0;
+            for (const value of lineMap.values()) {
+                if (typeof value === 'number') {
+                    sum += value;
+                }
             }
-        }
-        return sum > 0 && sum < versions.length;
-    });
-    const [isDiff, setIsDiff] = useState(0);
-    const [data, setData] = useState(dataAll);
+            return sum > 0 && sum < versions.length;
+        });
+        setDataDiff(diff);
+        setDataAll(all);
+        setData(all);
+    }, [versions]);
 
     const handleInputChange = (event) => {
         setIsDiff(parseInt(event.target.value, 10));
@@ -151,7 +158,6 @@ const ModelTrims = ({ versions }) => {
         selectableRows: 'none',
         selectableRowsHeader: false,
     };
-    console.log('DATA', data);
     return (
         <Accordion TransitionProps={{ unmountOnExit: true }}>
             <AccordionSummary
