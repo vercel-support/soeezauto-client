@@ -459,3 +459,7 @@ export function arrayIntersect(a, b) {
 export function objectToMap(o) {
     return new Map(Object.entries(o));
 }
+
+export function numberFrance(value) {
+    return new Intl.NumberFormat('fr-FR').format(Math.floor(Math.round(value)));
+}

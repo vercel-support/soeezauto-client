@@ -1,26 +1,102 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
+import {
+    Table,
+    TableBody,
+    TableRow,
+    TableCell,
+    TableHead,
+    Card,
+    CardHeader,
+    CardContent,
+    CardActions,
+    Button,
+    Box,
+    Select,
+    FormControl,
+    InputLabel,
+    MenuItem,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import getModels from 'lib/getModels';
 import getPosts from 'lib/getPosts';
 import Link from 'components/link';
-import { urlWriter } from 'tools/functions';
+import { urlWriter, numberFrance } from 'tools/functions';
+import { apiQl } from 'lib/functions';
+
+const useStyles = makeStyles({
+    root: {
+        color: '#29335c',
+        '& .MuiCardHeader-root': {
+            textAlign: 'center',
+        },
+        '& .MuiCardActions-root': {
+            justifyContent: 'center',
+        },
+        '& .MuiCardHeader-content span': {
+            textTransform: 'uppercase',
+            fontWeight: 'bold',
+        },
+    },
+    cardContent: {
+        padding: '8px',
+        '& td': {
+            fontSize: '.75rem',
+        },
+    },
+    container: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: '10px',
+        justifyContent: 'space-around',
+        '& > div': {
+            flex: '0 0 300px',
+            margin: '20px 0',
+            display: 'grid',
+            gridTemplateRows: '100px auto 100px',
+        },
+    },
+    image: {
+        display: 'flex',
+        justifyContent: 'center',
+    },
+});
 
 const Promotions = (props) => {
-    console.log('models', props);
-    const { models } = props;
-    const promos = [];
-    models.forEach((model) => {
-        const promoVersions = model.versions.filter((version) => {
-            return version.prices[0].promo;
+    const classes = useStyles();
+    console.log('promo', props);
+    const { brands } = props;
+    const [brandSelect, setBrandSelect] = useState('all');
+    const [selectedBrand, setSelectedBrand] = useState(brands);
+    const handleSetBrandSelect = () => {
+        const options = [
+            <MenuItem key={0} aria-label="Toutes" value="all">
+                Toutes
+            </MenuItem>,
+        ];
+        brands.forEach((brand) => {
+            options.push(
+                <MenuItem value={brand.id} key={brand.id}>
+                    {brand.brand}
+                </MenuItem>,
+            );
         });
-        if (promoVersions.length > 0) {
-            // eslint-disable-next-line no-param-reassign
-            model.versions = promoVersions;
-            promos.push(model);
+
+        return options;
+    };
+    const handleBrandSelectChange = (event) => {
+        setBrandSelect(event.target.value);
+        if (event.target.value === 'all') {
+            setSelectedBrand(brands);
+        } else {
+            setSelectedBrand(
+                brands.filter((brand) => {
+                    return brand.id === event.target.value;
+                }),
+            );
         }
-    });
+    };
     return (
         <div>
             <Head>
@@ -29,24 +105,135 @@ const Promotions = (props) => {
             </Head>
 
             <main>
-                {promos.map((model) => (
-                    <Link
-                        key={model.model}
-                        href={`${
-                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                        }/modeles-voiture/${urlWriter(model.brand.brand)}/${urlWriter(
-                            model.model,
-                        )}`}
-                    >
-                        <Image
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                            alt={`${model.brand.brand}-${model.model}`}
-                            width="100"
-                            height="67"
-                            loading="eager"
-                            priority
-                        />
-                    </Link>
+                <div>
+                    <form>
+                        <div className="form_input form_select">
+                            <FormControl>
+                                <InputLabel id="item-select">Select brand</InputLabel>
+                                <Select
+                                    labelId="item-select"
+                                    name="item"
+                                    value={brandSelect}
+                                    onChange={handleBrandSelectChange}
+                                >
+                                    {handleSetBrandSelect()}
+                                </Select>
+                                <span id="no_cat_search" className="form_error" />
+                            </FormControl>
+                        </div>
+                    </form>
+                </div>
+                {selectedBrand.map((brand) => (
+                    <div key={brand.id}>
+                        <Box className={classes.image}>
+                            <Link
+                                href={`${
+                                    process.env.NEXT_PUBLIC_CLIENT_HOST
+                                }/marques-voiture/${urlWriter(brand.brand)}`}
+                            >
+                                <Image
+                                    src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
+                                    alt={brand.brand}
+                                    width="100"
+                                    height="100"
+                                    loading="eager"
+                                    priority
+                                />
+                            </Link>
+                        </Box>
+                        <div className={classes.container}>
+                            {brand.models.map((model) => (
+                                <Card key={model.id} className={classes.root}>
+                                    <CardHeader
+                                        title={model.model}
+                                        avatar={
+                                            <Link
+                                                key={model.model}
+                                                href={`${
+                                                    process.env.NEXT_PUBLIC_CLIENT_HOST
+                                                }/modeles-voiture/${urlWriter(
+                                                    brand.brand,
+                                                )}/${urlWriter(model.model)}`}
+                                            >
+                                                <Image
+                                                    src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                                    alt={`${brand.brand}-${model.model}`}
+                                                    width="100"
+                                                    height="67"
+                                                    loading="eager"
+                                                    priority
+                                                />
+                                            </Link>
+                                        }
+                                    />
+                                    <CardContent className={classes.cardContent}>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell width="50%">
+                                                        Version
+                                                    </TableCell>
+                                                    <TableCell width="25%">
+                                                        Prix
+                                                    </TableCell>
+                                                    <TableCell width="25%">
+                                                        Promo
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {model.versions.map((version) => (
+                                                    <TableRow key={version.id}>
+                                                        <TableCell>
+                                                            <Link
+                                                                href={`/fiche-technique-prix/${urlWriter(
+                                                                    brand.brand,
+                                                                )}/${urlWriter(
+                                                                    model.model,
+                                                                )}`}
+                                                            >
+                                                                {version.version}
+                                                            </Link>
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {numberFrance(
+                                                                version.prices[0].price /
+                                                                    1000,
+                                                            )}
+                                                        </TableCell>
+                                                        <TableCell>
+                                                            {numberFrance(
+                                                                version.prices[0].promo /
+                                                                    1000,
+                                                            )}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Link
+                                            key={model.model}
+                                            href={`${
+                                                process.env.NEXT_PUBLIC_CLIENT_HOST
+                                            }/modeles-voiture/${urlWriter(
+                                                brand.brand,
+                                            )}/${urlWriter(model.model)}`}
+                                        >
+                                            <Button
+                                                variant="outlined"
+                                                color="primary"
+                                                size="small"
+                                            >
+                                                Go to model
+                                            </Button>
+                                        </Link>
+                                    </CardActions>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
                 ))}
             </main>
         </div>
@@ -54,19 +241,81 @@ const Promotions = (props) => {
 };
 
 Promotions.propTypes = {
-    models: PropTypes.array.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 
 export default Promotions;
 
+const queryQl = `query getBrandsForPromo(
+    $isActive: Boolean!,
+    $isActiveModel: Boolean!
+    $imageIsFeatured: Boolean!
+    $isActivePrice: Boolean!
+) {
+    brands(
+        isActive: $isActive
+        _order: {brand: "ASC"}
+    ) {
+        id
+        brand
+        image
+        models(
+            isActive: $isActiveModel
+            _order: {model: "ASC"}
+        ){
+            id
+            model
+            modelYear
+            images(isFeatured: $imageIsFeatured) {
+                filename
+            }
+            versions(exists: {prices:true}) {
+                id
+                version
+                prices(
+                    isActive: $isActivePrice
+                ) {
+                    id
+                    updatedAt
+                    price
+                    promo
+                }
+                motor {
+                    power
+                    fuel
+                }
+            }
+        }
+    }
+}`;
+
 export async function getStaticProps() {
-    let models = await getModels();
-    models = models.data.models;
+    const variables = {
+        isActive: true,
+        isActiveModel: true,
+        imageIsFeatured: true,
+        isActivePrice: true,
+    };
+    const data = await apiQl(queryQl, variables, false);
+    const brands = data.data.brands;
+    const promoBrands = brands.filter((brand) => {
+        const promoModels = brand.models.filter((model) => {
+            const promoVersions = model.versions.filter((version) => {
+                return version.prices[0].promo;
+            });
+            // eslint-disable-next-line no-param-reassign
+            model.versions = promoVersions;
+            return promoVersions.length > 0;
+        });
+        // eslint-disable-next-line no-param-reassign
+        brand.models = promoModels;
+        return promoModels.length > 0;
+    });
     let posts = await getPosts();
     posts = posts.data.posts;
     return {
         props: {
-            models,
+            brands: promoBrands,
             posts,
         },
     };
