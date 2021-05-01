@@ -12,7 +12,7 @@ import {
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import { apiQl } from 'lib/functions';
-import { urlWriter } from 'tools/functions';
+import { urlWriter, numberFrance } from 'tools/functions';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 
@@ -100,7 +100,9 @@ const FicheTechnique = (props) => {
                         ))}
                     </CardContent>
                     <CardActions>
-                        <h2>Faites votre propre budget</h2>
+                        <p>{`Prix:${numberFrance(currentVersion.prices[0].price)} DH`}</p>
+                        {currentVersion.prices[0].promo &&
+                            `Promo:${numberFrance(currentVersion.prices[0].promo)}  DH`}
                     </CardActions>
                 </Card>
                 <ModelSpecs versions={[currentVersion]} />
