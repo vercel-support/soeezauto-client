@@ -1,3 +1,4 @@
+import { TRIMS_LEATHER_SEATS } from 'parameters';
 import { apiQl } from './functions';
 
 const queryQl = `query getModelsWithLeatherSeats(
@@ -12,7 +13,7 @@ const queryQl = `query getModelsWithLeatherSeats(
   }`;
 
 const variables = {
-    trims: ['/api/trims/115', '/api/trims/283', '/api/trims/540'],
+    trims: TRIMS_LEATHER_SEATS,
     isActive: true,
 };
 

@@ -31,9 +31,29 @@ export const PRICE_RANGES = [
     [1100001, 5000000],
 ];
 
+export const PRICE_RANGES_SHORT = [
+    ['0', '200000'],
+    ['200000', '300000'],
+    ['300000', '400000'],
+    ['400000'],
+];
+
 export const CONVERSION_FUEL = {
     diesel: 'die',
     gas: 'ess',
     hybrid: 'hyb',
     electric: 'ele',
 };
+
+export const AUTOMATIC_GEARBOXES = ['a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'cvt'];
+
+export const TRIMS_AIR_COND_AUTO = [
+    '/api/trims/37',
+    '/api/trims/38',
+    '/api/trims/204',
+    '/api/trims/250',
+];
+
+export const TRIMS_DISPLAY_MULTIMEDIA = ['/api/trims/272', '/api/trims/462'];
+
+export const TRIMS_LEATHER_SEATS = ['/api/trims/115', '/api/trims/283', '/api/trims/540'];

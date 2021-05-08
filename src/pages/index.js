@@ -21,6 +21,7 @@ import { urlWriter } from 'tools/functions';
 const useStyles = makeStyles({
     root: {
         color: '#29335c',
+        backgroundColor: 'rgb(218, 165, 32)',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
         },
@@ -33,6 +34,8 @@ const useStyles = makeStyles({
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
+            fontSize: '1.2rem',
+            color: '#fff',
         },
     },
     cardContent: {
@@ -71,9 +74,9 @@ const useStyles = makeStyles({
     },
 });
 
-const randIndex = (len) => {
+const randIndex = (len, max) => {
     const rand = [];
-    while (rand.length < 6) {
+    while (rand.length < max) {
         const r = Math.floor(Math.random() * len) + 1;
         if (rand.indexOf(r) === -1) rand.push(r);
     }
@@ -81,7 +84,7 @@ const randIndex = (len) => {
 };
 
 const Home = (props) => {
-    console.log('home props', props);
+    // console.log('home props', props);
     const classes = useStyles();
     const {
         selectBrands,
@@ -124,7 +127,7 @@ const Home = (props) => {
                     </CardContent>
                     <CardActions>
                         <Link href="/marques-voiture">
-                            <Button variant="outlined" color="primary" size="small">
+                            <Button variant="contained" color="primary" size="small">
                                 Toutes les marques
                             </Button>
                         </Link>
@@ -157,7 +160,7 @@ const Home = (props) => {
                     </CardContent>
                     <CardActions>
                         <Link href="/segments-automobile">
-                            <Button variant="outlined" color="primary" size="small">
+                            <Button variant="contained" color="primary" size="small">
                                 Tous les segments
                             </Button>
                         </Link>
@@ -192,7 +195,7 @@ const Home = (props) => {
                     </CardContent>
                     <CardActions>
                         <Link href="/modeles-voiture">
-                            <Button variant="outlined" color="primary" size="small">
+                            <Button variant="contained" color="primary" size="small">
                                 Tous les modeles
                             </Button>
                         </Link>
@@ -256,7 +259,7 @@ const Home = (props) => {
                     </CardContent>
                     <CardActions>
                         <Link href="/promotion-voiture-neuve-au-maroc">
-                            <Button variant="outlined" color="primary" size="small">
+                            <Button variant="contained" color="primary" size="small">
                                 Toutes les promotions
                             </Button>
                         </Link>
@@ -304,7 +307,7 @@ export async function getStaticProps() {
     segments = segments.data.segments;
     posts = posts.data.posts;
     models = models.data.models;
-    const randMod = randIndex(19);
+    const randMod = randIndex(19, 6);
     const recentModels = models.filter((model, ind) => {
         return randMod.includes(ind);
     });
@@ -320,31 +323,24 @@ export async function getStaticProps() {
             promos.push(model);
         }
     });
-    const randProm = randIndex(promos.length);
-    const randPromos = promos.filter((model, ind) => {
-        return randProm.includes(ind);
-    });
 
     const selected = {
-        brands: ['bmw', 'dacia', 'ford', 'peugeot', 'renault', 'volkswagen'],
-        segments: [
-            'citadine',
-            'compacte',
-            'suv compact',
-            'routiere',
-            'mini-crossover',
-            'berlines de luxe',
-        ],
-        models: ['x3', 'focus', 'yaris', 'captur', 'logan', 'gle'],
+        brands: randIndex(brands.length, 6),
+        segments: randIndex(segments.length, 6),
+        models: randIndex(models.length, 6),
+        promos: randIndex(promos.length, 6),
     };
-    const selectBrands = brands.filter((brand) => {
-        return selected.brands.includes(brand.brand);
+    const selectBrands = brands.filter((brand, ind) => {
+        return selected.brands.includes(ind + 1);
     });
-    const selectSegments = segments.filter((segment) => {
-        return selected.segments.includes(segment.segment);
+    const selectSegments = segments.filter((segment, ind) => {
+        return selected.segments.includes(ind + 1);
     });
-    const selectModels = models.filter((model) => {
-        return selected.models.includes(model.model);
+    const selectModels = models.filter((model, ind) => {
+        return selected.models.includes(ind + 1);
+    });
+    const randPromos = promos.filter((model, ind) => {
+        return selected.promos.includes(ind + 1);
     });
 
     const postsWithImage = posts.edges.filter((post) => {

@@ -25,9 +25,60 @@ export const GET_MODEL_INIT = 'GET_MODEL_INIT';
 export const GET_MODEL_OK = 'GET_MODEL_OK';
 export const GET_MODEL_ERROR = 'GET_MODEL_ERROR';
 
+export const GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND =
+    'GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND';
+export const GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_OK =
+    'GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_OK';
+export const GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_ERROR';
+
+export const GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND =
+    'GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND';
+export const GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_OK =
+    'GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_OK';
+export const GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_ERROR';
+
+export const GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND =
+    'GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND';
+export const GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_OK =
+    'GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_OK';
+export const GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_ERROR';
 export const actionCheckOnlineStatus = () => ({
     type: CHECK_ONLINE_STATUS,
 });
+
+export const GET_MODELS_WITH_FUEL_FOR_BRAND = 'GET_MODELS_WITH_FUEL_FOR_BRAND';
+export const GET_MODELS_WITH_FUEL_FOR_BRAND_OK = 'GET_MODELS_WITH_FUEL_FOR_BRAND_OK';
+export const GET_MODELS_WITH_FUEL_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_FUEL_FOR_BRAND_ERROR';
+
+export const GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND =
+    'GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND';
+export const GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_OK =
+    'GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_OK';
+export const GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_ERROR';
+
+export const GET_MODELS_WITH_POWER_RANGE_FOR_BRAND =
+    'GET_MODELS_WITH_POWER_RANGE_FOR_BRAND';
+export const GET_MODELS_WITH_POWER_RANGE_FOR_BRAND_OK =
+    'GET_MODELS_WITH_POWER_RANGE_FOR_BRAND_OK';
+export const GET_MODELS_WITH_POWER_RANGE_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_POWER_RANGE_FOR_BRAND_ERROR';
+
+export const GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND =
+    'GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND';
+export const GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND_OK =
+    'GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND_OK';
+export const GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND_ERROR =
+    'GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND_ERROR';
+
+export const POST_CLIENT_LOG = 'POST_CLIENT_LOG';
+export const POST_CLIENT_LOG_INIT = 'POST_CLIENT_LOG_INIT';
+export const POST_CLIENT_LOG_OK = 'POST_CLIENT_LOG_OK';
+export const POST_CLIENT_LOG_ERROR = 'POST_CLIENT_LOG_ERROR';
 
 export const actionLogoutInit = () => ({
     type: LOGOUT_INIT,
@@ -66,5 +117,61 @@ export function actionGetModel(modelId) {
     return {
         type: GET_MODEL,
         modelId,
+    };
+}
+
+export function actionGetModelsWithAutomaticGearboxForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithAirCondAutoForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithDisplayMultimediaForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithFuelForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_FUEL_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithLeatherSeatsForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithPowerRangeForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_POWER_RANGE_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionGetModelsWithPriceRangeForBrand(values) {
+    return {
+        type: GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND,
+        values,
+    };
+}
+
+export function actionPostClientLog(values) {
+    return {
+        type: POST_CLIENT_LOG,
+        values,
     };
 }

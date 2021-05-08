@@ -72,7 +72,7 @@ class NotifierInline extends React.Component {
                 <Box
                     className={classes.notifier}
                     color={`${severity}.contrastText`}
-                    bgcolor={`${severity}.main`}
+                    bgcolor={`${severity}.A200`}
                 >
                     <div>{message}</div>
                     {!isNotClosable ? (

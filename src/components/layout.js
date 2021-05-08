@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import styles from '../styles/layout.module.scss';
 import Header from './header';
+import ClientLog from './clientLog';
 
 const Footer = dynamic(() => import('./footer'), {});
 
@@ -13,6 +14,7 @@ const Layout = ({ children }) => {
         <div className={styles.container}>
             <div>
                 <Header siteTitle="soeezauto.ma" router={router} />
+                <ClientLog />
                 <>{children}</>
             </div>
             <Footer />

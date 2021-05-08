@@ -18,13 +18,15 @@ import { urlWriter } from 'tools/functions';
 const useStyles = makeStyles((theme) => ({
     root: {
         marginBottom: '20px',
+        backgroundColor: '#daa520',
+        width: '100%',
     },
     horizontal: {
         display: 'flex',
     },
     vertical: {
         display: 'grid',
-        gridTemplateRows: '180px 1fr',
+        gridTemplateRows: 'auto 1fr',
         // height: '100%',
         padding: 0,
     },
@@ -72,6 +74,12 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '.9rem',
         },
     },
+    treeItem: {
+        backgroundColor: '#fff',
+        '& .MuiTreeItem-iconContainer': {
+            display: 'none',
+        },
+    },
 }));
 
 const useTreeItemStyles = makeStyles((theme) => ({
@@ -81,7 +89,7 @@ const useTreeItemStyles = makeStyles((theme) => ({
             backgroundColor: theme.palette.action.hover,
         },
         '&:focus > $content, &$selected > $content': {
-            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
+            // backgroundColor: `var(--tree-view-bg-color, ${theme.palette.grey[400]})`,
             color: 'var(--tree-view-color)',
         },
         '&:focus > $content $label, &:hover > $content $label, &$selected > $content $label': {
@@ -97,12 +105,16 @@ const useTreeItemStyles = makeStyles((theme) => ({
         '$expanded > &': {
             fontWeight: theme.typography.fontWeightRegular,
         },
+        '& svg': {
+            color: '#fff',
+        },
     },
     group: {
         marginLeft: 0,
         '& $content': {
             paddingLeft: theme.spacing(2),
         },
+        backgroundColor: '#fff',
     },
     expanded: {},
     selected: {},
@@ -111,9 +123,13 @@ const useTreeItemStyles = makeStyles((theme) => ({
         color: 'inherit',
     },
     labelRoot: {
-        display: 'flex',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
         alignItems: 'center',
         padding: theme.spacing(0.5, 0),
+        '& > p': {
+            fontWeight: 'bold',
+        },
     },
     labelIcon: {
         marginRight: theme.spacing(1),
@@ -144,9 +160,6 @@ function StyledTreeItem(props) {
                     <LabelIcon color="inherit" className={classes.labelIcon} />
                     <Typography variant="body2" className={classes.labelText}>
                         {labelText}
-                    </Typography>
-                    <Typography variant="caption" color="inherit">
-                        {labelInfo}
                     </Typography>
                 </div>
             }
@@ -196,10 +209,16 @@ const TreeCard = ({ item, node }) => {
                             priority
                         />
                     </Link>
-                    <GridListTileBar
-                        title={item.brand}
-                        className={classes.MuiGridListTileBar}
-                    />
+                    <Link
+                        href={`${
+                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                        }/marques-voiture/${urlWriter(item.brand)}`}
+                    >
+                        <GridListTileBar
+                            title={item.brand}
+                            className={classes.MuiGridListTileBar}
+                        />
+                    </Link>
                 </GridListTile>
             </CardContent>
             <CardActions>
@@ -223,6 +242,7 @@ const TreeCard = ({ item, node }) => {
                                 )}/${urlWriter(child.model)}`}
                             >
                                 <StyledTreeItem
+                                    className={classes.treeItem}
                                     nodeId={child.id}
                                     labelText={child.model}
                                     labelIcon={() => (

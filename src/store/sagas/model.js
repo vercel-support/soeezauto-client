@@ -281,7 +281,7 @@ function* getModel(action) {
 }
 
 // eslint-disable-next-line func-names
-export default function* contactEmail() {
+export default function* model() {
     yield all([
         takeLatest(GET_MODEL_VERSIONS_WITH_TRIMS, getModelVersionsWithTrims),
         takeLatest(GET_PREVIOUS_MODELS, getPreviousModels),

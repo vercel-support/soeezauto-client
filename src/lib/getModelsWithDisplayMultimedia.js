@@ -1,3 +1,4 @@
+import { TRIMS_DISPLAY_MULTIMEDIA } from 'parameters';
 import { apiQl } from './functions';
 
 const queryQl = `query getModelsWithDisplayMultimedia(
@@ -12,7 +13,7 @@ const queryQl = `query getModelsWithDisplayMultimedia(
   }`;
 
 const variables = {
-    trims: ['/api/trims/272', '/api/trims/462'],
+    trims: TRIMS_DISPLAY_MULTIMEDIA,
     isActive: true,
 };
 

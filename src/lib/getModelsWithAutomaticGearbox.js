@@ -1,3 +1,4 @@
+import { AUTOMATIC_GEARBOXES } from 'parameters';
 import { apiQl } from './functions';
 
 const queryQl = `query getModelsWithAutomaticGearbox(
@@ -12,7 +13,7 @@ const queryQl = `query getModelsWithAutomaticGearbox(
   }`;
 
 const variables = {
-    gearbox: ['a4', 'a5', 'a6', 'a7', 'a8', 'a9', 'a10', 'cvt'],
+    gearbox: AUTOMATIC_GEARBOXES,
     isActive: true,
 };
 

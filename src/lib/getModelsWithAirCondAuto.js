@@ -1,3 +1,4 @@
+import { TRIMS_AIR_COND_AUTO } from 'parameters';
 import { apiQl } from './functions';
 
 const queryQl = `query getModelsWithAirCondAuto(
@@ -12,7 +13,7 @@ const queryQl = `query getModelsWithAirCondAuto(
   }`;
 
 const variables = {
-    trims: ['/api/trims/37', '/api/trims/38', '/api/trims/204', '/api/trims/250'],
+    trims: TRIMS_AIR_COND_AUTO,
     isActive: true,
 };
 
