@@ -81,13 +81,11 @@ const useStyles = makeStyles((theme) => ({
     },
     cardRoot: {
         width: 'clamp(300px, 100%, 700px)',
-        margin: '0 auto',
+        backgroundColor: '#ffe082',
+        margin: '30px auto',
         color: '#29335c',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
-        },
-        '& .MuiCardContent-root': {
-            height: '200px',
         },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
@@ -107,6 +105,21 @@ const useStyles = makeStyles((theme) => ({
         gridGap: '6px',
         '& >div': {
             textAlign: 'center',
+        },
+    },
+    ownBudget: {
+        backgroundColor: '#fff',
+        width: 'clamp(300px,50%,500px)',
+        borderRadius: 8,
+        display: 'grid',
+        gridGap: 20,
+        padding: 10,
+        '& div:first-child': {
+            textAlign: 'center',
+        },
+        '& .MuiChip-root': {
+            width: '50%',
+            margin: '0 auto',
         },
     },
     range: {
@@ -163,6 +176,7 @@ const Prices = (props) => {
                 newSegments.push({ ...seg, models: newModels });
             }
         });
+        console.log('event i', event.target.id);
         setCurrentSegments(newSegments);
         setTabValue(0);
         setSelectedButtonId(event.target.id);
@@ -202,8 +216,11 @@ const Prices = (props) => {
             </Head>
 
             <main>
+                <div className="main-title">
+                    <h1>Prix et budget voiture au Maroc</h1>
+                </div>
                 <Card className={classes.cardRoot}>
-                    <CardHeader title="Prix" />
+                    <CardHeader title="Gammes de prix" subheader="mille dh" />
                     <CardContent className={classes.cardContent}>
                         {PRICE_RANGES.map((range, index) => (
                             <Box key={range}>
@@ -233,228 +250,247 @@ const Prices = (props) => {
                         ))}
                     </CardContent>
                     <CardActions>
-                        <h2>Faites votre propre budget</h2>
-
-                        <Slider
-                            value={sliderRange}
-                            onChange={handleSliderRangeChange}
-                            valueLabelDisplay="auto"
-                            aria-labelledby="range-slider"
-                            min={RANGE.minPrice}
-                            max={RANGE.maxPrice}
-                            step={10}
-                        />
-                        <Chip
-                            label={`Range ${sliderRange[0]}-${sliderRange[1]}`}
-                            color={
-                                selectedButtonId === 'sliderButton'
-                                    ? 'secondary'
-                                    : 'default'
-                            }
-                        />
-                        <Button
-                            id="sliderButton"
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            onClick={handleRangeSelect}
-                        >
-                            Get models
-                        </Button>
+                        <Box className={classes.ownBudget}>
+                            <div>
+                                <h3>Faites votre propre budget</h3>
+                            </div>
+                            <Slider
+                                value={sliderRange}
+                                onChange={handleSliderRangeChange}
+                                valueLabelDisplay="auto"
+                                aria-labelledby="range-slider"
+                                min={RANGE.minPrice}
+                                max={RANGE.maxPrice}
+                                step={10}
+                            />
+                            <Chip
+                                label={`Range ${sliderRange[0]}-${sliderRange[1]}`}
+                                color={
+                                    selectedButtonId === 'sliderButton'
+                                        ? 'secondary'
+                                        : 'default'
+                                }
+                            />
+                            <Button
+                                id="sliderButton"
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                onClick={handleRangeSelect}
+                            >
+                                Envoyer
+                            </Button>
+                        </Box>
                     </CardActions>
                 </Card>
-                <div className={classes.root}>
-                    <AppBar position="static">
-                        <Tabs
-                            value={tabValue}
-                            onChange={handleTabChange}
-                            variant="scrollable"
-                            scrollButtons="on"
-                            aria-label="simple tabs example"
-                        >
-                            {currentSegments.map((segment, index) => (
-                                <Tab
-                                    key={segment.id}
-                                    label={segment.segment}
-                                    {...a11yProps(index)}
-                                />
-                            ))}
-                        </Tabs>
-                    </AppBar>
-                    {currentSegments.map((segment, index) => (
-                        <TabPanel
-                            key={`panel${segment.id}`}
-                            value={tabValue}
-                            index={index}
-                        >
-                            <TableContainer component={Paper}>
-                                <Table
-                                    className={classes.table}
-                                    aria-label={segment.segment}
+                <Card className={classes.cardRoot}>
+                    <CardHeader title="Modeles par gamme de prix et segment" />
+                    <CardContent>
+                        <div className={classes.root}>
+                            <AppBar position="static">
+                                <Tabs
+                                    value={tabValue}
+                                    onChange={handleTabChange}
+                                    variant="scrollable"
+                                    scrollButtons="on"
+                                    aria-label="simple tabs example"
                                 >
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                Brand
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.model}>
-                                                    {model.brand.brand}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                Model
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.model}>
-                                                    <Link
-                                                        href={`/modeles-voiture/${urlWriter(
-                                                            model.brand.brand,
-                                                        )}/${urlWriter(model.model)}`}
+                                    {currentSegments.map((segment, index) => (
+                                        <Tab
+                                            key={segment.id}
+                                            label={segment.segment}
+                                            {...a11yProps(index)}
+                                        />
+                                    ))}
+                                </Tabs>
+                            </AppBar>
+                            {currentSegments.map((segment, index) => (
+                                <TabPanel
+                                    key={`panel${segment.id}`}
+                                    value={tabValue}
+                                    index={index}
+                                >
+                                    <TableContainer component={Paper}>
+                                        <Table
+                                            className={classes.table}
+                                            aria-label={segment.segment}
+                                        >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Brand
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.model}>
+                                                            {model.brand.brand}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Model
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.model}>
+                                                            <Link
+                                                                href={`/modeles-voiture/${urlWriter(
+                                                                    model.brand.brand,
+                                                                )}/${urlWriter(
+                                                                    model.model,
+                                                                )}`}
+                                                            >
+                                                                {model.model}
+                                                            </Link>
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        No of versions
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {model.versions.length}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Prix
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {model.versions.length === 1
+                                                                ? Math.floor(
+                                                                      Math.round(
+                                                                          model
+                                                                              .versions[0]
+                                                                              .prices[0]
+                                                                              .price /
+                                                                              1000,
+                                                                      ),
+                                                                  )
+                                                                : `${Math.floor(
+                                                                      Math.round(
+                                                                          model
+                                                                              .versions[0]
+                                                                              .prices[0]
+                                                                              .price /
+                                                                              1000,
+                                                                      ),
+                                                                  )}-${Math.floor(
+                                                                      Math.round(
+                                                                          model.versions[
+                                                                              model
+                                                                                  .versions
+                                                                                  .length -
+                                                                                  1
+                                                                          ].prices[0]
+                                                                              .price /
+                                                                              1000,
+                                                                      ),
+                                                                  )}`}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        gearbox
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'gearbox',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        fuel
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'motor',
+                                                                'fuel',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell
+                                                        component="th"
+                                                        scope="row"
+                                                        colSpan={
+                                                            segment.models.length + 1
+                                                        }
                                                     >
-                                                        {model.model}
-                                                    </Link>
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                No of versions
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {model.versions.length}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                Prix
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {model.versions.length === 1
-                                                        ? Math.floor(
-                                                              Math.round(
-                                                                  model.versions[0]
-                                                                      .prices[0].price /
-                                                                      1000,
-                                                              ),
-                                                          )
-                                                        : `${Math.floor(
-                                                              Math.round(
-                                                                  model.versions[0]
-                                                                      .prices[0].price /
-                                                                      1000,
-                                                              ),
-                                                          )}-${Math.floor(
-                                                              Math.round(
-                                                                  model.versions[
-                                                                      model.versions
-                                                                          .length - 1
-                                                                  ].prices[0].price /
-                                                                      1000,
-                                                              ),
-                                                          )}`}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                gearbox
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'gearbox',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                fuel
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'motor',
-                                                        'fuel',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                                colSpan={segment.models.length + 1}
-                                            >
-                                                Performance
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                mileage mix
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'performance',
-                                                        'mileageMix',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                max speed
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'performance',
-                                                        'maxSpeed',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                Trunk
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'measures',
-                                                        'trunk',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
-                                                Length
-                                            </TableCell>
-                                            {segment.models.map((model) => (
-                                                <TableCell key={model.id}>
-                                                    {getUnique(model.versions, [
-                                                        'measures',
-                                                        'length',
-                                                    ])}
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </TabPanel>
-                    ))}
-                </div>
+                                                        Performance
+                                                    </TableCell>
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        mileage mix
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'performance',
+                                                                'mileageMix',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        max speed
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'performance',
+                                                                'maxSpeed',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Trunk
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'measures',
+                                                                'trunk',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Length
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {getUnique(model.versions, [
+                                                                'measures',
+                                                                'length',
+                                                            ])}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                </TabPanel>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
             </main>
         </div>
     );

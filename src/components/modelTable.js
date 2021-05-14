@@ -175,4 +175,4 @@ ModelTable.propTypes = {
     currentModels: PropTypes.array.isRequired,
 };
 
-export default ModelTable;
+export default React.memo(ModelTable);

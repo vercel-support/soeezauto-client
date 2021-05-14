@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -17,13 +17,15 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    Chip,
+    Avatar,
 } from '@material-ui/core';
 import { Clear, ExpandMore } from '@material-ui/icons';
+import { deepOrange } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 import { objectToMap } from 'tools/functions';
 import { LANG } from 'parameters';
 import Loading from 'components/loading';
-import NotifierInline from 'components/notifierInline';
 import NotifierDialog from 'components/notifierDialog';
 
 const ModelTable = dynamic(() => import('./modelTable'), {
@@ -46,6 +48,10 @@ const trans = {
     },
 };
 const useStyles = makeStyles((theme) => ({
+    mainContent: {
+        width: 'clamp(320px,100%, 600px)',
+        margin: '20px 0',
+    },
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -55,12 +61,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     cardRoot: {
-        backgroundColor: '#daa520',
+        backgroundColor: '#ffe082',
         maxWidth: 400,
         margin: '0 auto 20px',
         '& .MuiCardHeader-content': {
             '& span': {
-                color: '#fff',
+                // color: '#fff',
                 textAlign: 'center',
                 textTransform: 'uppercase',
                 fontSize: '.875rem',
@@ -72,10 +78,12 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     accordionRoot: {
-        backgroundColor: '#daa520',
+        backgroundColor: '#ffe082',
         '& .MuiAccordionSummary-root': {
+            backgroundColor: '#fff',
             '& svg': {
-                color: '#fff',
+                width: '1.5em',
+                height: '1.5em',
             },
         },
     },
@@ -95,10 +103,65 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
     },
+    modelTable: {
+        padding: '8px 0 0',
+        '& div:first-child': {
+            width: '100%',
+        },
+    },
+    filterResult: {
+        width: '100%',
+        '& .MuiChip-label': {
+            fontWeight: 800,
+        },
+        '& .MuiAvatar-root': {
+            color: theme.palette.getContrastText(deepOrange[500]),
+            backgroundColor: deepOrange[500],
+            width: 24,
+            height: 24,
+            fontSize: '.8rem',
+        },
+        '& > div:first-child': {
+            position: 'relative',
+            backgroundColor: 'initial',
+            color: 'initial',
+        },
+    },
+    blockReveal: {
+        animationDuration: '1s',
+        animationName: '$slidein',
+        animationFillMode: 'forwards',
+    },
+    '@keyframes slidein': {
+        from: {
+            width: 60,
+            position: 'absolute',
+            left: '-500px',
+        },
+        to: {
+            left: 0,
+        },
+    },
+    blockHide: {
+        animationDuration: '1s',
+        animationName: '$slideout',
+        animationFillMode: 'forwards',
+    },
+    '@keyframes slideout': {
+        from: {
+            left: 0,
+        },
+        to: {
+            width: 60,
+            position: 'absolute',
+            left: '-500px',
+        },
+    },
 }));
 
 const ModelFilter = ({ allModels, filters }) => {
     const classes = useStyles();
+    const filterResultRef = useRef();
     const [currentModels, setCurrentModels] = useState(allModels);
     const [filterValues, setFilterValues] = useState({
         airCondAuto: false,
@@ -139,10 +202,21 @@ const ModelFilter = ({ allModels, filters }) => {
         setIsFormPristine(false);
         setIsFormSubmitted(false);
     };
+    const handleAnimationIn = () => {
+        const div = filterResultRef.current;
+        div.classList.add(classes.blockReveal);
+        setTimeout(() => div.classList.remove(classes.blockReveal), 3000);
+    };
+    const handleAnimationOut = () => {
+        const div = filterResultRef.current;
+        div.classList.add(classes.blockHide);
+        setTimeout(() => div.classList.remove(classes.blockHide), 1000);
+    };
     const handleFilterSubmit = () => {
         event.preventDefault();
         if (isFiltersValid) {
             setIsFormSubmitting(true);
+            handleAnimationOut();
             const values = objectToMap(filterValues);
             const models = [...allModels];
             let filtered = [];
@@ -176,6 +250,7 @@ const ModelFilter = ({ allModels, filters }) => {
             setCurrentModels(filtered);
             setIsFormSubmitting(false);
             setIsFormSubmitted(true);
+            handleAnimationIn();
         } else {
             setNotification({
                 status: 'ok_and_dismiss',
@@ -186,6 +261,7 @@ const ModelFilter = ({ allModels, filters }) => {
         }
     };
     const handleResetFilter = () => {
+        handleAnimationOut();
         setFilterValues({
             airCondAuto: false,
             hybrid: false,
@@ -198,6 +274,7 @@ const ModelFilter = ({ allModels, filters }) => {
         setIsFormPristine(true);
         setIsFormSubmitted(false);
         setCurrentModels(allModels);
+        handleAnimationIn();
     };
 
     const handleNotificationDismiss = () => {
@@ -209,7 +286,7 @@ const ModelFilter = ({ allModels, filters }) => {
         });
     };
     return (
-        <div>
+        <div className={classes.mainContent}>
             {isFormSubmitting && <Loading />}
             <Card className={classes.cardRoot}>
                 <CardHeader title="Filtres" />
@@ -362,24 +439,38 @@ const ModelFilter = ({ allModels, filters }) => {
                     </form>
                 </CardContent>
             </Card>
-            <Accordion
-                TransitionProps={{ unmountOnExit: true }}
-                className={classes.accordionRoot}
-            >
-                <AccordionSummary
-                    expandIcon={<ExpandMore />}
-                    aria-controls="panel1a-content"
-                    id="panel1a-header"
-                >
-                    <NotifierInline
-                        message={`${currentModels.length} modeles correspondent a vos criteres`}
-                        isNotClosable
-                    />
-                </AccordionSummary>
-                <AccordionDetails>
-                    <ModelTable currentModels={currentModels} />
-                </AccordionDetails>
-            </Accordion>
+            <Card className={classes.cardRoot}>
+                <CardHeader title="Modeles" />
+                <CardContent className={classes.cardContent}>
+                    <Accordion
+                        TransitionProps={{ unmountOnExit: true }}
+                        className={classes.accordionRoot}
+                    >
+                        <AccordionSummary
+                            expandIcon={<ExpandMore />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                        >
+                            {' '}
+                            <Chip
+                                className={classes.filterResult}
+                                avatar={
+                                    <div className={classes.avatar}>
+                                        <Avatar ref={filterResultRef}>
+                                            {currentModels.length}
+                                        </Avatar>
+                                    </div>
+                                }
+                                label="modeles correspondent a la recherche"
+                                color="primary"
+                            />
+                        </AccordionSummary>
+                        <AccordionDetails className={classes.modelTable}>
+                            <ModelTable currentModels={currentModels} />
+                        </AccordionDetails>
+                    </Accordion>
+                </CardContent>
+            </Card>
             <NotifierDialog
                 notification={notification}
                 handleNotificationDismiss={handleNotificationDismiss}

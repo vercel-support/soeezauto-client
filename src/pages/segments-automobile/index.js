@@ -42,9 +42,11 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         flexWrap: 'wrap',
         padding: '10px',
+        gap: 10,
         justifyContent: 'space-around',
         '& > div': {
             flex: '0 0 280px',
+            backgroundColor: '#ffe082',
         },
     },
 }));
@@ -91,7 +93,7 @@ const Segments = (props) => {
                                     }/segments-automobile/${urlWriter(segment.segment)}`}
                                 >
                                     <Button
-                                        variant="outlined"
+                                        variant="contained"
                                         color="primary"
                                         size="small"
                                     >

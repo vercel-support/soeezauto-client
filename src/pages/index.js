@@ -21,12 +21,15 @@ import { urlWriter } from 'tools/functions';
 const useStyles = makeStyles({
     root: {
         color: '#29335c',
-        backgroundColor: 'rgb(218, 165, 32)',
+        backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
         },
         '& .MuiCardContent-root': {
             height: '200px',
+            '& img': {
+                border: '2px solid #fff',
+            },
         },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
@@ -35,7 +38,7 @@ const useStyles = makeStyles({
             textTransform: 'uppercase',
             fontWeight: 'bold',
             fontSize: '1.2rem',
-            color: '#fff',
+            // color: '#fff',
         },
     },
     cardContent: {
@@ -143,14 +146,16 @@ const Home = (props) => {
                                         process.env.NEXT_PUBLIC_CLIENT_HOST
                                     }/segments-automobile/${urlWriter(segment.segment)}`}
                                 >
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
-                                        alt={segment.segment}
-                                        width="90"
-                                        height="60"
-                                        loading="eager"
-                                        priority
-                                    />
+                                    <div>
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
+                                            alt={segment.segment}
+                                            width="90"
+                                            height="60"
+                                            loading="eager"
+                                            priority
+                                        />
+                                    </div>
                                 </Link>
                                 <span className={classes.subtitle}>
                                     {segment.segment}

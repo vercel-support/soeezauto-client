@@ -12,8 +12,10 @@ const useStyles = makeStyles(() => ({
         flexWrap: 'wrap',
         padding: '10px',
         justifyContent: 'space-around',
+        gap: 10,
         '& > div': {
             flex: '0 0 280px',
+            backgroundColor: '#ffe082',
         },
     },
 }));
@@ -29,6 +31,9 @@ const Brands = (props) => {
             </Head>
 
             <main>
+                <div className="main-title">
+                    <h1>Marques voiture au Maroc</h1>
+                </div>
                 <div className={classes.catList}>
                     {brands.map((brand, ind) => (
                         <TreeCard key={brand.id} item={brand} node={ind + 1} />

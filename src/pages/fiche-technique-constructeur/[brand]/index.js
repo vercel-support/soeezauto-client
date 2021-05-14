@@ -7,6 +7,7 @@ import {
     CardContent,
     CardActions,
     Button,
+    Chip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -17,9 +18,10 @@ import NotifierInline from 'components/notifierInline';
 
 const useStyles = makeStyles(() => ({
     cardRoot: {
+        backgroundColor: '#ffe082',
         width: 'clamp(300px, 100%, 700px)',
-        margin: '0 auto',
-        color: '#29335c',
+        margin: '20px auto',
+        color: '#fff',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
         },
@@ -30,6 +32,10 @@ const useStyles = makeStyles(() => ({
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
+        },
+        '& h2': {
+            color: '#fff',
+            fontSize: '1rem',
         },
     },
     cardContent: {
@@ -83,11 +89,12 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <div className="main-title">
+                    <h1>{`Fiche technique constructeur - ${brand.brand}`}</h1>
+                </div>
                 {models.length > 0 ? (
                     <Card className={classes.cardRoot}>
-                        <CardHeader
-                            title={`Fiche technique constructeur - ${brand.brand}`}
-                        />
+                        <CardHeader title="Modeles" />
                         <CardContent className={classes.cardContent}>
                             {models.map((model, index) => (
                                 <Box key={model.model}>
@@ -109,7 +116,12 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                             ))}
                         </CardContent>
                         <CardActions>
-                            <h2>{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
+                            <Chip
+                                label={
+                                    <h2>{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
+                                }
+                                color="secondary"
+                            />
                         </CardActions>
                     </Card>
                 ) : (
@@ -118,7 +130,7 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                 {currentModel && (
                     <iframe
                         title={currentModel.specs[0].filename}
-                        style={{ width: '100%', height: '100vh' }}
+                        style={{ width: '100%', height: 1500 }}
                         src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
                             brand.brand,
                         )}/${

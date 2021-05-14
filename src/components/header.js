@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
     headerTop: {
         display: 'flex',
         justifyContent: 'space-between',
-        backgroundColor: '#F39C12',
+        backgroundColor: '#ffc107',
         height: '60px',
         '& > div': {
             display: 'flex',

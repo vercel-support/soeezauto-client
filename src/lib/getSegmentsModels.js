@@ -2,7 +2,6 @@ import { apiQl } from './functions';
 
 const queryQl = `query getSegments(
   	    $isActiveModel: Boolean!
-        $imageIsFeatured: Boolean!
         ){
     segments(_order: {segment: "ASC"}) {
         id
@@ -15,12 +14,9 @@ const queryQl = `query getSegments(
             id
             model
             modelYear
-            images(isFeatured: $imageIsFeatured) {
-                filename
-            }
-            segment {
+            brand {
                 id
-                segment
+                brand
             }
         }
     }

@@ -18,6 +18,9 @@ const useStyles = makeStyles(() => ({
     accordion: {
         display: 'block',
         padding: 0,
+        '& div:first-child': {
+            justifyContent: 'space-evenly',
+        },
     },
 }));
 
@@ -121,9 +124,19 @@ const ModelTrims = ({ versions }) => {
         setIsDiff(parseInt(event.target.value, 10));
         setData(event.target.value === '0' ? dataAll : dataDiff);
     };
+    const trimTypes = {
+        help: 'assistance',
+        sec: 'securite',
+        ent: 'entreteniment',
+        easy: 'convenance',
+        must: 'basique',
+        sty: 'style',
+        com: 'comfort',
+    };
     const columns = [
         {
             name: 'trim',
+            label: 'Equipement',
             options: {
                 customBodyRender: (value) => {
                     return <p title={value}>{value}</p>;
@@ -132,6 +145,12 @@ const ModelTrims = ({ versions }) => {
         },
         {
             name: 'trimType',
+            label: 'Type',
+            options: {
+                customBodyRender: (value) => {
+                    return <p>{trimTypes[value]}</p>;
+                },
+            },
         },
     ];
     versions.forEach((version) => {

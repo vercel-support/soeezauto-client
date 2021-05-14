@@ -39,6 +39,14 @@ const useStyles = makeStyles({
             fontWeight: 'bold',
         },
     },
+    h2: {
+        fontSize: '1rem',
+        hyphens: 'none',
+    },
+    brand: {
+        backgroundColor: '#ffe082',
+        marginBottom: 30,
+    },
     cardContent: {
         padding: '8px',
         '& td': {
@@ -55,11 +63,21 @@ const useStyles = makeStyles({
             margin: '20px 0',
             display: 'grid',
             gridTemplateRows: '100px auto 100px',
+            boxShadow: '4px 9px 14px -1px rgba(255,193,7,0.62)',
         },
     },
     image: {
         display: 'flex',
         justifyContent: 'center',
+        padding: 20,
+        '& >a div:first-child': {
+            borderRadius: 10,
+        },
+    },
+    selectBrand: {
+        height: 80,
+        width: 300,
+        margin: '0 auto',
     },
 });
 
@@ -105,16 +123,24 @@ const Promotions = (props) => {
             </Head>
 
             <main>
-                <div>
+                <div className="main-title">
+                    <h1>Promotion voiture neuve au Maroc</h1>
+                </div>
+                <div className={classes.selectBrand}>
                     <form>
                         <div className="form_input form_select">
-                            <FormControl>
-                                <InputLabel id="item-select">Select brand</InputLabel>
+                            <FormControl variant="outlined">
+                                <InputLabel id="brand-select-label">
+                                    Select brand
+                                </InputLabel>
                                 <Select
-                                    labelId="item-select"
+                                    labelId="brand-select-label"
+                                    id="brand-select"
                                     name="item"
+                                    label="Select brand"
                                     value={brandSelect}
                                     onChange={handleBrandSelectChange}
+                                    variant="outlined"
                                 >
                                     {handleSetBrandSelect()}
                                 </Select>
@@ -124,7 +150,7 @@ const Promotions = (props) => {
                     </form>
                 </div>
                 {selectedBrand.map((brand) => (
-                    <div key={brand.id}>
+                    <div key={brand.id} className={classes.brand}>
                         <Box className={classes.image}>
                             <Link
                                 href={`${
@@ -145,7 +171,11 @@ const Promotions = (props) => {
                             {brand.models.map((model) => (
                                 <Card key={model.id} className={classes.root}>
                                     <CardHeader
-                                        title={model.model}
+                                        title={
+                                            <h2
+                                                className={classes.h2}
+                                            >{`${brand.brand} ${model.model}`}</h2>
+                                        }
                                         avatar={
                                             <Link
                                                 key={model.model}
@@ -222,11 +252,11 @@ const Promotions = (props) => {
                                             )}/${urlWriter(model.model)}`}
                                         >
                                             <Button
-                                                variant="outlined"
-                                                color="primary"
+                                                variant="contained"
+                                                color="secondary"
                                                 size="small"
                                             >
-                                                Go to model
+                                                Voir le modele
                                             </Button>
                                         </Link>
                                     </CardActions>

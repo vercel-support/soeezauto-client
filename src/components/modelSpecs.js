@@ -51,8 +51,10 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'scroll',
         '& button': {
             minWidth: 'unset',
+            maxWidth: 'unset',
             width: '33%',
             fontSize: '.75rem',
+            fontWeight: 'bold',
         },
     },
     table: {

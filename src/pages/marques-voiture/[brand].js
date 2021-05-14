@@ -43,7 +43,7 @@ import ModelFilter from 'components/modelFilter';
 
 const useStyles = makeStyles({
     root: {
-        backgroundColor: '#daa520',
+        backgroundColor: '#ffe082',
         color: '#29335c',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
@@ -66,9 +66,6 @@ const useStyles = makeStyles({
         },
     },
     table: {
-        '& td': {
-            borderBottom: '2px solid #daa520',
-        },
         '& li': {
             flexDirection: 'column',
             paddingLeft: 2,

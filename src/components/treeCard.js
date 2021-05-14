@@ -18,7 +18,7 @@ import { urlWriter } from 'tools/functions';
 const useStyles = makeStyles((theme) => ({
     root: {
         marginBottom: '20px',
-        backgroundColor: '#daa520',
+        backgroundColor: '#ffe082',
         width: '100%',
     },
     horizontal: {

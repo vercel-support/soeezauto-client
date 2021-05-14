@@ -8,7 +8,10 @@ import {
     CardActions,
     Button,
     Box,
+    Chip,
+    Avatar,
 } from '@material-ui/core';
+import { MonetizationOn } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import { apiQl } from 'lib/functions';
@@ -17,23 +20,46 @@ import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 
 const useStyles = makeStyles(() => ({
-    cardRoot: {
-        width: 'clamp(300px, 100%, 700px)',
-        margin: '0 auto',
-        color: '#29335c',
+    mainContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        padding: '10px',
+        justifyContent: 'space-around',
+        '& > div': {
+            flex: '0 0 clamp(300px,100%,700px)',
+            margin: '20px 0',
+        },
+    },
+    root: {
+        backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
         },
+        '& .MuiCardContent-root': {
+            // height: '200px',
+        },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
-            flexDirection: 'column',
         },
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
+            // color: '#fff',
+        },
+        '& .MuiChip-label': {
+            fontWeight: 'bold',
         },
     },
     cardContent: {
+        overflow: 'scroll',
+        '& >div': {
+            textAlign: 'center',
+        },
+        '& > a button': {
+            width: '100%',
+        },
+    },
+    versions: {
         display: 'flex',
         flexWrap: 'wrap',
         padding: '10px',
@@ -75,38 +101,77 @@ const FicheTechnique = (props) => {
             </Head>
 
             <main>
-                <Card className={classes.cardRoot}>
-                    <CardHeader
-                        title={`Fiche technique & prix - ${model.brand.brand} ${model.model}`}
-                    />
-                    <CardContent className={classes.cardContent}>
-                        {model.versions.map((version, index) => (
-                            <Box key={version.id}>
-                                <Button
-                                    data-versionindex={index}
-                                    id={version.id}
-                                    className={classes.range}
-                                    variant="contained"
-                                    color={
-                                        selectedVersionIndex === index
-                                            ? 'secondary'
-                                            : 'primary'
-                                    }
-                                    onClick={handleVersionSelect}
-                                >
-                                    {version.version}
-                                </Button>
+                <div className="main-title">
+                    <h1>{`Fiche technique & prix - ${model.brand.brand} ${model.model}`}</h1>
+                </div>
+                <div className={classes.mainContainer}>
+                    <Card className={classes.root}>
+                        <CardHeader title="Versions" />
+                        <CardContent className={classes.cardContent}>
+                            <Box className={classes.versions}>
+                                {model.versions.map((version, index) => (
+                                    <Box key={version.id}>
+                                        <Button
+                                            data-versionindex={index}
+                                            id={version.id}
+                                            className={classes.range}
+                                            variant="contained"
+                                            color={
+                                                selectedVersionIndex === index
+                                                    ? 'secondary'
+                                                    : 'primary'
+                                            }
+                                            onClick={handleVersionSelect}
+                                        >
+                                            {version.version}
+                                        </Button>
+                                    </Box>
+                                ))}
                             </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <p>{`Prix:${numberFrance(currentVersion.prices[0].price)} DH`}</p>
-                        {currentVersion.prices[0].promo &&
-                            `Promo:${numberFrance(currentVersion.prices[0].promo)}  DH`}
-                    </CardActions>
-                </Card>
-                <ModelSpecs versions={[currentVersion]} />
-                <ModelTrims versions={[currentVersion]} />
+                        </CardContent>
+                        <CardActions>
+                            <Chip
+                                size="small"
+                                label={`Prix:${numberFrance(
+                                    currentVersion.prices[0].price,
+                                )} DH`}
+                                color="primary"
+                                avatar={
+                                    <Avatar>
+                                        <MonetizationOn />
+                                    </Avatar>
+                                }
+                            />
+                            {currentVersion.prices[0].promo && (
+                                <Chip
+                                    className={classes.isPromo}
+                                    size="small"
+                                    avatar={
+                                        <Avatar>
+                                            <MonetizationOn />
+                                        </Avatar>
+                                    }
+                                    label={`Promo:${numberFrance(
+                                        currentVersion.prices[0].promo,
+                                    )}  DH`}
+                                    color="secondary"
+                                />
+                            )}
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title="Caracteristiques techniques" />
+                        <CardContent className={classes.cardContent}>
+                            <ModelSpecs versions={[currentVersion]} />
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title="Equipements" />
+                        <CardContent className={classes.cardContent}>
+                            <ModelTrims versions={[currentVersion]} />
+                        </CardContent>
+                    </Card>
+                </div>
             </main>
         </div>
     );

@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import Head from 'next/head';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
@@ -17,7 +16,7 @@ import ModelVersions from 'components/modelVersions';
 
 const useStyles = makeStyles({
     root: {
-        color: '#29335c',
+        backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
         },
@@ -30,10 +29,10 @@ const useStyles = makeStyles({
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
+            // color: '#fff',
         },
     },
     cardContent: {
-        padding: 0,
         overflow: 'scroll',
         // display: 'grid',
         // gridTemplateColumns: '1fr 1fr 1fr',
@@ -53,7 +52,7 @@ const useStyles = makeStyles({
         padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
-            flex: '0 0 clamp(300px,100%,600px)',
+            flex: '0 0 clamp(300px,100%,700px)',
             margin: '20px 0',
         },
     },
@@ -73,7 +72,7 @@ const useStyles = makeStyles({
         height: 400,
     },
     isPromo: {
-        backgroundColor: '#F29C12',
+        backgroundColor: '#ffc107',
     },
 });
 
@@ -89,17 +88,15 @@ const Model = ({ model, isPromo }) => {
             </Head>
 
             <main className={classes.mainContainer}>
-                <div>
-                    <Image
-                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                        alt={model.model}
-                        width="300"
-                        height="200"
-                        loading="eager"
-                        priority
-                    />
+                <div className="main-title">
+                    <h1>{`${model.brand.brand} ${model.model} neuve maroc`}</h1>
                 </div>
-                <ModelVersions model={model} isPromo={isPromo} />
+                <Card className={classes.root}>
+                    <CardHeader title={`Versions ${model.model}`} />
+                    <CardContent className={classes.cardContent}>
+                        <ModelVersions model={model} isPromo={isPromo} />
+                    </CardContent>
+                </Card>
                 <Card className={classes.root}>
                     <CardHeader title="Caracteristiques techniques" />
                     <CardContent className={classes.cardContent}>
