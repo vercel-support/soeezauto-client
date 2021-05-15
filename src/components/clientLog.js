@@ -8,7 +8,7 @@ import { actionPostClientLog, actionSetClientLogToNull } from 'store/actions';
 const ClientLog = (props) => {
     const router = useRouter();
     const { dataClientLog } = props;
-
+    console.log('DATA CLIENT', dataClientLog);
     const handleMessage = (errors) => {
         let message = [];
         if (Array.isArray(errors)) {
@@ -17,7 +17,7 @@ const ClientLog = (props) => {
                 message = [...message, error[key]];
             });
         } else {
-            message.push(dataClientLog);
+            message.push(dataClientLog.message);
         }
         return message.toString();
     };
@@ -26,7 +26,8 @@ const ClientLog = (props) => {
         if (dataClientLog) {
             props.actionPostClientLog({
                 url: router.pathname,
-                message: handleMessage(dataClientLog),
+                message: handleMessage(dataClientLog.message),
+                action: dataClientLog.action,
             });
             props.actionSetClientLogToNull();
         }

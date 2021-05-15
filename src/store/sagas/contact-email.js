@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import localforage from 'localforage';
 import {
+    CLIENT_LOG,
     CHECK_ONLINE_STATUS_ERROR,
     POST_CONTACT_EMAIL,
     POST_CONTACT_EMAIL_INIT,
@@ -39,6 +40,13 @@ function* postContactEmail(action) {
                     message: error.response.data.message,
                 },
             ];
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: error.response.data.message,
+                    action: POST_CONTACT_EMAIL,
+                },
+            });
         }
         yield put({
             type: POST_CONTACT_EMAIL_ERROR,

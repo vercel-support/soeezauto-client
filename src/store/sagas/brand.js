@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import localforage from 'localforage';
 import {
+    CLIENT_LOG,
     LOGOUT_TOKEN_EXPIRED,
     CHECK_ONLINE_STATUS_ERROR,
     GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND,
@@ -60,6 +61,13 @@ function* getModelsWithAutomaticGearboxForBrand(action) {
                 type: GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
             });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND,
+                },
+            });
         } else {
             yield put({
                 type: GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_OK,
@@ -117,6 +125,13 @@ function* getModelsWithAirCondAutoForBrand(action) {
                 type: GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
             });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND,
+                },
+            });
         } else {
             yield put({
                 type: GET_MODELS_WITH_AIR_COND_AUTO_FOR_BRAND_OK,
@@ -173,6 +188,13 @@ function* getModelsWithDisplayMultimediaForBrand(action) {
                 type: GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
             });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND,
+                },
+            });
         } else {
             yield put({
                 type: GET_MODELS_WITH_DISPLAY_MULTIMEDIA_FOR_BRAND_OK,
@@ -227,6 +249,13 @@ function* getModelsWithFuelForBrand(action) {
             yield put({
                 type: GET_MODELS_WITH_FUEL_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_FUEL_FOR_BRAND,
+                },
             });
         } else {
             yield put({
@@ -285,6 +314,13 @@ function* getModelsWithLeatherSeatsForBrand(action) {
                 type: GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
             });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND,
+                },
+            });
         } else {
             yield put({
                 type: GET_MODELS_WITH_LEATHER_SEATS_FOR_BRAND_OK,
@@ -342,6 +378,13 @@ function* getModelsWithPowerRangeForBrand(action) {
             yield put({
                 type: GET_MODELS_WITH_POWER_RANGE_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_POWER_RANGE_FOR_BRAND,
+                },
             });
         } else {
             yield put({
@@ -419,6 +462,13 @@ function* getModelsWithPriceRangeForBrand(action) {
             yield put({
                 type: GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODELS_WITH_PRICE_RANGE_FOR_BRAND,
+                },
             });
         } else {
             yield put({

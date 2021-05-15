@@ -80,6 +80,12 @@ export const POST_CLIENT_LOG_INIT = 'POST_CLIENT_LOG_INIT';
 export const POST_CLIENT_LOG_OK = 'POST_CLIENT_LOG_OK';
 export const POST_CLIENT_LOG_ERROR = 'POST_CLIENT_LOG_ERROR';
 
+export const CLIENT_LOG = 'CLIENT_LOG';
+
+export const SET_CLIENT_LOG_TO_NULL = 'SET_CLIENT_LOG_TO_NULL';
+
+export const ADD_TO_URL_HISTORY = 'ADD_TO_URL_HISTORY';
+
 export const actionLogoutInit = () => ({
     type: LOGOUT_INIT,
 });
@@ -173,5 +179,25 @@ export function actionPostClientLog(values) {
     return {
         type: POST_CLIENT_LOG,
         values,
+    };
+}
+
+export function actionClientLog(values) {
+    return {
+        type: CLIENT_LOG,
+        values,
+    };
+}
+
+export function actionSetClientLogToNull() {
+    return {
+        type: SET_CLIENT_LOG_TO_NULL,
+    };
+}
+
+export function actionAddToUrlHistory(url) {
+    return {
+        type: ADD_TO_URL_HISTORY,
+        url,
     };
 }

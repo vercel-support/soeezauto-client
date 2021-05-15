@@ -5,6 +5,7 @@ import brand from './brand';
 import contactEmail from './contact-email';
 import model from './model';
 import onlineStatus from './onlineStatus';
+import system from './system';
 
 const rootReducer = combineReducers({
     form: formReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     contactEmail,
     model,
     onlineStatus,
+    system,
 });
 
 export default rootReducer;

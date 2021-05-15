@@ -1,6 +1,7 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import localforage from 'localforage';
 import {
+    CLIENT_LOG,
     LOGOUT_TOKEN_EXPIRED,
     CHECK_ONLINE_STATUS_ERROR,
     GET_MODEL_VERSIONS_WITH_TRIMS,
@@ -43,6 +44,13 @@ function* getModelVersionsWithTrims(action) {
             yield put({
                 type: GET_MODEL_VERSIONS_WITH_TRIMS_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODEL_VERSIONS_WITH_TRIMS,
+                },
             });
         } else {
             yield put({
@@ -115,6 +123,13 @@ function* getPreviousModels(action) {
             yield put({
                 type: GET_PREVIOUS_MODELS_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_PREVIOUS_MODELS,
+                },
             });
         } else {
             yield put({
@@ -250,6 +265,13 @@ function* getModel(action) {
             yield put({
                 type: GET_MODEL_ERROR,
                 data: errorParserGraphql(data.errors),
+            });
+            yield put({
+                type: CLIENT_LOG,
+                data: {
+                    message: errorParserGraphql(data.errors),
+                    action: GET_MODEL,
+                },
             });
         } else {
             yield put({
