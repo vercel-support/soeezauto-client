@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 });
 
 const ModelVersions = ({ model, isPromo }) => {
-    console.log('MODEL VERllSIONS', model);
     const classes = useStyles();
     return (
         <>

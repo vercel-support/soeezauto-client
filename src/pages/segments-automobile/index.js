@@ -52,7 +52,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Segments = (props) => {
-    console.log('segments', props);
     const classes = useStyles();
     const { segments } = props;
     return (

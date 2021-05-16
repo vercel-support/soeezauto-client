@@ -83,7 +83,6 @@ const useStyles = makeStyles({
 
 const Promotions = (props) => {
     const classes = useStyles();
-    console.log('promo', props);
     const { brands } = props;
     const [brandSelect, setBrandSelect] = useState('all');
     const [selectedBrand, setSelectedBrand] = useState(brands);

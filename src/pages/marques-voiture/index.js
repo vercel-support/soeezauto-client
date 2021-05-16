@@ -20,7 +20,6 @@ const useStyles = makeStyles(() => ({
     },
 }));
 const Brands = (props) => {
-    console.log('brands', props);
     const classes = useStyles();
     const { brands } = props;
     return (

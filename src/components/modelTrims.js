@@ -70,7 +70,6 @@ const getMuiTheme = () =>
 
 const ModelTrims = ({ versions }) => {
     const classes = useStyles();
-    console.log('versions', versions);
     const [isDiff, setIsDiff] = useState(0);
     const [dataDiff, setDataDiff] = useState(null);
     const [dataAll, setDataAll] = useState(null);

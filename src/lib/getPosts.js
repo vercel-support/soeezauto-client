@@ -1,7 +1,7 @@
 import { apiWp } from './functions';
 
 const queryQl = `query AllPosts {
-    posts(first: 10, where: {orderby: {field: DATE, order: DESC}}) {
+    posts(first: 10, where: {orderby: {field: DATE, order: DESC}, categoryNotIn: "167"}) {
         pageInfo {
             endCursor
             startCursor
@@ -15,11 +15,9 @@ const queryQl = `query AllPosts {
                 uri
                 slug
                 date
-                tags {
-                    edges {
-                        node {
-                            description
-                        }
+                categories {
+                    nodes {
+                        name
                     }
                 }
                 featuredImage {

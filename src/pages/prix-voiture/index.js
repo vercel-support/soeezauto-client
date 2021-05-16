@@ -176,7 +176,6 @@ const Prices = (props) => {
                 newSegments.push({ ...seg, models: newModels });
             }
         });
-        console.log('event i', event.target.id);
         setCurrentSegments(newSegments);
         setTabValue(0);
         setSelectedButtonId(event.target.id);

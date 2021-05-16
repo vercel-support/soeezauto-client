@@ -77,7 +77,6 @@ const useStyles = makeStyles({
 });
 
 const Model = ({ model, isPromo }) => {
-    console.log('model', model);
     const classes = useStyles();
 
     return (

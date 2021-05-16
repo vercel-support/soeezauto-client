@@ -129,7 +129,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Segment = (props) => {
     const { segment, priceRanges } = props;
-    console.log('PRICE RANGE', props);
     const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
 
@@ -391,7 +390,6 @@ export async function getStaticProps({ params }) {
             });
         }
     });
-    console.log('segment', segment);
     return {
         props: {
             priceRanges,

@@ -1,43 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ReactHtmlParser from 'react-html-parser';
-import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Link from 'components/link';
 
-const useStyles = makeStyles(() => ({
-    catList: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        padding: '10px',
-        justifyContent: 'space-around',
-        '& > div': {
-            flex: '0 0 280px',
-        },
-    },
-}));
-
 const BlogPost = ({ post }) => {
-    const classes = useStyles();
     const [content, setContent] = useState(null);
-    /*
-    function removeScripts(string) {
-        if (string.indexOf('<script') === -1) {
-            return string;
-        }
-        const regexp = /<script/g;
-        const matches = [...string.matchAll(regexp)];
-        let newString = string;
-        for (let i = 0; i < matches.length; i++) {
-            const script = newString.substring(
-                newString.indexOf('<script'),
-                newString.indexOf('</script>') + '</script>'.length,
-            );
-            newString = newString.replace(script, '');
-        }
-        return newString;
-    }
-    */
+
     function replaceAtag(string) {
         // separate all <a tags
         // https://stackoverflow.com/questions/11592033/regex-match-text-between-tags
@@ -84,9 +53,9 @@ const BlogPost = ({ post }) => {
         return (
             // TODO improve this
             <p>
-                {newElem.map((el, ind) => (
+                {newElem.map((el) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <span key={ind}>{el}</span>
+                    <span key={Math.random()}>{el}</span>
                 ))}
             </p>
         );
@@ -95,19 +64,19 @@ const BlogPost = ({ post }) => {
         const images = [];
         const imgSection = [];
         Array.from(imgs).forEach((img) => {
-            console.log('img', img);
             images.push({
                 src: img.getAttribute('src'),
                 alt: img.getAttribute('alt'),
                 width: img.getAttribute('width'),
                 height: img.getAttribute('height'),
+                id: Math.random(),
             });
         });
         imgSection.push(
-            <div>
+            <div key={Math.random()}>
                 {images.map((img) => (
                     <Image
-                        key={img.src}
+                        key={img.id}
                         src={img.src}
                         alt={img.alt}
                         width={img.width}
@@ -122,7 +91,6 @@ const BlogPost = ({ post }) => {
         if (post) {
             const main = document.createElement('main');
             main.innerHTML = post.content;
-            console.log('MAe', main);
             const sections = [];
             for (const el of main.children) {
                 if (el.className !== 'news_img1') {
@@ -142,6 +110,17 @@ const BlogPost = ({ post }) => {
                         }
                     } else if (el.innerHTML.includes('<a')) {
                         sections.push(replaceAtag(el.innerHTML));
+                    } else if (el.nodeName === 'A') {
+                        sections.push(
+                            <a
+                                href={el
+                                    .getAttribute('href')
+                                    .replace('https://www.soeezauto.ma', '')}
+                                alt={el.alt}
+                            >
+                                {el.innerText}
+                            </a>,
+                        );
                     } else if (!el.innerHTML.includes('adsbygoogle')) {
                         const Tag = el.nodeName.toLowerCase();
                         sections.push(<Tag>{ReactHtmlParser(el.innerHTML)}</Tag>);
@@ -151,80 +130,14 @@ const BlogPost = ({ post }) => {
             setContent([...sections]);
         }
     }, [post]);
-    /*
-    useEffect(() => {
-        if (post) {
-            let temp = post.content;
-            const regexp = /<p>|<h2>/g;
-            const matches = [...temp.matchAll(regexp)];
-            const sections = [];
-            // get all p and h2
-            matches.forEach((match) => {
-                console.log('matchs', match);
-                const start = match[0] === '<p>' ? 'p' : 'h2';
-                const section = temp.substring(
-                    temp.indexOf(`<${start}>`),
-                    temp.indexOf(`</${start}>`) + `</${start}>`.length,
-                );
-                sections.push(section);
-                temp = temp.replace(section, '');
-            });
-
-            const newSections = [];
-            sections.forEach((elem) => {
-                let newElem = elem;
-                if (elem.startsWith('<h2>')) {
-                    // if h2, drop <h2> tags from string then create react element
-                    let h2 = newElem.replace('<h2>', '');
-                    h2 = h2.replace('</h2>', '');
-                    newElem = <h2>{ReactHtmlParser(h2)}</h2>;
-                } else if (elem.startsWith('<p><img') && elem.includes('wp-content')) {
-                    // if image from own wp, replace with Nextjs <Image
-                    let elemStr = elem.replace('</p>', '');
-                    elemStr = elemStr.replace('<p>', '');
-                    const temp1 = document.createElement('div');
-                    temp1.innerHTML = elemStr;
-                    const img = temp1.firstChild;
-                    newElem = (
-                        <Image
-                            src={img.getAttribute('src')}
-                            alt={img.getAttribute('alt')}
-                            width={img.getAttribute('width')}
-                            height={img.getAttribute('height')}
-                            loading="eager"
-                            priority
-                        />
-                    );
-                } else {
-                    // should be <p>, so remove from string and replace with react element
-                    newElem = newElem.replace('</p>', '');
-                    newElem = newElem.replace('<p>', '');
-                    if (newElem.includes('<a')) {
-                        newElem = replaceAtag(newElem);
-                    } else {
-                        newElem = <p>{ReactHtmlParser(newElem)}</p>;
-                    }
-                }
-                console.log('NEW ELEMe', newElem);
-                newSections.push(newElem);
-            });
-            setContent([...newSections]);
-        }
-    }, [post]);
-    */
     return (
-        <div>
-            <div className={classes.catList}>
-                <div>
-                    <div>{post.title}</div>
-                    {content &&
-                        content.map((div, ind) => (
-                            // eslint-disable-next-line react/no-array-index-key
-                            <div key={ind}>{div}</div>
-                        ))}
-                </div>
-            </div>
-        </div>
+        <>
+            {content &&
+                content.map((div) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <div key={Math.random()}>{div}</div>
+                ))}
+        </>
     );
 };
 

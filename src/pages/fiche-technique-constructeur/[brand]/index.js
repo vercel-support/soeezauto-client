@@ -58,7 +58,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FicheTechniqueManufacturer = ({ brand }) => {
-    console.log('brands', brand);
     const classes = useStyles();
     const [currentModel, setCurrentModel] = useState(null);
     const [models, setModels] = useState([]);

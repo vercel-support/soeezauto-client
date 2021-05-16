@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { actionAddToUrlHistory } from 'store/actions';
-import styles from '../styles/layout.module.scss';
+import styles from 'styles/layout.module.scss';
 import Header from './header';
 import ClientLog from './clientLog';
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import { apiWp } from 'lib/functions';
@@ -9,10 +10,24 @@ import BlogVideo from 'components/blogVideo';
 import BlogPost from 'components/blogPost';
 import Loading from 'components/loading';
 
-const Post = (props) => {
+const useStyles = makeStyles(() => ({
+    article: {
+        width: 'clamp(320px,100%, 600px)',
+        margin: '0 0 50px',
+        lineHeight: 1.8,
+        '& p': {
+            margin: '20px 0',
+            fontSize: 15,
+        },
+        '& h2': {
+            margin: '20px 0',
+        },
+    },
+}));
+
+const Post = ({ post, postFormat }) => {
     const router = useRouter();
-    const { post } = props;
-    console.log('POST', post);
+    const classes = useStyles();
     if (router.isFallback) {
         return <Loading />;
     }
@@ -23,13 +38,14 @@ const Post = (props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                {post && post.postFormats.nodes[0].name === 'Image' && (
-                    <BlogImage post={post} />
-                )}
-                {post && post.postFormats.nodes[0].name === 'Vidéo' && (
-                    <BlogVideo post={post} />
-                )}
-                {post && post.postFormats.nodes.length === 0 && <BlogPost post={post} />}
+                <div className="main-title">
+                    <h1>{post.title}</h1>
+                </div>
+                <article className={classes.article}>
+                    {postFormat === 'Image' && <BlogImage post={post} />}
+                    {postFormat === 'Vidéo' && <BlogVideo post={post} />}
+                    {postFormat === 'Standard' && <BlogPost post={post} />}
+                </article>
             </main>
         </div>
     );
@@ -37,6 +53,7 @@ const Post = (props) => {
 
 Post.propTypes = {
     post: PropTypes.object.isRequired,
+    postFormat: PropTypes.string.isRequired,
 };
 
 export default Post;
@@ -76,12 +93,18 @@ export async function getStaticProps({ params }) {
     const variables = {
         slug: params.slug,
     };
-    console.log('VARIABLES', variables);
-    const post = await apiWp(queryQl, variables);
-    console.log('POST GET', post);
+    let post = await apiWp(queryQl, variables);
+    post = post.data.post;
+    const getPostFormat = () => {
+        if (post.postFormats.nodes.length === 0) {
+            return 'Standard';
+        }
+        return post.postFormats.nodes[0].name;
+    };
     return {
         props: {
-            post: post.data.post,
+            post,
+            postFormat: getPostFormat(),
         },
     };
 }

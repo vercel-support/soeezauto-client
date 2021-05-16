@@ -104,8 +104,6 @@ const useStyles = makeStyles({
 });
 
 const Brand = (props) => {
-    console.log('brand props', props);
-    console.log('GLUE', orange);
     const {
         brand,
         allModels,
@@ -260,7 +258,7 @@ const Brand = (props) => {
             setPriceRangeIndex((prevPriceRangeIndex) => prevPriceRangeIndex + 1);
         }
     }, [dataGetModelsWithPriceRangeForBrand]);
-    console.log('PRICE RANGE INDEx', priceRangeIndex);
+
     return (
         <div>
             <Head>

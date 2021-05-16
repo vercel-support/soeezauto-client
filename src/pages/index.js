@@ -87,7 +87,6 @@ const randIndex = (len, max) => {
 };
 
 const Home = (props) => {
-    // console.log('home props', props);
     const classes = useStyles();
     const {
         selectBrands,

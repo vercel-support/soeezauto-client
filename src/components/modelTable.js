@@ -53,7 +53,6 @@ const getMuiTheme = () =>
     });
 
 const ModelTable = ({ currentModels }) => {
-    console.log('TABLE CURRENT', currentModels);
     const data = [];
     currentModels.map((model) =>
         data.push({

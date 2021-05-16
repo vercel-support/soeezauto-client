@@ -81,7 +81,6 @@ const useStyles = makeStyles(() => ({
 const FicheTechnique = (props) => {
     const { model } = props;
     const classes = useStyles();
-    console.log('version', props);
     const [currentVersion, setCurrentVersion] = useState(model.versions[0]);
     const [selectedVersionIndex, setSelectedVersionIndex] = useState(0);
 
