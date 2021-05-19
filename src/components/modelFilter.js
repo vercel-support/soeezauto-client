@@ -12,6 +12,7 @@ import {
     Card,
     CardHeader,
     CardContent,
+    CardActions,
     Radio,
     RadioGroup,
     Accordion,
@@ -50,7 +51,6 @@ const trans = {
 const useStyles = makeStyles((theme) => ({
     mainContent: {
         width: 'clamp(320px,100%, 600px)',
-        margin: '20px 0',
     },
     root: {
         display: 'flex',
@@ -62,7 +62,6 @@ const useStyles = makeStyles((theme) => ({
     },
     cardRoot: {
         backgroundColor: '#ffe082',
-        maxWidth: 400,
         margin: '0 auto 20px',
         '& .MuiCardHeader-content': {
             '& span': {
@@ -75,6 +74,14 @@ const useStyles = makeStyles((theme) => ({
         },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
+        },
+    },
+    cardActions: {
+        '& .MuiCardHeader-root': {
+            padding: 0,
+        },
+        '& .MuiCardContent-root': {
+            padding: 0,
         },
     },
     accordionRoot: {
@@ -105,9 +112,6 @@ const useStyles = makeStyles((theme) => ({
     },
     modelTable: {
         padding: '8px 0 0',
-        '& div:first-child': {
-            width: '100%',
-        },
     },
     filterResult: {
         width: '100%',
@@ -438,39 +442,42 @@ const ModelFilter = ({ allModels, filters }) => {
                         </div>
                     </form>
                 </CardContent>
+                <CardActions className={classes.cardActions}>
+                    <Card className={classes.cardRoot}>
+                        <CardHeader title="Votre selection" />
+                        <CardContent className={classes.cardContent}>
+                            <Accordion
+                                TransitionProps={{ unmountOnExit: true }}
+                                className={classes.accordionRoot}
+                            >
+                                <AccordionSummary
+                                    expandIcon={<ExpandMore />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                >
+                                    {' '}
+                                    <Chip
+                                        className={classes.filterResult}
+                                        avatar={
+                                            <div className={classes.avatar}>
+                                                <Avatar ref={filterResultRef}>
+                                                    {currentModels.length}
+                                                </Avatar>
+                                            </div>
+                                        }
+                                        label="modeles"
+                                        color="primary"
+                                    />
+                                </AccordionSummary>
+                                <AccordionDetails className={classes.modelTable}>
+                                    <ModelTable currentModels={currentModels} />
+                                </AccordionDetails>
+                            </Accordion>
+                        </CardContent>
+                    </Card>
+                </CardActions>
             </Card>
-            <Card className={classes.cardRoot}>
-                <CardHeader title="Modeles" />
-                <CardContent className={classes.cardContent}>
-                    <Accordion
-                        TransitionProps={{ unmountOnExit: true }}
-                        className={classes.accordionRoot}
-                    >
-                        <AccordionSummary
-                            expandIcon={<ExpandMore />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            {' '}
-                            <Chip
-                                className={classes.filterResult}
-                                avatar={
-                                    <div className={classes.avatar}>
-                                        <Avatar ref={filterResultRef}>
-                                            {currentModels.length}
-                                        </Avatar>
-                                    </div>
-                                }
-                                label="modeles correspondent a la recherche"
-                                color="primary"
-                            />
-                        </AccordionSummary>
-                        <AccordionDetails className={classes.modelTable}>
-                            <ModelTable currentModels={currentModels} />
-                        </AccordionDetails>
-                    </Accordion>
-                </CardContent>
-            </Card>
+
             <NotifierDialog
                 notification={notification}
                 handleNotificationDismiss={handleNotificationDismiss}

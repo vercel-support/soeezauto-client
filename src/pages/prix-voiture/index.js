@@ -29,6 +29,7 @@ import { CONVERSION_FUEL, PRICE_RANGES } from 'parameters';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 import usePrevious from 'tools/hooks/usePrevious';
+import Breadcrumb from 'components/breadcrumb';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -78,6 +79,14 @@ const useStyles = makeStyles((theme) => ({
         '& th': {
             fontSize: '.75rem',
         },
+    },
+    brand: {
+        width: 150,
+        minWidth: 150,
+        height: 85,
+    },
+    model: {
+        height: 70,
     },
     cardRoot: {
         width: 'clamp(300px, 100%, 700px)',
@@ -215,6 +224,18 @@ const Prices = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'prix voiture',
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>Prix et budget voiture au Maroc</h1>
                 </div>
@@ -316,7 +337,11 @@ const Prices = (props) => {
                                         >
                                             <TableHead>
                                                 <TableRow>
-                                                    <TableCell component="th" scope="row">
+                                                    <TableCell
+                                                        className={classes.brand}
+                                                        component="th"
+                                                        scope="row"
+                                                    >
                                                         Brand
                                                     </TableCell>
                                                     {segment.models.map((model) => (
@@ -327,7 +352,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                             </TableHead>
                                             <TableBody>
-                                                <TableRow>
+                                                <TableRow className={classes.model}>
                                                     <TableCell component="th" scope="row">
                                                         Model
                                                     </TableCell>
@@ -523,7 +548,7 @@ const queryQl = `query getRange(
     }
 }`;
 */
-export async function getServerSideProps() {
+export async function getStaticProps() {
     let segments = await getSegmentsModelsDetailed();
     segments = segments.data.segments;
     let posts = await getPosts();

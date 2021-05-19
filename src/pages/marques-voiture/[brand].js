@@ -40,6 +40,7 @@ import {
 } from 'store/actions';
 import Link from 'components/link';
 import ModelFilter from 'components/modelFilter';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles({
     root: {
@@ -85,6 +86,11 @@ const useStyles = makeStyles({
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gridGap: 30,
+    },
+    info: {
+        '& li > div': {
+            width: '100%',
+        },
     },
     isPromo: {
         '& span': {
@@ -267,6 +273,18 @@ const Brand = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/marques-voiture',
+                            text: 'marques voiture',
+                        },
+                        {
+                            href: null,
+                            text: brand.brand,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{`${brand.brand} neuve maroc`}</h1>
                 </div>
@@ -304,8 +322,8 @@ const Brand = (props) => {
                                                             <Image
                                                                 src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
                                                                 alt={model.model}
-                                                                width="100"
-                                                                height="60"
+                                                                width="180"
+                                                                height="120"
                                                                 loading="eager"
                                                                 priority
                                                             />
@@ -314,51 +332,59 @@ const Brand = (props) => {
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <List>
+                                                    <List className={classes.info}>
                                                         <ListItem>
-                                                            <>
-                                                                {model.isPromo && (
-                                                                    <Chip
-                                                                        className={
-                                                                            classes.isPromo
-                                                                        }
-                                                                        size="small"
-                                                                        avatar={
-                                                                            <Avatar>
-                                                                                <MonetizationOn />
-                                                                            </Avatar>
-                                                                        }
-                                                                        label="PROMO"
-                                                                        color="secondary"
-                                                                    />
-                                                                )}
-                                                                <p
+                                                            {model.isPromo && (
+                                                                <Chip
                                                                     className={
-                                                                        classes.prices
+                                                                        classes.isPromo
                                                                     }
-                                                                >
-                                                                    {model.prices
+                                                                    size="small"
+                                                                    avatar={
+                                                                        <Avatar>
+                                                                            <MonetizationOn />
+                                                                        </Avatar>
+                                                                    }
+                                                                    label="PROMO"
+                                                                    color="secondary"
+                                                                />
+                                                            )}
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <Chip
+                                                                size="small"
+                                                                label={`Prix ${
+                                                                    model.prices
                                                                         .length === 1
                                                                         ? `${model.prices[0]}`
-                                                                        : `${model.prices[0]} - ${model.prices[1]}`}
-                                                                    <span> mille DH</span>
-                                                                </p>
-                                                                <p>
-                                                                    {model.power
-                                                                        .length === 1
+                                                                        : `${model.prices[0]} - ${model.prices[1]}`
+                                                                } mille DH
+                                                                `}
+                                                                avatar={
+                                                                    <Avatar>
+                                                                        <MonetizationOn />
+                                                                    </Avatar>
+                                                                }
+                                                            />
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <Chip
+                                                                size="small"
+                                                                label={`Puissance: ${
+                                                                    model.power.length ===
+                                                                    1
                                                                         ? model.power[0]
-                                                                        : `${model.power[0]}-${model.power[1]}`}
-                                                                    <span> ch</span>
-                                                                </p>
-                                                                <p>
-                                                                    {model.fuels
-                                                                        .toString()
-                                                                        .replace(
-                                                                            /,/g,
-                                                                            '/',
-                                                                        )}
-                                                                </p>
-                                                            </>
+                                                                        : `${model.power[0]}-${model.power[1]}`
+                                                                } ch`}
+                                                            />
+                                                        </ListItem>
+                                                        <ListItem>
+                                                            <Chip
+                                                                size="small"
+                                                                label={model.fuels
+                                                                    .toString()
+                                                                    .replace(/,/g, '/')}
+                                                            />
                                                         </ListItem>
                                                     </List>
                                                 </TableCell>
@@ -447,6 +473,9 @@ const queryQl = `query getBrand(
                 segment {
                     id
                     segment
+                }
+                specs {
+                    id
                 }
                 versions(exists: {prices:true}) {
                     id

@@ -15,6 +15,7 @@ import getSegmentsModels from 'lib/getSegmentsModels';
 import getPosts from 'lib/getPosts';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -61,6 +62,21 @@ const Segments = (props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'segments voiture',
+                        },
+                    ]}
+                />
+                <div className="main-title">
+                    <h1>Segments voiture au Maroc</h1>
+                </div>
                 <div className={classes.catList}>
                     {segments.map((segment) => (
                         <Card key={segment.segment} className={classes.root}>

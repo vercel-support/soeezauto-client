@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import Link from 'components/link';
 import { showtime } from 'tools/functions';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -66,6 +67,18 @@ const SoeezBlog = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'soeez-blog',
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>Actualite automobiles neuves Maroc</h1>
                 </div>

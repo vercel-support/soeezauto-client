@@ -21,6 +21,7 @@ import FormSubmit from 'components/formInputs/formSubmit';
 import { LANG } from 'parameters';
 import styles from 'styles/contact.module.scss';
 import { actionPostContactEmail } from 'store/actions';
+import Breadcrumb from 'components/breadcrumb';
 
 const trans = {
     br: {
@@ -137,6 +138,18 @@ const ContactEmailForm = (props) => {
             </Head>
             <main>
                 {isLoading ? <Loading /> : null}
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'contact',
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{trans[LANG].contact}</h1>
                 </div>

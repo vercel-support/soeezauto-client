@@ -24,6 +24,7 @@ import getPosts from 'lib/getPosts';
 import Link from 'components/link';
 import { urlWriter, numberFrance } from 'tools/functions';
 import { apiQl } from 'lib/functions';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles({
     root: {
@@ -122,6 +123,18 @@ const Promotions = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'promotions',
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>Promotion voiture neuve au Maroc</h1>
                 </div>

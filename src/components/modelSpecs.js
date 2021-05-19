@@ -58,13 +58,21 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     table: {
-        tableLayout: 'unset',
+        tableLayout: 'fixed',
         '& td': {
             fontSize: '.75rem',
+            textAlign: 'center',
         },
         '& th': {
             fontSize: '.75rem',
+            width: 100,
         },
+        '& th:first-child': {
+            width: 180,
+        },
+    },
+    versionTh: {
+        height: 85,
     },
 }));
 
@@ -94,7 +102,11 @@ const ModelSpecs = ({ versions }) => {
                     <Table className={classes.table} aria-label="fiches techniques">
                         <TableHead>
                             <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell
+                                    className={classes.versionTh}
+                                    component="th"
+                                    scope="row"
+                                >
                                     Version
                                 </TableCell>
                                 {versions.map((version) => (
@@ -204,7 +216,11 @@ const ModelSpecs = ({ versions }) => {
                     <Table className={classes.table} aria-label="fiches techniques">
                         <TableHead>
                             <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell
+                                    className={classes.versionTh}
+                                    component="th"
+                                    scope="row"
+                                >
                                     Version
                                 </TableCell>
                                 {versions.map((version) => (
@@ -310,7 +326,11 @@ const ModelSpecs = ({ versions }) => {
                     <Table className={classes.table} aria-label="fiches techniques">
                         <TableHead>
                             <TableRow>
-                                <TableCell component="th" scope="row">
+                                <TableCell
+                                    className={classes.versionTh}
+                                    component="th"
+                                    scope="row"
+                                >
                                     Version
                                 </TableCell>
                                 {versions.map((version) => (

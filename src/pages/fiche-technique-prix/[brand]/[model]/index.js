@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Card,
@@ -13,11 +14,14 @@ import {
 } from '@material-ui/core';
 import { MonetizationOn } from '@material-ui/icons';
 import PropTypes from 'prop-types';
+import getBrandsModels from 'lib/getBrandsModels';
 import getModels from 'lib/getModels';
 import { apiQl } from 'lib/functions';
 import { urlWriter, numberFrance } from 'tools/functions';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
+import Loading from 'components/loading';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     mainContainer: {
@@ -64,6 +68,7 @@ const useStyles = makeStyles(() => ({
         flexWrap: 'wrap',
         padding: '10px',
         justifyContent: 'space-around',
+        gap: 10,
         '& > div': {
             flex: '0 0 33%',
             marginBottom: 15,
@@ -81,8 +86,15 @@ const useStyles = makeStyles(() => ({
 const FicheTechnique = (props) => {
     const { model } = props;
     const classes = useStyles();
-    const [currentVersion, setCurrentVersion] = useState(model.versions[0]);
+    const router = useRouter();
+    const [currentVersion, setCurrentVersion] = useState(null);
     const [selectedVersionIndex, setSelectedVersionIndex] = useState(0);
+
+    useEffect(() => {
+        if (model) {
+            setCurrentVersion(model.versions[0]);
+        }
+    }, [model]);
 
     const handleVersionSelect = (event) => {
         const newVersion = model.versions.filter((vs) => {
@@ -92,6 +104,9 @@ const FicheTechnique = (props) => {
         setSelectedVersionIndex(parseInt(event.target.dataset.versionindex, 10));
     };
 
+    if (router.isFallback) {
+        return <Loading />;
+    }
     return (
         <div>
             <Head>
@@ -100,76 +115,94 @@ const FicheTechnique = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: `/modeles-voiture/${urlWriter(
+                                model.brand.brand,
+                            )}/${urlWriter(model.model)}`,
+                            text: `${model.brand.brand} ${model.model}`,
+                        },
+                        {
+                            href: null,
+                            text: `fiche technique ${model.brand.brand} ${model.model}`,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{`Fiche technique & prix - ${model.brand.brand} ${model.model}`}</h1>
                 </div>
                 <div className={classes.mainContainer}>
-                    <Card className={classes.root}>
-                        <CardHeader title="Versions" />
-                        <CardContent className={classes.cardContent}>
-                            <Box className={classes.versions}>
-                                {model.versions.map((version, index) => (
-                                    <Box key={version.id}>
-                                        <Button
-                                            data-versionindex={index}
-                                            id={version.id}
-                                            className={classes.range}
-                                            variant="contained"
-                                            color={
-                                                selectedVersionIndex === index
-                                                    ? 'secondary'
-                                                    : 'primary'
-                                            }
-                                            onClick={handleVersionSelect}
-                                        >
-                                            {version.version}
-                                        </Button>
+                    {model && currentVersion && (
+                        <>
+                            <Card className={classes.root}>
+                                <CardHeader title="Versions" />
+                                <CardContent className={classes.cardContent}>
+                                    <Box className={classes.versions}>
+                                        {model.versions.map((version, index) => (
+                                            <Box key={version.id}>
+                                                <Button
+                                                    data-versionindex={index}
+                                                    id={version.id}
+                                                    className={classes.range}
+                                                    variant="contained"
+                                                    color={
+                                                        selectedVersionIndex === index
+                                                            ? 'secondary'
+                                                            : 'primary'
+                                                    }
+                                                    onClick={handleVersionSelect}
+                                                >
+                                                    {version.version}
+                                                </Button>
+                                            </Box>
+                                        ))}
                                     </Box>
-                                ))}
-                            </Box>
-                        </CardContent>
-                        <CardActions>
-                            <Chip
-                                size="small"
-                                label={`Prix:${numberFrance(
-                                    currentVersion.prices[0].price,
-                                )} DH`}
-                                color="primary"
-                                avatar={
-                                    <Avatar>
-                                        <MonetizationOn />
-                                    </Avatar>
-                                }
-                            />
-                            {currentVersion.prices[0].promo && (
-                                <Chip
-                                    className={classes.isPromo}
-                                    size="small"
-                                    avatar={
-                                        <Avatar>
-                                            <MonetizationOn />
-                                        </Avatar>
-                                    }
-                                    label={`Promo:${numberFrance(
-                                        currentVersion.prices[0].promo,
-                                    )}  DH`}
-                                    color="secondary"
-                                />
-                            )}
-                        </CardActions>
-                    </Card>
-                    <Card className={classes.root}>
-                        <CardHeader title="Caracteristiques techniques" />
-                        <CardContent className={classes.cardContent}>
-                            <ModelSpecs versions={[currentVersion]} />
-                        </CardContent>
-                    </Card>
-                    <Card className={classes.root}>
-                        <CardHeader title="Equipements" />
-                        <CardContent className={classes.cardContent}>
-                            <ModelTrims versions={[currentVersion]} />
-                        </CardContent>
-                    </Card>
+                                </CardContent>
+                                <CardActions>
+                                    <Chip
+                                        size="small"
+                                        label={`Prix:${numberFrance(
+                                            currentVersion.prices[0].price,
+                                        )} DH`}
+                                        color="primary"
+                                        avatar={
+                                            <Avatar>
+                                                <MonetizationOn />
+                                            </Avatar>
+                                        }
+                                    />
+                                    {currentVersion.prices[0].promo && (
+                                        <Chip
+                                            className={classes.isPromo}
+                                            size="small"
+                                            avatar={
+                                                <Avatar>
+                                                    <MonetizationOn />
+                                                </Avatar>
+                                            }
+                                            label={`Promo:${numberFrance(
+                                                currentVersion.prices[0].promo,
+                                            )}  DH`}
+                                            color="secondary"
+                                        />
+                                    )}
+                                </CardActions>
+                            </Card>
+                            <Card className={classes.root}>
+                                <CardHeader title="Caracteristiques techniques" />
+                                <CardContent className={classes.cardContent}>
+                                    <ModelSpecs versions={[currentVersion]} />
+                                </CardContent>
+                            </Card>
+                            <Card className={classes.root}>
+                                <CardHeader title="Equipements" />
+                                <CardContent className={classes.cardContent}>
+                                    <ModelTrims versions={[currentVersion]} />
+                                </CardContent>
+                            </Card>
+                        </>
+                    )}
                 </div>
             </main>
         </div>
@@ -177,7 +210,7 @@ const FicheTechnique = (props) => {
 };
 
 FicheTechnique.propTypes = {
-    model: PropTypes.object.isRequired,
+    model: PropTypes.any,
 };
 
 export default FicheTechnique;
@@ -272,10 +305,32 @@ const queryQl = `query getModelDetails(
     }
 }`;
 
-export async function getServerSideProps(context) {
-    const {
-        params: { model: modelParam },
-    } = context;
+export async function getStaticPaths() {
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
+    const paths = [];
+    // only generate static for a few brands
+    const selectedBrands = ['bmw', 'dacia', 'peugeot', 'renault', 'volkswagen'];
+    brands.forEach((brand) => {
+        if (selectedBrands.includes(urlWriter(brand.brand))) {
+            brand.models.forEach((model) => {
+                paths.push({
+                    params: {
+                        brand: urlWriter(brand.brand),
+                        model: urlWriter(model.model),
+                    },
+                });
+            });
+        }
+    });
+    return {
+        paths,
+        fallback: true,
+    };
+}
+
+export async function getStaticProps({ params }) {
+    const { model: modelParam } = params;
     let models = await getModels();
     models = models.data.models;
     const modelFilter = models.filter((mod) => {

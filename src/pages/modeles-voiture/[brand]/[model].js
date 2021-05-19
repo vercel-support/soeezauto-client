@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardHeader, CardContent, Box } from '@material-ui/core';
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    Box,
+    Select,
+    FormControl,
+    InputLabel,
+    MenuItem,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import getPosts from 'lib/getPosts';
@@ -13,9 +22,11 @@ import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import ModelPrices from 'components/modelPrices';
 import ModelVersions from 'components/modelVersions';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles({
     root: {
+        contentVisibility: 'auto',
         backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
@@ -45,6 +56,12 @@ const useStyles = makeStyles({
         '& > a button': {
             width: '100%',
         },
+        '& .selectForms': {
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr 1fr',
+            gap: 10,
+            textAlign: 'left',
+        },
     },
     mainContainer: {
         display: 'flex',
@@ -54,6 +71,9 @@ const useStyles = makeStyles({
         '& > div': {
             flex: '0 0 clamp(300px,100%,700px)',
             margin: '20px 0',
+        },
+        '& nav': {
+            width: '100%',
         },
     },
     table: {
@@ -71,14 +91,92 @@ const useStyles = makeStyles({
     chart: {
         height: 400,
     },
-    isPromo: {
-        backgroundColor: '#ffc107',
-    },
 });
 
-const Model = ({ model, isPromo }) => {
+const Model = ({ model }) => {
     const classes = useStyles();
+    const [versionSelect, setVersionSelect] = useState([model.versions[0].id, '', '']);
+    const [selectedVersions, setSelectedVersions] = useState([model.versions[0]]);
 
+    const handleVersionSelectChange = (event) => {
+        const index = parseInt(event.target.name.replace('version', ''), 10);
+        const versionsSelected = [...versionSelect];
+        versionsSelected[index] = event.target.value;
+        if (event.target.value === '' && index === 1) {
+            versionsSelected[2] = '';
+        }
+        setVersionSelect([...versionsSelected]);
+        let versions = [...selectedVersions];
+        if (event.target.value === '') {
+            if (index === 1) {
+                versions = [versions[0]];
+            } else if (index === 2) {
+                versions = [versions[0], versions[1]];
+            }
+        } else {
+            const newSelect = model.versions.filter((vs) => {
+                return vs.id === event.target.value;
+            });
+            versions[index] = newSelect[0];
+        }
+        setSelectedVersions([...versions]);
+    };
+
+    const handleSetVersionSelect = () => {
+        const handleSetOptions = (i) => {
+            let options = [];
+            let filtered = [...model.versions];
+            if (i > 0) {
+                options = [
+                    <MenuItem key={0} aria-label="aucune" value="">
+                        Aucune
+                    </MenuItem>,
+                ];
+                filtered = filtered.filter((ver) => {
+                    return !versionSelect.slice(0, i).includes(ver.id);
+                });
+            }
+            filtered.forEach((vs) => {
+                options.push(
+                    <MenuItem value={vs.id} key={vs.id}>
+                        {vs.version}
+                    </MenuItem>,
+                );
+            });
+
+            return options;
+        };
+        const selects = [];
+        for (let i = 0; i < 3; i++) {
+            selects.push(
+                <form key={i}>
+                    <div className="form_select">
+                        <FormControl variant="outlined">
+                            <InputLabel id={`version${i}-select-label`}>
+                                {`Select version ${i === 0 ? 'base' : i}`}
+                            </InputLabel>
+                            <Select
+                                labelId={`version${i}-select-label`}
+                                id={`version${i}-select`}
+                                name={`version${i}`}
+                                label={`Select version ${i}`}
+                                value={versionSelect[i]}
+                                onChange={handleVersionSelectChange}
+                                variant="outlined"
+                                disabled={i === 2 && versionSelect[1] === ''}
+                            >
+                                {handleSetOptions(i)}
+                            </Select>
+                        </FormControl>
+                    </div>
+                </form>,
+            );
+        }
+        return selects;
+    };
+    useEffect(() => {
+        handleSetVersionSelect();
+    }, [versionSelect]);
     return (
         <div>
             <Head>
@@ -87,25 +185,43 @@ const Model = ({ model, isPromo }) => {
             </Head>
 
             <main className={classes.mainContainer}>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: `/marques-voiture/${urlWriter(model.brand.brand)}`,
+                            text: `${model.brand.brand}`,
+                        },
+                        {
+                            href: null,
+                            text: `${model.brand.brand} ${model.model}`,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{`${model.brand.brand} ${model.model} neuve maroc`}</h1>
                 </div>
                 <Card className={classes.root}>
                     <CardHeader title={`Versions ${model.model}`} />
                     <CardContent className={classes.cardContent}>
-                        <ModelVersions model={model} isPromo={isPromo} />
+                        <ModelVersions model={model} />
+                    </CardContent>
+                </Card>
+                <Card className={classes.root}>
+                    <CardHeader title="Selectionez versions pour comparison" />
+                    <CardContent className={classes.cardContent}>
+                        <div className="selectForms">{handleSetVersionSelect()}</div>
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
                     <CardHeader title="Caracteristiques techniques" />
                     <CardContent className={classes.cardContent}>
-                        <ModelSpecs versions={model.versions} />
+                        <ModelSpecs versions={selectedVersions} />
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
                     <CardHeader title="Equipements" />
                     <CardContent className={classes.cardContent}>
-                        <ModelTrims versions={model.versions} />
+                        <ModelTrims versions={selectedVersions} />
                     </CardContent>
                 </Card>
                 <Box className={classes.chart}>
@@ -118,7 +234,6 @@ const Model = ({ model, isPromo }) => {
 
 Model.propTypes = {
     model: PropTypes.object.isRequired,
-    isPromo: PropTypes.bool.isRequired,
 };
 /*
 const mapStateToProps = (state) => {
@@ -261,14 +376,10 @@ export async function getStaticProps({ params }) {
     };
     const data = await apiQl(queryQl, variables, false);
     const model = data.data.model;
-    const prom = model.versions.filter((version) => {
-        return version.prices[0].promo;
-    });
     return {
         props: {
             model,
             posts,
-            isPromo: prom.length > 0,
         },
     };
 }

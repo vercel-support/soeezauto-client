@@ -16,6 +16,7 @@ import { objectToMap } from 'tools/functions';
 
 const useStyles = makeStyles(() => ({
     accordion: {
+        contentVisibility: 'auto',
         display: 'block',
         padding: 0,
         '& div:first-child': {

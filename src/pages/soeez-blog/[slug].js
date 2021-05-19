@@ -9,6 +9,7 @@ import BlogImage from 'components/blogImage';
 import BlogVideo from 'components/blogVideo';
 import BlogPost from 'components/blogPost';
 import Loading from 'components/loading';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     article: {
@@ -38,6 +39,18 @@ const Post = ({ post, postFormat }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/soeez-blog',
+                            text: 'accueil blog',
+                        },
+                        {
+                            href: null,
+                            text: post.title,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{post.title}</h1>
                 </div>

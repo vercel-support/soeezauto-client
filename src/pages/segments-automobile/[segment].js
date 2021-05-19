@@ -24,6 +24,7 @@ import { urlWriter } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import { PRICE_RANGES, CONVERSION_FUEL } from 'parameters';
 import Link from 'components/link';
+import Breadcrumb from 'components/breadcrumb';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -152,6 +153,18 @@ const Segment = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/segments-automobile',
+                            text: 'segments voiture',
+                        },
+                        {
+                            href: null,
+                            text: segment.segment,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{`Voitures ${segment.segment} neuves Maroc`}</h1>
                 </div>

@@ -9,6 +9,13 @@ import { urlWriter } from 'tools/functions';
 const getMuiTheme = () =>
     createMuiTheme({
         overrides: {
+            MuiTableBody: {
+                root: {
+                    '& tr': {
+                        borderBottom: '3px solid #ffe082',
+                    },
+                },
+            },
             MUIDataTableHeadCell: {
                 root: {
                     '&:nth-child(1)': {

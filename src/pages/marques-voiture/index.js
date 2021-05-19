@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
 import TreeCard from 'components/treeCard';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     catList: {
@@ -30,6 +31,18 @@ const Brands = (props) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'marques voiture',
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>Marques voiture au Maroc</h1>
                 </div>

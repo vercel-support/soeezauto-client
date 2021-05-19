@@ -16,6 +16,7 @@ import getModelsWithPriceHigherThan400 from 'lib/getModelsWithPriceHigherThan400
 import getPosts from 'lib/getPosts';
 import { CONVERSION_FUEL } from 'parameters';
 import ModelFilter from 'components/modelFilter';
+import Breadcrumb from 'components/breadcrumb';
 
 const Models = ({ allModels, filters }) => {
     return (
@@ -26,6 +27,21 @@ const Models = ({ allModels, filters }) => {
             </Head>
 
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: '/',
+                            text: 'accueil',
+                        },
+                        {
+                            href: null,
+                            text: 'modeles voiture',
+                        },
+                    ]}
+                />
+                <div className="main-title">
+                    <h1>Modeles voiture au Maroc</h1>
+                </div>
                 <ModelFilter allModels={allModels} filters={filters} />
             </main>
         </div>

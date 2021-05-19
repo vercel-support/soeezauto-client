@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import {
     Box,
     Card,
@@ -15,6 +16,8 @@ import getBrands from 'lib/getBrands';
 import { apiQl } from 'lib/functions';
 import { urlWriter } from 'tools/functions';
 import NotifierInline from 'components/notifierInline';
+import Loading from 'components/loading';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStyles = makeStyles(() => ({
     cardRoot: {
@@ -59,6 +62,7 @@ const useStyles = makeStyles(() => ({
 
 const FicheTechniqueManufacturer = ({ brand }) => {
     const classes = useStyles();
+    const router = useRouter();
     const [currentModel, setCurrentModel] = useState(null);
     const [models, setModels] = useState([]);
     const [selectedModelIndex, setSelectedModelIndex] = useState(0);
@@ -81,6 +85,9 @@ const FicheTechniqueManufacturer = ({ brand }) => {
         setCurrentModel(newModel[0]);
         setSelectedModelIndex(parseInt(event.target.dataset.modelindex, 10));
     };
+    if (!brand || router.isFallback) {
+        return <Loading />;
+    }
     return (
         <div>
             <Head>
@@ -88,6 +95,18 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: `/marques-voiture/${urlWriter(brand.brand)}`,
+                            text: `${brand.brand}`,
+                        },
+                        {
+                            href: null,
+                            text: `Fiche technique constructeur - ${brand.brand}`,
+                        },
+                    ]}
+                />
                 <div className="main-title">
                     <h1>{`Fiche technique constructeur - ${brand.brand}`}</h1>
                 </div>
@@ -172,10 +191,25 @@ const queryQl = `query getBrandSpecs(
     }
 }`;
 
-export async function getServerSideProps(context) {
-    const {
-        params: { brand: brandParam },
-    } = context;
+export async function getStaticPaths() {
+    let brands = await getBrands();
+    brands = brands.data.brands;
+    const paths = [];
+    brands.forEach((brand) => {
+        paths.push({
+            params: {
+                brand: urlWriter(brand.brand),
+            },
+        });
+    });
+    return {
+        paths,
+        fallback: true,
+    };
+}
+
+export async function getStaticProps({ params }) {
+    const { brand: brandParam } = params;
     let brands = await getBrands();
     brands = brands.data.brands;
     const brandFilter = brands.filter((brand) => {
