@@ -64,21 +64,27 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#ffe082',
         margin: '0 auto 20px',
         '& .MuiCardHeader-content': {
-            '& span': {
+            '& span:first-child': {
                 // color: '#fff',
                 textAlign: 'center',
                 textTransform: 'uppercase',
                 fontSize: '.875rem',
                 fontWeight: 'bold',
             },
+            '& span:nth-child(2)': {
+                textAlign: 'center',
+                fontSize: '.7rem',
+            },
         },
         '& .MuiCardActions-root': {
-            justifyContent: 'center',
+            display: 'block', // this added for brand page
+            // justifyContent: 'center',
         },
     },
     cardActions: {
         '& .MuiCardHeader-root': {
             padding: 0,
+            minHeight: 60,
         },
         '& .MuiCardContent-root': {
             padding: 0,
@@ -444,7 +450,10 @@ const ModelFilter = ({ allModels, filters }) => {
                 </CardContent>
                 <CardActions className={classes.cardActions}>
                     <Card className={classes.cardRoot}>
-                        <CardHeader title="Votre selection" />
+                        <CardHeader
+                            title="Votre selection"
+                            subheader="cliquez ci-dessous pour l'afficher"
+                        />
                         <CardContent className={classes.cardContent}>
                             <Accordion
                                 TransitionProps={{ unmountOnExit: true }}

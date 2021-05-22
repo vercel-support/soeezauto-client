@@ -21,7 +21,9 @@ import {
     Box,
     Slider,
     Chip,
+    Avatar,
 } from '@material-ui/core';
+import { MonetizationOn } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import getSegmentsModelsDetailed from 'lib/getSegmentsModelsDetailed';
@@ -191,13 +193,26 @@ const Prices = (props) => {
     };
 
     const getUnique = (versions, item) => {
-        const allItems = versions.map((vs) => {
+        let allItems = versions.map((vs) => {
             if (item[1] === 'fuel') {
                 return CONVERSION_FUEL[vs[item[0]][item[1]]];
             }
             return item.length === 1 ? vs[item[0]] : vs[item[0]][item[1]];
         });
-        return [...new Set(allItems)].toString();
+        if (item[1] === 'mileageMix') {
+            allItems = allItems.map((x) => {
+                return parseFloat(x, 10);
+            });
+        }
+        const withMinMax = ['trunk', 'length', 'maxSpeed', 'mileageMix'];
+        if (withMinMax.includes(item[1])) {
+            allItems = [Math.min(...allItems), Math.max(...allItems)];
+        }
+        const unique = [...new Set(allItems)];
+        if (unique.length === 1) {
+            return unique[0];
+        }
+        return `${unique[0]}-${unique[1]}`;
     };
     const handleSliderRangeChange = (event, newValue) => {
         const newRange = [...newValue];
@@ -232,7 +247,7 @@ const Prices = (props) => {
                         },
                         {
                             href: null,
-                            text: 'prix voiture',
+                            text: 'prix et budget voiture',
                         },
                     ]}
                 />
@@ -342,7 +357,7 @@ const Prices = (props) => {
                                                         component="th"
                                                         scope="row"
                                                     >
-                                                        Brand
+                                                        Marque
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.model}>
@@ -354,7 +369,7 @@ const Prices = (props) => {
                                             <TableBody>
                                                 <TableRow className={classes.model}>
                                                     <TableCell component="th" scope="row">
-                                                        Model
+                                                        Modele
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.model}>
@@ -372,7 +387,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        No of versions
+                                                        Versions
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -384,13 +399,12 @@ const Prices = (props) => {
                                                     <TableCell component="th" scope="row">
                                                         Prix
                                                     </TableCell>
-                                                    {segment.models.map((model) => (
-                                                        <TableCell key={model.id}>
-                                                            {model.versions.length === 1
+                                                    {segment.models.map((mod) => (
+                                                        <TableCell key={mod.id}>
+                                                            {mod.versions.length === 1
                                                                 ? Math.floor(
                                                                       Math.round(
-                                                                          model
-                                                                              .versions[0]
+                                                                          mod.versions[0]
                                                                               .prices[0]
                                                                               .price /
                                                                               1000,
@@ -398,17 +412,15 @@ const Prices = (props) => {
                                                                   )
                                                                 : `${Math.floor(
                                                                       Math.round(
-                                                                          model
-                                                                              .versions[0]
+                                                                          mod.versions[0]
                                                                               .prices[0]
                                                                               .price /
                                                                               1000,
                                                                       ),
                                                                   )}-${Math.floor(
                                                                       Math.round(
-                                                                          model.versions[
-                                                                              model
-                                                                                  .versions
+                                                                          mod.versions[
+                                                                              mod.versions
                                                                                   .length -
                                                                                   1
                                                                           ].prices[0]
@@ -421,7 +433,29 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        gearbox
+                                                        Promo
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            {model.isPromo ? (
+                                                                <Chip
+                                                                    size="small"
+                                                                    label="Promo"
+                                                                    avatar={
+                                                                        <Avatar>
+                                                                            <MonetizationOn />
+                                                                        </Avatar>
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                '-'
+                                                            )}
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        Boite vitesse
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -433,7 +467,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        fuel
+                                                        Combustible
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -457,7 +491,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        mileage mix
+                                                        Conso. mixte l/100km
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -470,7 +504,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        max speed
+                                                        Vitesse max. km/h
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -483,7 +517,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        Trunk
+                                                        Coffre
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -496,7 +530,7 @@ const Prices = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        Length
+                                                        Longueur
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -553,9 +587,24 @@ export async function getStaticProps() {
     segments = segments.data.segments;
     let posts = await getPosts();
     posts = posts.data.posts;
+    const newSegments = [];
+    segments.forEach((seg) => {
+        const newSeg = { ...seg };
+        const newModels = [];
+        seg.models.forEach((mod) => {
+            const newModel = { ...mod };
+            const versions = mod.versions.filter((vs) => {
+                return vs.prices[0].promo;
+            });
+            newModel.isPromo = versions.length > 0;
+            newModels.push(newModel);
+        });
+        newSeg.models = [...newModels];
+        newSegments.push(newSeg);
+    });
     return {
         props: {
-            segments,
+            segments: newSegments,
             posts,
         },
     };

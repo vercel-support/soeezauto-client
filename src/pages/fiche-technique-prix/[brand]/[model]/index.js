@@ -44,6 +44,11 @@ const useStyles = makeStyles(() => ({
         },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
+            flexDirection: 'column',
+            '& .MuiCard-root': {
+                width: '100%',
+                margin: '10px 0',
+            },
         },
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
@@ -70,7 +75,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-around',
         gap: 10,
         '& > div': {
-            flex: '0 0 33%',
+            flex: '0 0 clamp(100px, 45%, 100%)',
             marginBottom: 15,
         },
     },
@@ -136,7 +141,7 @@ const FicheTechnique = (props) => {
                     {model && currentVersion && (
                         <>
                             <Card className={classes.root}>
-                                <CardHeader title="Versions" />
+                                <CardHeader title={<h2>Versions</h2>} />
                                 <CardContent className={classes.cardContent}>
                                     <Box className={classes.versions}>
                                         {model.versions.map((version, index) => (
@@ -187,19 +192,21 @@ const FicheTechnique = (props) => {
                                             color="secondary"
                                         />
                                     )}
+                                    <Card className={classes.root}>
+                                        <CardHeader
+                                            title={<h2>Caracteristiques techniques</h2>}
+                                        />
+                                        <CardContent className={classes.cardContent}>
+                                            <ModelSpecs versions={[currentVersion]} />
+                                        </CardContent>
+                                    </Card>
+                                    <Card className={classes.root}>
+                                        <CardHeader title={<h2>Equipements</h2>} />
+                                        <CardContent className={classes.cardContent}>
+                                            <ModelTrims versions={[currentVersion]} />
+                                        </CardContent>
+                                    </Card>
                                 </CardActions>
-                            </Card>
-                            <Card className={classes.root}>
-                                <CardHeader title="Caracteristiques techniques" />
-                                <CardContent className={classes.cardContent}>
-                                    <ModelSpecs versions={[currentVersion]} />
-                                </CardContent>
-                            </Card>
-                            <Card className={classes.root}>
-                                <CardHeader title="Equipements" />
-                                <CardContent className={classes.cardContent}>
-                                    <ModelTrims versions={[currentVersion]} />
-                                </CardContent>
                             </Card>
                         </>
                     )}

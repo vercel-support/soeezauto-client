@@ -2,10 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import {
     Card,
+    CardHeader,
     CardActions,
     CardContent,
-    GridListTile,
-    GridListTileBar,
     Typography,
 } from '@material-ui/core';
 import { ArrowRight, ArrowDropDown } from '@material-ui/icons/';
@@ -15,20 +14,25 @@ import PropTypes from 'prop-types';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         marginBottom: '20px',
         backgroundColor: '#ffe082',
         width: '100%',
+        '& h2': {
+            textAlign: 'center',
+        },
     },
     horizontal: {
         display: 'flex',
     },
     vertical: {
-        display: 'grid',
-        gridTemplateRows: 'auto 1fr',
-        // height: '100%',
-        padding: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '10px 0',
+        backgroundColor: '#fff',
+        margin: '0 5px',
+        borderRadius: 6,
     },
     list: {
         display: 'grid',
@@ -49,30 +53,6 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         textDecoration: 'none',
         color: 'inherit',
-    },
-    imgHolder: {
-        width: '180px',
-        height: '180px',
-        margin: '0 auto',
-        '& .MuiBox-root': {
-            paddingTop: '36px',
-        },
-        '& a': {
-            display: 'grid',
-            justifyContent: 'center',
-            marginTop: '20px',
-        },
-        [theme.breakpoints.down('xs')]: {
-            margin: '20px auto',
-        },
-    },
-    MuiGridListTileBar: {
-        textTransform: 'uppercase',
-        borderRadius: '5px',
-        '& > div': {
-            fontWeight: '700',
-            fontSize: '.9rem',
-        },
     },
     treeItem: {
         backgroundColor: '#fff',
@@ -193,33 +173,22 @@ const TreeCard = ({ item, node }) => {
     const classes = useStyles();
     return (
         <Card className={classes.root}>
+            <CardHeader title={<h2>{item.brand}</h2>} />
             <CardContent className={classes.vertical}>
-                <GridListTile component="div" className={classes.imgHolder}>
-                    <Link
-                        href={`${
-                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                        }/marques-voiture/${urlWriter(item.brand)}`}
-                    >
-                        <Image
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${item.image}`}
-                            alt={item.brand}
-                            width="100"
-                            height="100"
-                            loading="eager"
-                            priority
-                        />
-                    </Link>
-                    <Link
-                        href={`${
-                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                        }/marques-voiture/${urlWriter(item.brand)}`}
-                    >
-                        <GridListTileBar
-                            title={item.brand}
-                            className={classes.MuiGridListTileBar}
-                        />
-                    </Link>
-                </GridListTile>
+                <Link
+                    href={`${
+                        process.env.NEXT_PUBLIC_CLIENT_HOST
+                    }/marques-voiture/${urlWriter(item.brand)}`}
+                >
+                    <Image
+                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${item.image}`}
+                        alt={item.brand}
+                        width="120"
+                        height="120"
+                        loading="eager"
+                        priority
+                    />
+                </Link>
             </CardContent>
             <CardActions>
                 <TreeView

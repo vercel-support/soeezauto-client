@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
-import MUIDataTable from 'mui-datatables';
-import { createMuiTheme, MuiThemeProvider, makeStyles } from '@material-ui/core/styles';
-import { Check, ExpandMore } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
+import { ExpandMore } from '@material-ui/icons';
 import {
     FormControlLabel,
     Radio,
@@ -10,9 +9,41 @@ import {
     Accordion,
     AccordionSummary,
     AccordionDetails,
+    AppBar,
+    Tabs,
+    Tab,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { objectToMap } from 'tools/functions';
+import ModelTrimsTable from './modelTrimsTable';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`spec-tabpanel-${index}`}
+            aria-labelledby={`spec-tab-${index}`}
+            {...other}
+        >
+            {value === index && children}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `spec-tab-${index}`,
+        'aria-controls': `spec-tabpanel-${index}`,
+    };
+}
 
 const useStyles = makeStyles(() => ({
     accordion: {
@@ -23,51 +54,12 @@ const useStyles = makeStyles(() => ({
             justifyContent: 'space-evenly',
         },
     },
-}));
-
-const getMuiTheme = () =>
-    createMuiTheme({
-        overrides: {
-            MUIDataTableHeadCell: {
-                root: {
-                    '&:nth-child(1)': {
-                        width: '180px',
-                    },
-                    width: 90,
-                },
-            },
-            MUIDataTableBodyCell: {
-                root: {
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    // cursor: 'pointer',
-                    '& > p': {
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        // textTransform: 'capitalize',
-                    },
-                    '& >svg': {
-                        color: 'green',
-                    },
-                },
-                cellStackedSmall: {
-                    height: 48,
-                },
-                responsiveStackedSmall: {
-                    height: 48,
-                },
-            },
-            MuiTypography: {
-                h6: {
-                    textTransform: 'capitalize',
-                    fontWeight: 700,
-                    letterSpacing: '.1em',
-                },
-            },
+    tabs: {
+        '& .MuiTabs-flexContainer': {
+            display: 'block',
         },
-    });
+    },
+}));
 
 const ModelTrims = ({ versions }) => {
     const classes = useStyles();
@@ -75,6 +67,7 @@ const ModelTrims = ({ versions }) => {
     const [dataDiff, setDataDiff] = useState(null);
     const [dataAll, setDataAll] = useState(null);
     const [data, setData] = useState(null);
+    const [tabValue, setTabValue] = useState(0);
 
     useEffect(() => {
         const trimList = {
@@ -124,58 +117,16 @@ const ModelTrims = ({ versions }) => {
         setIsDiff(parseInt(event.target.value, 10));
         setData(event.target.value === '0' ? dataAll : dataDiff);
     };
+    const handleChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
     const trimTypes = {
         help: 'assistance',
         sec: 'securite',
-        ent: 'entreteniment',
-        easy: 'convenance',
-        must: 'basique',
+        ent: 'divertis.',
+        easy: 'commodite',
         sty: 'style',
-        com: 'comfort',
-    };
-    const columns = [
-        {
-            name: 'trim',
-            label: 'Equipement',
-            options: {
-                customBodyRender: (value) => {
-                    return <p title={value}>{value}</p>;
-                },
-            },
-        },
-        {
-            name: 'trimType',
-            label: 'Type',
-            options: {
-                customBodyRender: (value) => {
-                    return <p>{trimTypes[value]}</p>;
-                },
-            },
-        },
-    ];
-    versions.forEach((version) => {
-        columns.push({
-            name: version.version,
-            options: {
-                filter: false,
-                customBodyRender: (value) => {
-                    return value === 1 && <Check />;
-                },
-            },
-        });
-    });
-    const options = {
-        sort: false,
-        viewColumns: false,
-        filter: true,
-        print: false,
-        download: false,
-        filterType: 'dropdown',
-        responsive: 'vertical',
-        pagination: false,
-        // rowsPerPage: trimList.uniqueIds.length,
-        selectableRows: 'none',
-        selectableRowsHeader: false,
+        com: 'confort',
     };
     return (
         <Accordion TransitionProps={{ unmountOnExit: true }}>
@@ -204,9 +155,37 @@ const ModelTrims = ({ versions }) => {
                     </RadioGroup>
                 )}
                 {data && (
-                    <MuiThemeProvider theme={getMuiTheme()}>
-                        <MUIDataTable data={data} columns={columns} options={options} />
-                    </MuiThemeProvider>
+                    <>
+                        <AppBar position="static">
+                            <Tabs
+                                value={tabValue}
+                                onChange={handleChange}
+                                aria-label="specifications"
+                                variant="scrollable"
+                                scrollButtons="on"
+                                className={classes.tabs}
+                            >
+                                {[...Array(Object.keys(trimTypes).length).keys()].map(
+                                    (key) => (
+                                        <Tab
+                                            key={key}
+                                            label={Object.entries(trimTypes)[key][1]}
+                                            {...a11yProps(key)}
+                                        />
+                                    ),
+                                )}
+                            </Tabs>
+                        </AppBar>
+                        {[...Array(Object.keys(trimTypes).length).keys()].map((type) => (
+                            <TabPanel value={tabValue} key={type} index={type}>
+                                <ModelTrimsTable
+                                    data={data}
+                                    type={Object.entries(trimTypes)[type][0]}
+                                    versions={versions}
+                                />
+                            </TabPanel>
+                        ))}
+                    </>
                 )}
             </AccordionDetails>
         </Accordion>

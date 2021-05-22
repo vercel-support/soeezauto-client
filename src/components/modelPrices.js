@@ -228,8 +228,8 @@ const ModelPrices = (props) => {
                 <ResponsiveLine
                     data={priceData}
                     margin={{
-                        top: 50,
-                        right: 110,
+                        top: 60,
+                        right: 10,
                         bottom: 50,
                         left: 60,
                     }}
@@ -274,11 +274,11 @@ const ModelPrices = (props) => {
                     useMesh
                     legends={[
                         {
-                            anchor: 'bottom-right',
-                            direction: 'column',
+                            anchor: 'top',
+                            direction: 'row',
                             justify: false,
-                            translateX: 100,
-                            translateY: 0,
+                            translateX: -20,
+                            translateY: -50,
                             itemsSpacing: 0,
                             itemDirection: 'left-to-right',
                             itemWidth: 80,

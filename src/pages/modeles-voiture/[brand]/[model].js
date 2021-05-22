@@ -7,7 +7,6 @@ import {
     Card,
     CardHeader,
     CardContent,
-    Box,
     Select,
     FormControl,
     InputLabel,
@@ -58,7 +57,8 @@ const useStyles = makeStyles({
         },
         '& .selectForms': {
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
+            gridTemplateColumns: 'repeat(auto-fit, 200px)',
+            justifyContent: 'space-evenly',
             gap: 10,
             textAlign: 'left',
         },
@@ -69,7 +69,7 @@ const useStyles = makeStyles({
         padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
-            flex: '0 0 clamp(300px,100%,700px)',
+            flex: '0 0 clamp(300px, 100%, 700px)',
             margin: '20px 0',
         },
         '& nav': {
@@ -90,6 +90,9 @@ const useStyles = makeStyles({
     },
     chart: {
         height: 400,
+        backgroundColor: '#fff',
+        margin: 5,
+        padding: 0,
     },
 });
 
@@ -201,32 +204,35 @@ const Model = ({ model }) => {
                     <h1>{`${model.brand.brand} ${model.model} neuve maroc`}</h1>
                 </div>
                 <Card className={classes.root}>
-                    <CardHeader title={`Versions ${model.model}`} />
+                    <CardHeader title={<h2>{`Versions ${model.model}`}</h2>} />
                     <CardContent className={classes.cardContent}>
                         <ModelVersions model={model} />
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title="Selectionez versions pour comparison" />
+                    <CardHeader title={<h2>Selectionez versions pour comparison</h2>} />
                     <CardContent className={classes.cardContent}>
                         <div className="selectForms">{handleSetVersionSelect()}</div>
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title="Caracteristiques techniques" />
+                    <CardHeader title={<h2>Caracteristiques techniques</h2>} />
                     <CardContent className={classes.cardContent}>
                         <ModelSpecs versions={selectedVersions} />
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title="Equipements" />
+                    <CardHeader title={<h2>Equipements</h2>} />
                     <CardContent className={classes.cardContent}>
                         <ModelTrims versions={selectedVersions} />
                     </CardContent>
                 </Card>
-                <Box className={classes.chart}>
-                    <ModelPrices model={model} />
-                </Box>
+                <Card className={classes.root}>
+                    <CardHeader title={<h2>Evolution prix et promotion</h2>} />
+                    <CardContent className={classes.chart}>
+                        <ModelPrices model={model} />
+                    </CardContent>
+                </Card>
             </main>
         </div>
     );

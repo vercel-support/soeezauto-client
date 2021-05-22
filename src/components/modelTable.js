@@ -5,6 +5,7 @@ import MUIDataTable from 'mui-datatables';
 import PropTypes from 'prop-types';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
+import { MUI_DATATABLES_TEXT_LABELS } from 'parameters';
 
 const getMuiTheme = () =>
     createMuiTheme({
@@ -161,9 +162,10 @@ const ModelTable = ({ currentModels }) => {
         download: false,
         filterType: 'dropdown',
         responsive: 'vertical',
-        rowsPerPageOptions: [10, 20, 50],
+        rowsPerPageOptions: [10],
         selectableRows: 'none',
         selectableRowsHeader: false,
+        textLabels: MUI_DATATABLES_TEXT_LABELS,
     };
     return (
         <MuiThemeProvider theme={getMuiTheme()}>

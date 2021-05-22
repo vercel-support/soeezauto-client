@@ -57,3 +57,38 @@ export const TRIMS_AIR_COND_AUTO = [
 export const TRIMS_DISPLAY_MULTIMEDIA = ['/api/trims/272', '/api/trims/462'];
 
 export const TRIMS_LEATHER_SEATS = ['/api/trims/115', '/api/trims/283', '/api/trims/540'];
+
+export const MUI_DATATABLES_TEXT_LABELS = {
+    body: {
+        noMatch: 'Sorry, no matching records found',
+        toolTip: 'Sort',
+        columnHeaderTooltip: (column) => `Sort for ${column.label}`,
+    },
+    pagination: {
+        next: 'Prochaine Page',
+        previous: 'Page précédente',
+        rowsPerPage: 'lignes par page:',
+        displayRows: 'de',
+    },
+    toolbar: {
+        search: 'Recherche',
+        downloadCsv: 'télécharger CSV',
+        print: 'Imprimer',
+        viewColumns: 'Afficher les colonnes',
+        filterTable: 'Filtrer tableau',
+    },
+    filter: {
+        all: 'Tous',
+        title: 'Filtres',
+        reset: 'Réinitialiser',
+    },
+    viewColumns: {
+        title: 'Afficher les colonnes',
+        titleAria: 'Afficher/Masquer colonnes',
+    },
+    selectedRows: {
+        text: ' ligne(s) sélectionnée(s)',
+        delete: 'Supprimer',
+        deleteAria: 'Supprimer lignes sélectionnées',
+    },
+};

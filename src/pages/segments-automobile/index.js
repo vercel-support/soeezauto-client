@@ -7,7 +7,7 @@ import {
     CardContent,
     CardActions,
     Button,
-    Box,
+    Chip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -24,19 +24,23 @@ const useStyles = makeStyles(() => ({
             textAlign: 'center',
         },
         '& .MuiCardContent-root': {
-            height: '200px',
+            display: 'flex',
+            justifyContent: 'center',
+            backgroundColor: '#fff',
+            padding: '10px 0',
+            margin: '0 6px',
+            '& >div': {
+                textAlign: 'center',
+            },
         },
         '& .MuiCardActions-root': {
             justifyContent: 'center',
+            flexDirection: 'column',
+            gap: 10,
         },
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
-        },
-    },
-    cardContent: {
-        '& >div': {
-            textAlign: 'center',
         },
     },
     catList: {
@@ -80,28 +84,25 @@ const Segments = (props) => {
                 <div className={classes.catList}>
                     {segments.map((segment) => (
                         <Card key={segment.segment} className={classes.root}>
-                            <CardHeader title={segment.segment} />
-                            <CardContent className={classes.cardContent}>
-                                <Box>
-                                    <Link
-                                        href={`${
-                                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                                        }/segments-automobile/${urlWriter(
-                                            segment.segment,
-                                        )}`}
-                                    >
-                                        <Image
-                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
-                                            alt={segment.segment}
-                                            width="300"
-                                            height="200"
-                                            loading="eager"
-                                            priority
-                                        />
-                                    </Link>
-                                </Box>
+                            <CardHeader title={<h2>{segment.segment}</h2>} />
+                            <CardContent>
+                                <Link
+                                    href={`${
+                                        process.env.NEXT_PUBLIC_CLIENT_HOST
+                                    }/segments-automobile/${urlWriter(segment.segment)}`}
+                                >
+                                    <Image
+                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
+                                        alt={segment.segment}
+                                        width="240"
+                                        height="160"
+                                        loading="eager"
+                                        priority
+                                    />
+                                </Link>
                             </CardContent>
                             <CardActions>
+                                <Chip label={`${segment.models.length} modeles`} />
                                 <Link
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST

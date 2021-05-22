@@ -369,6 +369,12 @@ export function sortArrayOfObjectsByKey(key, order = 'asc') {
     };
 }
 
+export function sortArrayOfObjectsByValue(array) {
+    return array.sort((a, b) =>
+        a.trim.localeCompare(b.trim, LOCALE, { sensitivity: 'base' }),
+    );
+}
+
 export function urlWriter(string) {
     const a =
         'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';

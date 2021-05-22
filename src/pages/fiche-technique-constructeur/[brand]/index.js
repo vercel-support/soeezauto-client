@@ -31,14 +31,14 @@ const useStyles = makeStyles(() => ({
         '& .MuiCardActions-root': {
             justifyContent: 'center',
             flexDirection: 'column',
+            '& h2': {
+                color: '#fff',
+                fontSize: '.8rem',
+            },
         },
         '& .MuiCardHeader-content span': {
             textTransform: 'uppercase',
             fontWeight: 'bold',
-        },
-        '& h2': {
-            color: '#fff',
-            fontSize: '1rem',
         },
     },
     cardContent: {
@@ -112,7 +112,7 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                 </div>
                 {models.length > 0 ? (
                     <Card className={classes.cardRoot}>
-                        <CardHeader title="Modeles" />
+                        <CardHeader title={<h2>Modeles</h2>} />
                         <CardContent className={classes.cardContent}>
                             {models.map((model, index) => (
                                 <Box key={model.model}>

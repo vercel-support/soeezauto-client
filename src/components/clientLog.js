@@ -13,7 +13,7 @@ const ClientLog = (props) => {
         if (Array.isArray(errors)) {
             errors.forEach((error) => {
                 const key = Object.keys(error)[0];
-                message = [...message, error[key]];
+                message = [key, error[key]];
             });
         } else {
             message.push(dataClientLog.message);

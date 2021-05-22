@@ -15,6 +15,7 @@ import {
     Card,
     CardHeader,
     CardContent,
+    Chip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -167,6 +168,7 @@ const Segment = (props) => {
                 />
                 <div className="main-title">
                     <h1>{`Voitures ${segment.segment} neuves Maroc`}</h1>
+                    <Chip label={`${segment.modelsLength} modeles`} />
                 </div>
                 <Card className={classes.cardRoot}>
                     <CardHeader title="Modeles par gamme de prix" subheader="mille DH" />

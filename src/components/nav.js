@@ -32,7 +32,7 @@ const Nav = () => {
                         </Link>
                     </MenuItem>
                     <MenuItem disableGutters id="/">
-                        <Link href="/prix-voiture" isActivable>
+                        <Link href="/prix-budget-voiture" isActivable>
                             prix
                         </Link>
                     </MenuItem>

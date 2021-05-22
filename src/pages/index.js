@@ -48,6 +48,9 @@ const useStyles = makeStyles({
         justifyContent: 'space-evenly',
         rowGap: '6px',
         gridGap: '6px',
+        backgroundColor: '#fff',
+        margin: '0 5px',
+        borderRadius: 6,
         '& >div': {
             textAlign: 'center',
         },
@@ -104,188 +107,191 @@ const Home = (props) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className={classes.mainContainer}>
-                <Card className={classes.root}>
-                    <CardHeader title="marques" />
-                    <CardContent className={classes.cardContent}>
-                        {selectBrands.map((brand) => (
-                            <Box key={brand.brand}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/marques-voiture/${urlWriter(brand.brand)}`}
-                                >
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
-                                        alt={brand.brand}
-                                        width="60"
-                                        height="60"
-                                        loading="eager"
-                                        priority
-                                    />
-                                </Link>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <Link href="/marques-voiture">
-                            <Button variant="contained" color="primary" size="small">
-                                Toutes les marques
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Segments" />
-                    <CardContent className={classes.cardContent}>
-                        {selectSegments.map((segment) => (
-                            <Box key={segment.segment}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/segments-automobile/${urlWriter(segment.segment)}`}
-                                >
-                                    <div>
+            <main>
+                <div className="main-title">
+                    <h1>Voiture neuve au Maroc</h1>
+                </div>
+                <div className={classes.mainContainer}>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Marques</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {selectBrands.map((brand) => (
+                                <Box key={brand.brand}>
+                                    <Link
+                                        href={`${
+                                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                                        }/marques-voiture/${urlWriter(brand.brand)}`}
+                                    >
                                         <Image
-                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
-                                            alt={segment.segment}
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
+                                            alt={brand.brand}
+                                            width="60"
+                                            height="60"
+                                            loading="eager"
+                                            priority
+                                        />
+                                    </Link>
+                                </Box>
+                            ))}
+                        </CardContent>
+                        <CardActions>
+                            <Link href="/marques-voiture">
+                                <Button variant="contained" color="primary" size="small">
+                                    Toutes les marques
+                                </Button>
+                            </Link>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Promotions</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {randPromos?.map((model) => (
+                                <Box key={model.id}>
+                                    <Link
+                                        href={`${
+                                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                                        }/modeles-voiture/${urlWriter(
+                                            model.brand.brand,
+                                        )}/${urlWriter(model.model)}`}
+                                    >
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                            alt={model.model}
                                             width="90"
                                             height="60"
                                             loading="eager"
                                             priority
                                         />
-                                    </div>
-                                </Link>
-                                <span className={classes.subtitle}>
-                                    {segment.segment}
-                                </span>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <Link href="/segments-automobile">
-                            <Button variant="contained" color="primary" size="small">
-                                Tous les segments
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Modeles" />
-                    <CardContent className={classes.cardContent}>
-                        {selectModels.map((model) => (
-                            <Box key={model.model}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/modeles-voiture/${urlWriter(
-                                        model.brand.brand,
-                                    )}/${urlWriter(model.model)}`}
-                                >
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                                        alt={model.model}
-                                        width="90"
-                                        height="60"
-                                        loading="eager"
-                                        priority
-                                    />
-                                </Link>
-                                <span
-                                    className={classes.subtitle}
-                                >{`${model.brand.brand} ${model.model}`}</span>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <Link href="/modeles-voiture">
-                            <Button variant="contained" color="primary" size="small">
-                                Tous les modeles
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Lancements" />
-                    <CardContent className={classes.cardContent}>
-                        {recentModels?.map((model) => (
-                            <Box key={model.model}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/modeles-voiture/${urlWriter(
-                                        model.brand.brand,
-                                    )}/${urlWriter(model.model)}`}
-                                >
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                                        alt={model.model}
-                                        width="90"
-                                        height="60"
-                                        loading="eager"
-                                        priority
-                                    />
-                                </Link>
-                                <span
-                                    className={classes.subtitle}
-                                >{`${model.brand.brand} ${model.model}`}</span>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions />
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Promotions" />
-                    <CardContent className={classes.cardContent}>
-                        {randPromos?.map((model) => (
-                            <Box key={model.id}>
-                                <Link
-                                    href={`${
-                                        process.env.NEXT_PUBLIC_CLIENT_HOST
-                                    }/modeles-voiture/${urlWriter(
-                                        model.brand.brand,
-                                    )}/${urlWriter(model.model)}`}
-                                >
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                                        alt={model.model}
-                                        width="90"
-                                        height="60"
-                                        loading="eager"
-                                        priority
-                                    />
-                                </Link>
-                                <span
-                                    className={classes.subtitle}
-                                >{`${model.brand.brand} ${model.model}`}</span>
-                            </Box>
-                        ))}
-                    </CardContent>
-                    <CardActions>
-                        <Link href="/promotion-voiture-neuve-au-maroc">
-                            <Button variant="contained" color="primary" size="small">
-                                Toutes les promotions
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title="Articles" />
-                    <CardContent>
-                        {postsWithImage.map((post) => (
-                            <Box key={post.node.slug}>
-                                <Image
-                                    src={post.node.featuredImage.node.sourceUrl}
-                                    alt={post.node.slug}
-                                    width="300"
-                                    height="200"
-                                    loading="eager"
-                                    priority
-                                />
-                            </Box>
-                        ))}
-                    </CardContent>
-                </Card>
+                                    </Link>
+                                    <span
+                                        className={classes.subtitle}
+                                    >{`${model.brand.brand} ${model.model}`}</span>
+                                </Box>
+                            ))}
+                        </CardContent>
+                        <CardActions>
+                            <Link href="/promotion-voiture-neuve-au-maroc">
+                                <Button variant="contained" color="primary" size="small">
+                                    Toutes les promotions
+                                </Button>
+                            </Link>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Modeles</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {selectModels.map((model) => (
+                                <Box key={model.model}>
+                                    <Link
+                                        href={`${
+                                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                                        }/modeles-voiture/${urlWriter(
+                                            model.brand.brand,
+                                        )}/${urlWriter(model.model)}`}
+                                    >
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                            alt={model.model}
+                                            width="90"
+                                            height="60"
+                                            loading="eager"
+                                            priority
+                                        />
+                                    </Link>
+                                    <span
+                                        className={classes.subtitle}
+                                    >{`${model.brand.brand} ${model.model}`}</span>
+                                </Box>
+                            ))}
+                        </CardContent>
+                        <CardActions>
+                            <Link href="/modeles-voiture">
+                                <Button variant="contained" color="primary" size="small">
+                                    Tous les modeles
+                                </Button>
+                            </Link>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Nouveautés </h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {recentModels?.map((model) => (
+                                <Box key={model.model}>
+                                    <Link
+                                        href={`${
+                                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                                        }/modeles-voiture/${urlWriter(
+                                            model.brand.brand,
+                                        )}/${urlWriter(model.model)}`}
+                                    >
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
+                                            alt={model.model}
+                                            width="90"
+                                            height="60"
+                                            loading="eager"
+                                            priority
+                                        />
+                                    </Link>
+                                    <span
+                                        className={classes.subtitle}
+                                    >{`${model.brand.brand} ${model.model}`}</span>
+                                </Box>
+                            ))}
+                        </CardContent>
+                        <CardActions />
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Segments</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {selectSegments.map((segment) => (
+                                <Box key={segment.segment}>
+                                    <Link
+                                        href={`${
+                                            process.env.NEXT_PUBLIC_CLIENT_HOST
+                                        }/segments-automobile/${urlWriter(
+                                            segment.segment,
+                                        )}`}
+                                    >
+                                        <div>
+                                            <Image
+                                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/segments/${segment.image}`}
+                                                alt={segment.segment}
+                                                width="90"
+                                                height="60"
+                                                loading="eager"
+                                                priority
+                                            />
+                                        </div>
+                                    </Link>
+                                    <span className={classes.subtitle}>
+                                        {segment.segment}
+                                    </span>
+                                </Box>
+                            ))}
+                        </CardContent>
+                        <CardActions>
+                            <Link href="/segments-automobile">
+                                <Button variant="contained" color="primary" size="small">
+                                    Tous les segments
+                                </Button>
+                            </Link>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Articles</h2>} />
+                        <CardContent>
+                            <Image
+                                src={postsWithImage[0].node.featuredImage.node.sourceUrl}
+                                alt={postsWithImage[0].node.slug}
+                                width="300"
+                                height="200"
+                                loading="eager"
+                                priority
+                            />
+                        </CardContent>
+                    </Card>
+                </div>
             </main>
         </div>
     );

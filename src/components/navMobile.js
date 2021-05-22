@@ -22,6 +22,31 @@ const NavMobile = (props) => {
                             Marques
                         </Link>
                     </ListItem>
+                    <ListItem disableGutters id="/">
+                        <Link href="/modeles-voiture" isActivable>
+                            modeles
+                        </Link>
+                    </ListItem>
+                    <ListItem disableGutters id="/">
+                        <Link href="/segments-automobile" isActivable>
+                            segments
+                        </Link>
+                    </ListItem>
+                    <ListItem disableGutters id="/">
+                        <Link href="/prix-budget-voiture" isActivable>
+                            prix
+                        </Link>
+                    </ListItem>
+                    <ListItem disableGutters id="/">
+                        <Link href="/promotion-voiture-neuve-au-maroc" isActivable>
+                            promotions
+                        </Link>
+                    </ListItem>
+                    <ListItem disableGutters id="/">
+                        <Link href="/soeez-blog" isActivable>
+                            blog
+                        </Link>
+                    </ListItem>
                     <Divider />
                 </List>
             )}

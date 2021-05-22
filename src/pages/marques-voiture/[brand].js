@@ -20,6 +20,7 @@ import {
     Box,
     Chip,
     Avatar,
+    Button,
 } from '@material-ui/core';
 import { MonetizationOn } from '@material-ui/icons';
 import { orange, cyan } from '@material-ui/core/colors';
@@ -48,7 +49,7 @@ const useStyles = makeStyles({
         color: '#29335c',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
-            color: '#fff',
+            // color: '#fff',
         },
         '& .MuiCardHeader-avatar': {
             padding: 6,
@@ -107,12 +108,20 @@ const useStyles = makeStyles({
             fontSize: '.7rem',
         },
     },
+    fiche: {
+        display: 'flex',
+        justifyContent: 'center',
+        '& button': {
+            fontWeight: 700,
+        },
+    },
 });
 
 const Brand = (props) => {
     const {
         brand,
         allModels,
+        isSpecs,
         dataGetModelsWithAutomaticGearboxForBrand,
         dataGetModelsWithAirCondAutoForBrand,
         dataGetModelsWithDisplayMultimediaForBrand,
@@ -139,7 +148,7 @@ const Brand = (props) => {
         props.actionGetModelsWithAutomaticGearboxForBrand({
             isActive: true,
             gearbox: AUTOMATIC_GEARBOXES,
-            brand: brand.id,
+            brand: '/apiljlkj/brand/334333',
         });
         props.actionGetModelsWithAirCondAutoForBrand({
             isActive: true,
@@ -327,7 +336,7 @@ const Brand = (props) => {
                                                                 loading="eager"
                                                                 priority
                                                             />
-                                                            <p>{model.model}</p>
+                                                            <h2>{model.model}</h2>
                                                         </div>
                                                     </Link>
                                                 </TableCell>
@@ -390,6 +399,27 @@ const Brand = (props) => {
                                                 </TableCell>
                                             </TableRow>
                                         ))}
+                                        {isSpecs && (
+                                            <TableRow>
+                                                <TableCell colspan={2}>
+                                                    <Box className={classes.fiche}>
+                                                        <Link
+                                                            href={`/fiche-technique-constructeur/${urlWriter(
+                                                                brand.brand,
+                                                            )}`}
+                                                        >
+                                                            <Button
+                                                                variant="contained"
+                                                                color="secondary"
+                                                            >
+                                                                Fiches techniques
+                                                                constructeur
+                                                            </Button>
+                                                        </Link>
+                                                    </Box>
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
@@ -405,6 +435,7 @@ const Brand = (props) => {
 Brand.propTypes = {
     brand: PropTypes.object.isRequired,
     allModels: PropTypes.array.isRequired,
+    isSpecs: PropTypes.bool.isRequired,
     actionGetModelsWithAutomaticGearboxForBrand: PropTypes.func.isRequired,
     actionGetModelsWithAirCondAutoForBrand: PropTypes.func.isRequired,
     actionGetModelsWithDisplayMultimediaForBrand: PropTypes.func.isRequired,
@@ -532,6 +563,7 @@ export async function getStaticProps({ params }) {
     // get price range, power range
     // same as /pages/modeles-voiture/index.js
     const allModels = brand.models;
+    let isSpecs = false;
     allModels.forEach((model) => {
         model.brand = brand.brand;
         const prices = model.versions.map((version) => {
@@ -554,12 +586,16 @@ export async function getStaticProps({ params }) {
             return version.prices[0].promo;
         });
         model.isPromo = prom.length > 0;
+        if (!isSpecs) {
+            isSpecs = model.specs.length > 0;
+        }
     });
     return {
         props: {
             brand,
             allModels,
             posts,
+            isSpecs,
         },
     };
 }
