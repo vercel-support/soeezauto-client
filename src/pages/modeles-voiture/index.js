@@ -15,10 +15,13 @@ import getModelsWithPriceBetween300400 from 'lib/getModelsWithPriceBetween300400
 import getModelsWithPriceHigherThan400 from 'lib/getModelsWithPriceHigherThan400';
 import getPosts from 'lib/getPosts';
 import { CONVERSION_FUEL } from 'parameters';
+import { randIndex } from 'tools/functions';
 import ModelFilter from 'components/modelFilter';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
-const Models = ({ allModels, filters }) => {
+const Models = ({ allModels, filters, recentModels, randPromos }) => {
     return (
         <div>
             <Head>
@@ -43,6 +46,8 @@ const Models = ({ allModels, filters }) => {
                     <h1>Modeles voiture au Maroc</h1>
                 </div>
                 <ModelFilter allModels={allModels} filters={filters} />
+                <WidgetPromo data={randPromos} />
+                <WidgetLaunches data={recentModels} />
             </main>
         </div>
     );
@@ -51,6 +56,8 @@ const Models = ({ allModels, filters }) => {
 Models.propTypes = {
     allModels: PropTypes.array.isRequired,
     filters: PropTypes.object.isRequired,
+    recentModels: PropTypes.array.isRequired,
+    randPromos: PropTypes.array.isRequired,
 };
 
 export default Models;
@@ -58,9 +65,31 @@ export default Models;
 export async function getStaticProps() {
     let allModels = await getModels();
     allModels = allModels.data.models;
+
+    // data for widgets
+    const randMod = randIndex(19, 6);
+    const recentModels = allModels.filter((model, ind) => {
+        return randMod.includes(ind);
+    });
+    // rand promos
+    const promos = [];
+    allModels.forEach((model) => {
+        const promoVersions = model.versions.filter((version) => {
+            return version.prices[0].promo !== null;
+        });
+        if (promoVersions.length > 0) {
+            // eslint-disable-next-line no-param-reassign
+            model.versions = promoVersions;
+            promos.push(model);
+        }
+    });
+    const selectedPromos = randIndex(promos.length, 6);
+    const randPromos = promos.filter((model, ind) => {
+        return selectedPromos.includes(ind + 1);
+    });
     // get price range, power range
     allModels.forEach((model) => {
-        model.brand = model.brand.brand;
+        // model.brand = model.brand.brand;
         const prices = model.versions.map((version) => {
             return Math.round(version.prices[0].price / 1000);
         });
@@ -78,6 +107,7 @@ export async function getStaticProps() {
         });
         model.fuels = fuels.sort();
     });
+
     const modelsWithAirCondAuto = await getModelsWithAirCondAuto();
     const modelsWithDisplayMultimedia = await getModelsWithDisplayMultimedia();
     const modelsWithHybrid = await getModelsWithHybrid();
@@ -107,6 +137,8 @@ export async function getStaticProps() {
             allModels,
             filters,
             posts,
+            randPromos,
+            recentModels,
         },
     };
 }

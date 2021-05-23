@@ -25,6 +25,8 @@ import Link from 'components/link';
 import { urlWriter, numberFrance } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
 
 const useStyles = makeStyles({
     root: {
@@ -278,6 +280,8 @@ const Promotions = (props) => {
                     </div>
                 ))}
             </main>
+            <WidgetNav brands={brands} />
+            <WidgetLaunches data={brands} />
         </div>
     );
 };
@@ -307,7 +311,6 @@ const queryQl = `query getBrandsForPromo(
         ){
             id
             model
-            modelYear
             images(isFeatured: $imageIsFeatured) {
                 filename
             }
@@ -321,10 +324,6 @@ const queryQl = `query getBrandsForPromo(
                     updatedAt
                     price
                     promo
-                }
-                motor {
-                    power
-                    fuel
                 }
             }
         }

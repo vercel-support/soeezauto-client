@@ -1,10 +1,10 @@
 import { apiQl } from './functions';
 
 const queryQl = `query getBrandsModels(
-  	    $isActive: Boolean!,
-		$isActiveModel: Boolean!
-        $imageIsFeatured: Boolean!
-        ) {
+    $isActive: Boolean!,
+    $isActiveModel: Boolean!
+    $imageIsFeatured: Boolean!
+    ) {
     brands(
         isActive: $isActive
         _order: {brand: "ASC"}
@@ -18,13 +18,21 @@ const queryQl = `query getBrandsModels(
             ){
                 id
                 model
-                modelYear
+                createdAt
                 images(isFeatured: $imageIsFeatured) {
                     filename
                 }
-                segment {
+                versions(exists: {prices:true}) {
                     id
-                    segment
+                    version
+                    prices(
+                        isActive: true
+                    ) {
+                        id
+                        updatedAt
+                        price
+                        promo
+                    }
                 }
             }
         }

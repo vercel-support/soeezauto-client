@@ -26,7 +26,7 @@ import { MonetizationOn } from '@material-ui/icons';
 import { orange, cyan } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 import { AUTOMATIC_GEARBOXES, CONVERSION_FUEL, PRICE_RANGES_SHORT } from 'parameters';
-import getBrands from 'lib/getBrands';
+import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
 import { urlWriter } from 'tools/functions';
 import { apiQl } from 'lib/functions';
@@ -42,6 +42,9 @@ import {
 import Link from 'components/link';
 import ModelFilter from 'components/modelFilter';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles({
     root: {
@@ -119,6 +122,7 @@ const useStyles = makeStyles({
 
 const Brand = (props) => {
     const {
+        brands,
         brand,
         allModels,
         isSpecs,
@@ -130,6 +134,7 @@ const Brand = (props) => {
         dataGetModelsWithPowerRangeForBrand,
         dataGetModelsWithPriceRangeForBrand,
     } = props;
+
     const classes = useStyles();
     const [filters, setFilters] = useState({
         airCondAuto: null,
@@ -425,7 +430,12 @@ const Brand = (props) => {
                             </TableContainer>
                         </CardContent>
                     </Card>
-                    <ModelFilter allModels={allModels} filters={filters} />
+                    <div>
+                        <ModelFilter allModels={allModels} filters={filters} />
+                        <WidgetNav brands={brands} />
+                        <WidgetLaunches data={brands} />
+                        <WidgetPromo data={brands} />
+                    </div>
                 </Box>
             </main>
         </div>
@@ -433,6 +443,7 @@ const Brand = (props) => {
 };
 
 Brand.propTypes = {
+    brands: PropTypes.array.isRequired,
     brand: PropTypes.object.isRequired,
     allModels: PropTypes.array.isRequired,
     isSpecs: PropTypes.bool.isRequired,
@@ -529,7 +540,7 @@ const queryQl = `query getBrand(
     }`;
 
 export async function getStaticPaths() {
-    let brands = await getBrands();
+    let brands = await getBrandsModels();
     brands = brands.data.brands;
     const paths = [];
     brands.forEach((brand) => {
@@ -547,7 +558,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
     const { brand: brandParam } = params;
-    let brands = await getBrands();
+    let brands = await getBrandsModels();
     brands = brands.data.brands;
     let posts = await getPosts();
     posts = posts.data.posts;
@@ -592,6 +603,7 @@ export async function getStaticProps({ params }) {
     });
     return {
         props: {
+            brands,
             brand,
             allModels,
             posts,

@@ -369,9 +369,9 @@ export function sortArrayOfObjectsByKey(key, order = 'asc') {
     };
 }
 
-export function sortArrayOfObjectsByValue(array) {
+export function sortArrayOfObjectsByValue(array, property) {
     return array.sort((a, b) =>
-        a.trim.localeCompare(b.trim, LOCALE, { sensitivity: 'base' }),
+        a[property].localeCompare(b[property], LOCALE, { sensitivity: 'base' }),
     );
 }
 
@@ -467,4 +467,13 @@ export function objectToMap(o) {
 
 export function numberFrance(value) {
     return new Intl.NumberFormat('fr-FR').format(Math.floor(Math.round(value)));
+}
+
+export function randIndex(len, max) {
+    const rand = [];
+    while (rand.length < max) {
+        const r = Math.floor(Math.random() * len) + 1;
+        if (rand.indexOf(r) === -1) rand.push(r);
+    }
+    return rand;
 }

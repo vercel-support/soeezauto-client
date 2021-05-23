@@ -20,12 +20,16 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getSegments from 'lib/getSegments';
+import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
 import { urlWriter } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import { PRICE_RANGES, CONVERSION_FUEL } from 'parameters';
 import Link from 'components/link';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -130,7 +134,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Segment = (props) => {
-    const { segment, priceRanges } = props;
+    const { segment, priceRanges, brands } = props;
     const classes = useStyles();
     const [tabValue, setTabValue] = useState(0);
 
@@ -303,6 +307,9 @@ const Segment = (props) => {
                         </div>
                     </CardContent>
                 </Card>
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
+                <WidgetPromo data={brands} />
             </main>
         </div>
     );
@@ -311,6 +318,7 @@ const Segment = (props) => {
 Segment.propTypes = {
     priceRanges: PropTypes.array.isRequired,
     segment: PropTypes.object.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 
 export default Segment;
@@ -375,6 +383,8 @@ export async function getStaticProps({ params }) {
     segments = segments.data.segments;
     let posts = await getPosts();
     posts = posts.data.posts;
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
     const segmentFilter = segments.filter((seg) => {
         return urlWriter(seg.segment) === segmentParam;
     });
@@ -407,6 +417,7 @@ export async function getStaticProps({ params }) {
     });
     return {
         props: {
+            brands,
             priceRanges,
             posts,
             segment: {

@@ -13,11 +13,15 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getBrands from 'lib/getBrands';
+import getBrandsModels from 'lib/getBrandsModels';
 import { apiQl } from 'lib/functions';
 import { urlWriter } from 'tools/functions';
 import NotifierInline from 'components/notifierInline';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles(() => ({
     cardRoot: {
@@ -58,9 +62,24 @@ const useStyles = makeStyles(() => ({
             fontWeight: 'bold',
         },
     },
+    iframeContainer: {
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100%',
+        paddingTop: '130%',
+    },
+    responsiveIframe: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        width: '100%',
+        height: '100%',
+    },
 }));
 
-const FicheTechniqueManufacturer = ({ brand }) => {
+const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
     const classes = useStyles();
     const router = useRouter();
     const [currentModel, setCurrentModel] = useState(null);
@@ -146,18 +165,24 @@ const FicheTechniqueManufacturer = ({ brand }) => {
                     <NotifierInline severity="info" message="no specs" />
                 )}
                 {currentModel && (
-                    <iframe
-                        title={currentModel.specs[0].filename}
-                        style={{ width: '100%', height: 1500 }}
-                        src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
-                            brand.brand,
-                        )}/${
-                            currentModel.specs[0].year
-                        }-${currentModel.specs[0].month.toString().padStart(2, '0')}/${
-                            currentModel.specs[0].filename
-                        }`}
-                    />
+                    <div className={classes.iframeContainer}>
+                        <iframe
+                            className={classes.responsiveIframe}
+                            title={currentModel.specs[0].filename}
+                            style={{ width: '100%', height: 1500 }}
+                            src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
+                                brand.brand,
+                            )}/${
+                                currentModel.specs[0].year
+                            }-${currentModel.specs[0].month
+                                .toString()
+                                .padStart(2, '0')}/${currentModel.specs[0].filename}`}
+                        />
+                    </div>
                 )}
+                <WidgetPromo data={brands} />
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
             </main>
         </div>
     );
@@ -165,6 +190,7 @@ const FicheTechniqueManufacturer = ({ brand }) => {
 
 FicheTechniqueManufacturer.propTypes = {
     brand: PropTypes.object.isRequired,
+    brandsModels: PropTypes.array.isRequired,
 };
 
 export default FicheTechniqueManufacturer;
@@ -219,9 +245,12 @@ export async function getStaticProps({ params }) {
         id: brandFilter[0].id,
     };
     const data = await apiQl(queryQl, variables, false);
+    let brandsModels = await getBrandsModels();
+    brandsModels = brandsModels.data.brands;
     return {
         props: {
             brand: data.data.brand,
+            brandsModels,
         },
     };
 }

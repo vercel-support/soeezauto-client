@@ -56,7 +56,7 @@ const ModelTrimsTable = ({ data, type, versions }) => {
         const filtered = data.filter((trim) => {
             return trim.trimType === type;
         });
-        const sorted = sortArrayOfObjectsByValue(filtered);
+        const sorted = sortArrayOfObjectsByValue(filtered, 'trim');
         setLocalData([...sorted]);
     }, [data, type]);
     const columns = [

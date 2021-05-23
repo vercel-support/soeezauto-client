@@ -65,12 +65,12 @@ const ModelTable = ({ currentModels }) => {
     currentModels.map((model) =>
         data.push({
             id: model.id,
-            marque: model.brand,
+            marque: model.brand.brand,
             modele: model.model,
             model: () => (
                 <Image
                     src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                    alt={`${model.brand}-${model.model}`}
+                    alt={`${model.brand.brand}-${model.model}`}
                     width="100"
                     height="67"
                     loading="eager"

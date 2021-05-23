@@ -12,10 +12,14 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getSegmentsModels from 'lib/getSegmentsModels';
+import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -58,7 +62,7 @@ const useStyles = makeStyles(() => ({
 
 const Segments = (props) => {
     const classes = useStyles();
-    const { segments } = props;
+    const { segments, brands } = props;
     return (
         <div>
             <Head>
@@ -120,6 +124,9 @@ const Segments = (props) => {
                         </Card>
                     ))}
                 </div>
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
+                <WidgetPromo data={brands} />
             </main>
         </div>
     );
@@ -127,6 +134,7 @@ const Segments = (props) => {
 
 Segments.propTypes = {
     segments: PropTypes.array.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 
 export default Segments;
@@ -136,10 +144,13 @@ export async function getStaticProps() {
     segments = segments.data.segments;
     let posts = await getPosts();
     posts = posts.data.posts;
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
     return {
         props: {
             segments,
             posts,
+            brands,
         },
     };
 }

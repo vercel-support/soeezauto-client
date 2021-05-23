@@ -16,7 +16,9 @@ import getPosts from 'lib/getPosts';
 import getSegments from 'lib/getSegments';
 import getModels from 'lib/getModels';
 import Link from 'components/link';
-import { urlWriter } from 'tools/functions';
+import { urlWriter, randIndex } from 'tools/functions';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles({
     root: {
@@ -80,15 +82,6 @@ const useStyles = makeStyles({
     },
 });
 
-const randIndex = (len, max) => {
-    const rand = [];
-    while (rand.length < max) {
-        const r = Math.floor(Math.random() * len) + 1;
-        if (rand.indexOf(r) === -1) rand.push(r);
-    }
-    return rand;
-};
-
 const Home = (props) => {
     const classes = useStyles();
     const {
@@ -99,7 +92,6 @@ const Home = (props) => {
         recentModels,
         randPromos,
     } = props;
-
     return (
         <div>
             <Head>
@@ -142,41 +134,7 @@ const Home = (props) => {
                             </Link>
                         </CardActions>
                     </Card>
-                    <Card className={classes.root}>
-                        <CardHeader title={<h2>Promotions</h2>} />
-                        <CardContent className={classes.cardContent}>
-                            {randPromos?.map((model) => (
-                                <Box key={model.id}>
-                                    <Link
-                                        href={`${
-                                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                                        }/modeles-voiture/${urlWriter(
-                                            model.brand.brand,
-                                        )}/${urlWriter(model.model)}`}
-                                    >
-                                        <Image
-                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                                            alt={model.model}
-                                            width="90"
-                                            height="60"
-                                            loading="eager"
-                                            priority
-                                        />
-                                    </Link>
-                                    <span
-                                        className={classes.subtitle}
-                                    >{`${model.brand.brand} ${model.model}`}</span>
-                                </Box>
-                            ))}
-                        </CardContent>
-                        <CardActions>
-                            <Link href="/promotion-voiture-neuve-au-maroc">
-                                <Button variant="contained" color="primary" size="small">
-                                    Toutes les promotions
-                                </Button>
-                            </Link>
-                        </CardActions>
-                    </Card>
+                    <WidgetPromo data={randPromos} />
                     <Card className={classes.root}>
                         <CardHeader title={<h2>Modeles</h2>} />
                         <CardContent className={classes.cardContent}>
@@ -212,35 +170,7 @@ const Home = (props) => {
                             </Link>
                         </CardActions>
                     </Card>
-                    <Card className={classes.root}>
-                        <CardHeader title={<h2>Nouveautés </h2>} />
-                        <CardContent className={classes.cardContent}>
-                            {recentModels?.map((model) => (
-                                <Box key={model.model}>
-                                    <Link
-                                        href={`${
-                                            process.env.NEXT_PUBLIC_CLIENT_HOST
-                                        }/modeles-voiture/${urlWriter(
-                                            model.brand.brand,
-                                        )}/${urlWriter(model.model)}`}
-                                    >
-                                        <Image
-                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
-                                            alt={model.model}
-                                            width="90"
-                                            height="60"
-                                            loading="eager"
-                                            priority
-                                        />
-                                    </Link>
-                                    <span
-                                        className={classes.subtitle}
-                                    >{`${model.brand.brand} ${model.model}`}</span>
-                                </Box>
-                            ))}
-                        </CardContent>
-                        <CardActions />
-                    </Card>
+                    <WidgetLaunches data={recentModels} />
                     <Card className={classes.root}>
                         <CardHeader title={<h2>Segments</h2>} />
                         <CardContent className={classes.cardContent}>
@@ -325,7 +255,7 @@ export async function getStaticProps() {
     const promos = [];
     models.forEach((model) => {
         const promoVersions = model.versions.filter((version) => {
-            return version.prices.promo !== null;
+            return version.prices[0].promo !== null;
         });
         if (promoVersions.length > 0) {
             // eslint-disable-next-line no-param-reassign

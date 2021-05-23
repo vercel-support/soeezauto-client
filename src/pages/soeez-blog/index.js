@@ -6,9 +6,13 @@ import { List, ListItem, Box, Divider } from '@material-ui/core';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
+import getBrandsModels from 'lib/getBrandsModels';
 import Link from 'components/link';
 import { showtime } from 'tools/functions';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -58,7 +62,7 @@ const useStyles = makeStyles(() => ({
 }));
 const SoeezBlog = (props) => {
     const classes = useStyles();
-    const { posts } = props;
+    const { posts, brands } = props;
     return (
         <div>
             <Head>
@@ -123,6 +127,9 @@ const SoeezBlog = (props) => {
                         </div>
                     ))}
                 </List>
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
+                <WidgetPromo data={brands} />
             </main>
         </div>
     );
@@ -130,6 +137,7 @@ const SoeezBlog = (props) => {
 
 SoeezBlog.propTypes = {
     posts: PropTypes.object.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 
 export default SoeezBlog;
@@ -137,9 +145,12 @@ export default SoeezBlog;
 export async function getStaticProps() {
     let posts = await getPosts();
     posts = posts.data.posts;
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
     return {
         props: {
             posts,
+            brands,
         },
     };
 }

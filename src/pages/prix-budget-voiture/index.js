@@ -27,11 +27,15 @@ import { MonetizationOn } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import getSegmentsModelsDetailed from 'lib/getSegmentsModelsDetailed';
+import getBrandsModels from 'lib/getBrandsModels';
 import { CONVERSION_FUEL, PRICE_RANGES } from 'parameters';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 import usePrevious from 'tools/hooks/usePrevious';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -151,7 +155,7 @@ const RANGE = {
 
 const Prices = (props) => {
     const classes = useStyles();
-    const { segments } = props;
+    const { segments, brands } = props;
 
     const [tabValue, setTabValue] = useState(0);
     const [currentSegments, setCurrentSegments] = useState(segments);
@@ -549,6 +553,9 @@ const Prices = (props) => {
                         </div>
                     </CardContent>
                 </Card>
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
+                <WidgetPromo data={brands} />
             </main>
         </div>
     );
@@ -556,6 +563,7 @@ const Prices = (props) => {
 
 Prices.propTypes = {
     segments: PropTypes.array.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 
 export default Prices;
@@ -587,6 +595,8 @@ export async function getStaticProps() {
     segments = segments.data.segments;
     let posts = await getPosts();
     posts = posts.data.posts;
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
     const newSegments = [];
     segments.forEach((seg) => {
         const newSeg = { ...seg };
@@ -605,6 +615,7 @@ export async function getStaticProps() {
     return {
         props: {
             segments: newSegments,
+            brands,
             posts,
         },
     };

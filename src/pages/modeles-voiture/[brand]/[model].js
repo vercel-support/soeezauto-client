@@ -15,13 +15,17 @@ import {
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import getPosts from 'lib/getPosts';
-import { urlWriter } from 'tools/functions';
+import getBrandsModels from 'lib/getBrandsModels';
+import { urlWriter, randIndex } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import ModelPrices from 'components/modelPrices';
 import ModelVersions from 'components/modelVersions';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles({
     root: {
@@ -96,7 +100,7 @@ const useStyles = makeStyles({
     },
 });
 
-const Model = ({ model }) => {
+const Model = ({ model, recentModels, randPromos, brands }) => {
     const classes = useStyles();
     const [versionSelect, setVersionSelect] = useState([model.versions[0].id, '', '']);
     const [selectedVersions, setSelectedVersions] = useState([model.versions[0]]);
@@ -233,6 +237,9 @@ const Model = ({ model }) => {
                         <ModelPrices model={model} />
                     </CardContent>
                 </Card>
+                <WidgetNav brands={brands} />
+                <WidgetPromo data={randPromos} />
+                <WidgetLaunches data={recentModels} />
             </main>
         </div>
     );
@@ -240,6 +247,9 @@ const Model = ({ model }) => {
 
 Model.propTypes = {
     model: PropTypes.object.isRequired,
+    recentModels: PropTypes.array.isRequired,
+    randPromos: PropTypes.array.isRequired,
+    brands: PropTypes.array.isRequired,
 };
 /*
 const mapStateToProps = (state) => {
@@ -374,6 +384,30 @@ export async function getStaticProps({ params }) {
     models = models.data.models;
     let posts = await getPosts();
     posts = posts.data.posts;
+    // data for widgets
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
+    const randMod = randIndex(19, 6);
+    const recentModels = models.filter((model, ind) => {
+        return randMod.includes(ind);
+    });
+    // rand promos
+    const promos = [];
+    models.forEach((model) => {
+        const promoVersions = model.versions.filter((version) => {
+            return version.prices[0].promo !== null;
+        });
+        if (promoVersions.length > 0) {
+            // eslint-disable-next-line no-param-reassign
+            model.versions = promoVersions;
+            promos.push(model);
+        }
+    });
+    const selectedPromos = randIndex(promos.length, 6);
+    const randPromos = promos.filter((model, ind) => {
+        return selectedPromos.includes(ind + 1);
+    });
+
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
@@ -385,7 +419,10 @@ export async function getStaticProps({ params }) {
     return {
         props: {
             model,
+            brands,
             posts,
+            recentModels,
+            randPromos,
         },
     };
 }

@@ -22,6 +22,9 @@ import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
+import WidgetNav from 'components/widgetNav';
+import WidgetLaunches from 'components/widgetLaunches';
+import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles(() => ({
     mainContainer: {
@@ -89,7 +92,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const FicheTechnique = (props) => {
-    const { model } = props;
+    const { model, brandsModels: brands } = props;
     const classes = useStyles();
     const router = useRouter();
     const [currentVersion, setCurrentVersion] = useState(null);
@@ -211,6 +214,9 @@ const FicheTechnique = (props) => {
                         </>
                     )}
                 </div>
+                <WidgetPromo data={brands} />
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
             </main>
         </div>
     );
@@ -218,6 +224,7 @@ const FicheTechnique = (props) => {
 
 FicheTechnique.propTypes = {
     model: PropTypes.any,
+    brandsModels: PropTypes.array.isRequired,
 };
 
 export default FicheTechnique;
@@ -347,9 +354,12 @@ export async function getStaticProps({ params }) {
         id: modelFilter[0].id,
     };
     const data = await apiQl(queryQl, variables, false);
+    let brandsModels = await getBrandsModels();
+    brandsModels = brandsModels.data.brands;
     return {
         props: {
             model: data.data.model,
+            brandsModels,
         },
     };
 }

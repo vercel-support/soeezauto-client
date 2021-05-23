@@ -51,6 +51,7 @@ const trans = {
 const useStyles = makeStyles((theme) => ({
     mainContent: {
         width: 'clamp(320px,100%, 600px)',
+        margin: '0 auto',
     },
     root: {
         display: 'flex',
