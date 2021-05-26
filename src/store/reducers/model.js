@@ -8,6 +8,7 @@ import {
     GET_MODEL_INIT,
     GET_MODEL_OK,
     GET_MODEL_ERROR,
+    SET_GET_MODEL_TO_NULL,
 } from '../actions';
 
 const initialState = {
@@ -59,16 +60,25 @@ const model = (state = initialState, action) => {
                 ...state,
                 dataGetModel: null,
                 errorGetModel: null,
+                isLoading: true,
             };
         case GET_MODEL_OK:
             return {
                 ...state,
                 dataGetModel: action.data,
+                isLoading: false,
             };
         case GET_MODEL_ERROR:
             return {
                 ...state,
                 errorGetModel: action.data,
+                isLoading: false,
+            };
+        case SET_GET_MODEL_TO_NULL:
+            return {
+                ...state,
+                dataGetModel: null,
+                errorGetModel: null,
             };
         default:
             return state;

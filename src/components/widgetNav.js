@@ -72,7 +72,7 @@ const WidgetNav = ({ brands }) => {
     const handleSetBrandSelect = () => {
         const options = [
             <MenuItem key={0} aria-label="Toutes" value="all">
-                Toutes
+                Choisir
             </MenuItem>,
         ];
         brands.forEach((brand) => {
@@ -97,7 +97,7 @@ const WidgetNav = ({ brands }) => {
     const handleSetModelSelect = () => {
         const options = [
             <MenuItem key={0} aria-label="Tous" value="all">
-                Tous
+                Choisir
             </MenuItem>,
         ];
         brands.forEach((brand) => {
@@ -135,7 +135,7 @@ const WidgetNav = ({ brands }) => {
     };
     return (
         <Card className={classes.root}>
-            <CardHeader title={<h2>Acces direct</h2>} />
+            <CardHeader title={<h2>Acces rapide marque & modele</h2>} />
             <CardContent className={classes.cardContent}>
                 <form>
                     <FormControl variant="outlined">

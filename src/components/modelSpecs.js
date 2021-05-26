@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
         tableLayout: 'fixed',
         '& td': {
             fontSize: '.75rem',
-            textAlign: 'center',
+            textAlign: 'left',
         },
         '& th': {
             fontSize: '.75rem',
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
             width: 180,
         },
         '& thead tr th:nth-child(2)': {
-            textAlign: 'center',
+            textAlign: 'left',
         },
     },
     versionTh: {
@@ -370,7 +370,7 @@ const ModelSpecs = ({ versions }) => {
                                 </TableCell>
                                 {versions.map((version) => (
                                     <TableCell key={version.id}>
-                                        {version.measures.trunkMin || 'n/c'}
+                                        {version.measures.trunk || 'n/c'}
                                     </TableCell>
                                 ))}
                             </TableRow>
@@ -438,4 +438,4 @@ ModelSpecs.propTypes = {
     versions: PropTypes.array.isRequired,
 };
 
-export default ModelSpecs;
+export default React.memo(ModelSpecs);

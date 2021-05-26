@@ -25,6 +25,8 @@ export const GET_MODEL_INIT = 'GET_MODEL_INIT';
 export const GET_MODEL_OK = 'GET_MODEL_OK';
 export const GET_MODEL_ERROR = 'GET_MODEL_ERROR';
 
+export const SET_GET_MODEL_TO_NULL = 'SET_GET_MODEL_TO_NULL';
+
 export const GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND =
     'GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND';
 export const GET_MODELS_WITH_AUTOMATIC_GEARBOX_FOR_BRAND_OK =
@@ -199,5 +201,11 @@ export function actionAddToUrlHistory(url) {
     return {
         type: ADD_TO_URL_HISTORY,
         url,
+    };
+}
+
+export function actionSetGetModelToNull() {
+    return {
+        type: SET_GET_MODEL_TO_NULL,
     };
 }

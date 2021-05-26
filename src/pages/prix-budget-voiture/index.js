@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     AppBar,
@@ -22,8 +23,13 @@ import {
     Slider,
     Chip,
     Avatar,
+    Checkbox,
+    Snackbar,
+    SnackbarContent,
+    Badge,
 } from '@material-ui/core';
 import { MonetizationOn } from '@material-ui/icons';
+import localforage from 'localforage';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import getSegmentsModelsDetailed from 'lib/getSegmentsModelsDetailed';
@@ -65,6 +71,40 @@ function a11yProps(index) {
         'aria-controls': `spec-tabpanel-${index}`,
     };
 }
+
+function CheckboxCompare({ model, handleCompareChange, selectedModels }) {
+    const [checked, setChecked] = useState(false);
+
+    useEffect(() => {
+        if (selectedModels.length === 0) {
+            setChecked(false);
+        }
+    }, [selectedModels]);
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+        handleCompareChange(event);
+    };
+
+    return (
+        <Checkbox
+            checked={checked}
+            value={model.id}
+            onChange={handleChange}
+            size="small"
+            disabled={!checked && selectedModels.length === 3}
+            inputProps={{
+                'aria-label': `Comparer ${model.model}`,
+            }}
+        />
+    );
+}
+
+CheckboxCompare.propTypes = {
+    model: PropTypes.object.isRequired,
+    handleCompareChange: PropTypes.func.isRequired,
+    selectedModels: PropTypes.array.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -144,6 +184,27 @@ const useStyles = makeStyles((theme) => ({
             fontWeight: 'bold',
         },
     },
+    snack: {
+        '& .MuiSnackbarContent-root': {
+            backgroundColor: theme.palette.primary.main,
+        },
+        '& .MuiSnackbarContent-message': {
+            display: 'flex',
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
+            fontWeight: 700,
+        },
+    },
+    subheader: {
+        height: 40,
+        display: 'grid',
+        gridTemplateColumns: 'auto auto',
+        gap: 20,
+        justifyContent: 'center',
+        alignContent: 'center',
+    },
 }));
 
 const RANGE = {
@@ -155,6 +216,7 @@ const RANGE = {
 
 const Prices = (props) => {
     const classes = useStyles();
+    const router = useRouter();
     const { segments, brands } = props;
 
     const [tabValue, setTabValue] = useState(0);
@@ -163,6 +225,16 @@ const Prices = (props) => {
     const previousSliderRange = usePrevious(sliderRange);
     const [selectedButtonId, setSelectedButtonId] = useState(null);
     const [selectedRangeIndex, setSelectedRangeIndex] = useState(null);
+    const [selectedModels, setSelectedModels] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
 
     const handleTabChange = (event, newValue) => {
         setTabValue(newValue);
@@ -235,6 +307,39 @@ const Prices = (props) => {
         }
         setSliderRange(newRange);
     };
+
+    const handleCompareChange = (event) => {
+        const currentModels = [...selectedModels];
+        if (event.target.checked) {
+            setSelectedModels([...currentModels, event.target.value]);
+        } else {
+            const index = currentModels.indexOf(event.target.value);
+            if (index > -1) {
+                currentModels.splice(index, 1);
+                setSelectedModels([...currentModels]);
+            }
+        }
+        setOpenSnackbar(true);
+    };
+    const handleComparison = () => {
+        localforage.setItem('modelsForComparison', [...selectedModels]);
+        setSelectedModels([]);
+        router.push('/comparatif-voiture');
+    };
+    const handleDeleteComparison = () => {
+        setSelectedModels([]);
+    };
+
+    const alertMessage = () => {
+        return (
+            <>
+                <Badge badgeContent={selectedModels.length} color="secondary" showZero />
+                <span>de</span>
+                <Badge badgeContent={3} color="secondary" />
+                <span>modeles choisis</span>
+            </>
+        );
+    };
     return (
         <div>
             <Head>
@@ -243,6 +348,14 @@ const Prices = (props) => {
             </Head>
 
             <main>
+                <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={3000}
+                    onClose={handleCloseSnackbar}
+                    className={classes.snack}
+                >
+                    <SnackbarContent message={alertMessage()} />
+                </Snackbar>
                 <Breadcrumb
                     links={[
                         {
@@ -323,7 +436,33 @@ const Prices = (props) => {
                     </CardActions>
                 </Card>
                 <Card className={classes.cardRoot}>
-                    <CardHeader title="Modeles par gamme de prix et segment" />
+                    <CardHeader
+                        title="Modeles par gamme de prix et segment"
+                        subheader={
+                            <div className={classes.subheader}>
+                                {selectedModels.length > 0 && (
+                                    <>
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="secondary"
+                                            onClick={handleComparison}
+                                        >
+                                            Comparer
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="secondary"
+                                            onClick={handleDeleteComparison}
+                                        >
+                                            Effacer selections
+                                        </Button>
+                                    </>
+                                )}
+                            </div>
+                        }
+                    />
                     <CardContent>
                         <div className={classes.root}>
                             <AppBar position="static">
@@ -386,6 +525,35 @@ const Prices = (props) => {
                                                             >
                                                                 {model.model}
                                                             </Link>
+                                                        </TableCell>
+                                                    ))}
+                                                </TableRow>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">
+                                                        <Button
+                                                            variant="contained"
+                                                            size="small"
+                                                            disabled={
+                                                                selectedModels.length ===
+                                                                0
+                                                            }
+                                                            color="secondary"
+                                                            onClick={handleComparison}
+                                                        >
+                                                            Comparer
+                                                        </Button>
+                                                    </TableCell>
+                                                    {segment.models.map((model) => (
+                                                        <TableCell key={model.id}>
+                                                            <CheckboxCompare
+                                                                model={model}
+                                                                handleCompareChange={
+                                                                    handleCompareChange
+                                                                }
+                                                                selectedModels={
+                                                                    selectedModels
+                                                                }
+                                                            />
                                                         </TableCell>
                                                     ))}
                                                 </TableRow>

@@ -41,7 +41,7 @@ const Footer = () => {
                         <Link className={styles.sectionDivA} href="/marques-voiture">
                             {trans[LANG].search}
                         </Link>
-                        <Link className={styles.sectionDivA} href="/contato">
+                        <Link className={styles.sectionDivA} href="/contact">
                             {trans[LANG].contact}
                         </Link>
                         <Link className={styles.sectionDivA} href="/legal">

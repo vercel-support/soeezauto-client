@@ -46,6 +46,11 @@ const Nav = () => {
                             blog
                         </Link>
                     </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/comparatif-voiture" isActivable>
+                            comparatif
+                        </Link>
+                    </MenuItem>
                 </MenuList>
             )}
         </>

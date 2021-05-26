@@ -196,4 +196,4 @@ ModelTrims.propTypes = {
     versions: PropTypes.array.isRequired,
 };
 
-export default ModelTrims;
+export default React.memo(ModelTrims);

@@ -51,10 +51,10 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         flexWrap: 'wrap',
         padding: '10px',
-        gap: 10,
+        gap: 20,
         justifyContent: 'space-around',
         '& > div': {
-            flex: '0 0 280px',
+            flex: '0 0 300px',
             backgroundColor: '#ffe082',
         },
     },
