@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -25,6 +26,7 @@ import Breadcrumb from 'components/breadcrumb';
 import WidgetNav from 'components/widgetNav';
 import WidgetLaunches from 'components/widgetLaunches';
 import WidgetPromo from 'components/widgetPromotion';
+import Link from 'components/link';
 
 const useStyles = makeStyles(() => ({
     mainContainer: {
@@ -61,6 +63,11 @@ const useStyles = makeStyles(() => ({
         '& .MuiChip-label': {
             fontWeight: 'bold',
         },
+        '& .MuiCardHeader-avatar': {
+            padding: 6,
+            borderRadius: 10,
+            backgroundColor: '#fff',
+        },
     },
     cardContent: {
         overflow: 'scroll',
@@ -89,6 +96,9 @@ const useStyles = makeStyles(() => ({
             fontWeight: 'bold',
         },
     },
+    isPromo: {
+        marginTop: 20,
+    },
 }));
 
 const FicheTechnique = (props) => {
@@ -111,7 +121,6 @@ const FicheTechnique = (props) => {
         setCurrentVersion(newVersion[0]);
         setSelectedVersionIndex(parseInt(event.target.dataset.versionindex, 10));
     };
-
     if (router.isFallback) {
         return <Loading />;
     }
@@ -144,7 +153,25 @@ const FicheTechnique = (props) => {
                     {model && currentVersion && (
                         <>
                             <Card className={classes.root}>
-                                <CardHeader title={<h2>Versions</h2>} />
+                                <CardHeader
+                                    title={<h2>Versions</h2>}
+                                    avatar={
+                                        <Link
+                                            href={`/marques-voiture/${urlWriter(
+                                                model.brand.brand,
+                                            )}`}
+                                        >
+                                            <Image
+                                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${model.brand.image}`}
+                                                alt={model.brand.brand}
+                                                width="60"
+                                                height="60"
+                                                loading="eager"
+                                                priority
+                                            />
+                                        </Link>
+                                    }
+                                />
                                 <CardContent className={classes.cardContent}>
                                     <Box className={classes.versions}>
                                         {model.versions.map((version, index) => (
@@ -170,7 +197,7 @@ const FicheTechnique = (props) => {
                                 <CardActions>
                                     <Chip
                                         size="small"
-                                        label={`Prix:${numberFrance(
+                                        label={`Prix: ${numberFrance(
                                             currentVersion.prices[0].price,
                                         )} DH`}
                                         color="primary"
@@ -189,7 +216,7 @@ const FicheTechnique = (props) => {
                                                     <MonetizationOn />
                                                 </Avatar>
                                             }
-                                            label={`Promo:${numberFrance(
+                                            label={`Promo: ${numberFrance(
                                                 currentVersion.prices[0].promo,
                                             )}  DH`}
                                             color="secondary"
@@ -209,6 +236,23 @@ const FicheTechnique = (props) => {
                                             <ModelTrims versions={[currentVersion]} />
                                         </CardContent>
                                     </Card>
+                                    {model.specs.edges.length > 0 && (
+                                        <Box className={classes.fiche}>
+                                            <Link
+                                                href={`/fiche-technique-constructeur/${urlWriter(
+                                                    model.brand.brand,
+                                                )}`}
+                                                target="_blank"
+                                            >
+                                                <Button
+                                                    variant="contained"
+                                                    color="secondary"
+                                                >
+                                                    Fiche technique constructeur
+                                                </Button>
+                                            </Link>
+                                        </Box>
+                                    )}
                                 </CardActions>
                             </Card>
                         </>
@@ -231,6 +275,7 @@ export default FicheTechnique;
 
 const queryQl = `query getModelDetails(
   	$id: ID!
+    $after: String!
 ) {
     model(id: $id) {
         model
@@ -247,11 +292,18 @@ const queryQl = `query getModelDetails(
             id
             segment
         }
-        specs(_order: {year: "DESC", month: "DESC"}){
-            id
-            year
-            month
-            filename
+        specs(
+            first: 1, after: null,
+            _order: {updatedAt: "DESC"}
+            updatedAt: {after: $after}
+        ) {
+            edges {
+                node {
+                    id
+                    filename
+                    updatedAt
+                }
+            }
         }
         versions(
             isActive: true
@@ -350,8 +402,14 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
+    const getAfter = () => {
+        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
+        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
+    };
     const variables = {
         id: modelFilter[0].id,
+        after: getAfter(),
     };
     const data = await apiQl(queryQl, variables, false);
     let brandsModels = await getBrandsModels();

@@ -305,7 +305,7 @@ const Brand = (props) => {
                 <Box className={classes.mainContent}>
                     <Card className={classes.root}>
                         <CardHeader
-                            title="Modeles"
+                            title={<h2>Modeles</h2>}
                             avatar={
                                 <Image
                                     src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
@@ -406,7 +406,7 @@ const Brand = (props) => {
                                         ))}
                                         {isSpecs && (
                                             <TableRow>
-                                                <TableCell colspan={2}>
+                                                <TableCell colSpan={2}>
                                                     <Box className={classes.fiche}>
                                                         <Link
                                                             href={`/fiche-technique-constructeur/${urlWriter(
@@ -500,7 +500,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(Brand);
 
 const queryQl = `query getBrand(
   	    $id: ID!
-		$isActiveModel: Boolean!) {
+		$isActiveModel: Boolean!
+        $after: String!
+    ) {
         brand(id: $id) {
 		    id
 		    brand
@@ -516,8 +518,16 @@ const queryQl = `query getBrand(
                     id
                     segment
                 }
-                specs {
-                    id
+                specs(
+                    first: 1, after: null,
+                    _order: {updatedAt: "DESC"}
+                    updatedAt: {after: $after}
+                ) {
+                    edges {
+                        node {
+                            id
+                        }
+                    }
                 }
                 versions(exists: {prices:true}) {
                     id
@@ -565,9 +575,15 @@ export async function getStaticProps({ params }) {
     const brandFilter = brands.filter((br) => {
         return urlWriter(br.brand) === brandParam;
     });
+    const getAfter = () => {
+        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
+        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
+    };
     const variables = {
         id: brandFilter[0].id,
         isActiveModel: true,
+        after: getAfter(),
     };
     const data = await apiQl(queryQl, variables, false);
     const brand = data.data.brand;
@@ -598,7 +614,7 @@ export async function getStaticProps({ params }) {
         });
         model.isPromo = prom.length > 0;
         if (!isSpecs) {
-            isSpecs = model.specs.length > 0;
+            isSpecs = model.specs.edges.length > 0;
         }
     });
     return {

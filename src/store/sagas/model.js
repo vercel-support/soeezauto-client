@@ -163,6 +163,7 @@ function* getPreviousModels(action) {
 function* getModel(action) {
     const queryQl = `query getModel(
         $id: ID!
+        $after: String!
     ) {
         model(id: $id) {
             id
@@ -180,11 +181,18 @@ function* getModel(action) {
                 id
                 segment
             }
-            specs(_order: {year: "DESC", month: "DESC"}){
-                id
-                year
-                month
-                filename
+            specs(
+                first: 1, after: null,
+              	_order: {updatedAt: "DESC"}
+              	updatedAt: {after: $after}
+            ) {
+                edges {
+                    node {
+                        id
+                        filename
+                        updatedAt
+                    }
+                }
             }
             versions(
                 isActive: true
@@ -252,8 +260,15 @@ function* getModel(action) {
         }
     }`;
 
+    const getAfter = () => {
+        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
+        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
+    };
+
     const variables = {
         id: action.modelId,
+        after: getAfter(),
     };
     try {
         yield put({

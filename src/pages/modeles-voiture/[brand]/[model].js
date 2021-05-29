@@ -271,6 +271,7 @@ export default Model;
 
 const queryQl = `query getModel(
   	$id: ID!
+    $after: String!
 ) {
     model(id: $id) {
         id
@@ -288,11 +289,18 @@ const queryQl = `query getModel(
             id
             segment
         }
-        specs(_order: {year: "DESC", month: "DESC"}){
-            id
-            year
-            month
-            filename
+        specs(
+            first: 1, after: null,
+            _order: {updatedAt: "DESC"}
+            updatedAt: {after: $after}
+        ) {
+            edges {
+                node {
+                    id
+                    filename
+                    updatedAt
+                }
+            }
         }
         versions(
             isActive: true
@@ -411,8 +419,14 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
+    const getAfter = () => {
+        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
+        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
+    };
     const variables = {
         id: modelFilter[0].id,
+        after: getAfter(),
     };
     const data = await apiQl(queryQl, variables, false);
     const model = data.data.model;

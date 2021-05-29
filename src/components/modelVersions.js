@@ -129,7 +129,7 @@ const ModelVersions = ({ model }) => {
                     </Card>
                 ))}
             </div>
-            {model.specs.length > 0 && (
+            {model.specs.edges.length > 0 && (
                 <Box className={classes.fiche}>
                     <Link
                         href={`/fiche-technique-constructeur/${urlWriter(

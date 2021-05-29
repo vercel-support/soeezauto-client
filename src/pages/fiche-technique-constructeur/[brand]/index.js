@@ -89,7 +89,7 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
     useEffect(() => {
         if (brand) {
             const modelsWithSpecs = brand.models.filter((model) => {
-                return model.specs.length > 0;
+                return model.specs.edges.length > 0;
             });
             if (modelsWithSpecs.length > 0) {
                 setModels([...modelsWithSpecs]);
@@ -104,6 +104,7 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
         setCurrentModel(newModel[0]);
         setSelectedModelIndex(parseInt(event.target.dataset.modelindex, 10));
     };
+
     if (!brand || router.isFallback) {
         return <Loading />;
     }
@@ -171,15 +172,21 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                     <div className={classes.iframeContainer}>
                         <iframe
                             className={classes.responsiveIframe}
-                            title={currentModel.specs[0].filename}
+                            title={currentModel.specs.edges[0].node.filename}
                             style={{ width: '100%', height: 1500 }}
                             src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
                                 brand.brand,
-                            )}/${
-                                currentModel.specs[0].year
-                            }-${currentModel.specs[0].month
+                            )}/${new Date(
+                                currentModel.specs.edges[0].node.updatedAt,
+                            ).getFullYear()}/${(
+                                new Date(
+                                    currentModel.specs.edges[0].node.updatedAt,
+                                ).getMonth() + 1
+                            )
                                 .toString()
-                                .padStart(2, '0')}/${currentModel.specs[0].filename}`}
+                                .padStart(2, '0')}/${
+                                currentModel.specs.edges[0].node.filename
+                            }`}
                         />
                     </div>
                 )}
@@ -200,6 +207,7 @@ export default FicheTechniqueManufacturer;
 
 const queryQl = `query getBrandSpecs(
   	$id: ID!
+    $after: String!
 ) {
     brand(id: $id) {
         brand
@@ -210,11 +218,18 @@ const queryQl = `query getBrandSpecs(
             images(isFeatured: true) {
                 filename
             }
-            specs(_order: {year: "DESC", month: "DESC"}){
-                id
-                year
-                month
-                filename
+            specs(
+                first: 1, after: null,
+              	_order: {updatedAt: "DESC"}
+              	updatedAt: {after: $after}
+            ) {
+                edges {
+                    node {
+                        id
+                        filename
+                        updatedAt
+                    }
+                }
             }
         }
     }
@@ -244,8 +259,14 @@ export async function getStaticProps({ params }) {
     const brandFilter = brands.filter((brand) => {
         return urlWriter(brand.brand) === brandParam;
     });
+    const getAfter = () => {
+        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
+        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
+    };
     const variables = {
         id: brandFilter[0].id,
+        after: getAfter(),
     };
     const data = await apiQl(queryQl, variables, false);
     let brandsModels = await getBrandsModels();
