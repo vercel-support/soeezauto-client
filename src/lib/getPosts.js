@@ -7,6 +7,7 @@ const queryQl = `query AllPosts {
             startCursor
             hasNextPage
             hasPreviousPage
+            total
         }
         edges {
             node {

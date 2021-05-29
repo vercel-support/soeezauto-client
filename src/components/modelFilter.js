@@ -300,7 +300,7 @@ const ModelFilter = ({ allModels, filters }) => {
         <div className={classes.mainContent}>
             {isFormSubmitting && <Loading />}
             <Card className={classes.cardRoot}>
-                <CardHeader title="Filtres" />
+                <CardHeader title={<h2>Filtres</h2>} />
                 <CardContent>
                     <form onSubmit={handleFilterSubmit}>
                         <div className={classes.root}>

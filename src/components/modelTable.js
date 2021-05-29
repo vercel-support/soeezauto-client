@@ -35,7 +35,7 @@ const getMuiTheme = () =>
             },
             MUIDataTableBodyCell: {
                 root: {
-                    whiteSpace: 'nowrap',
+                    // whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     // cursor: 'pointer',

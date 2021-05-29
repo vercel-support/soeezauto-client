@@ -88,6 +88,16 @@ export const SET_CLIENT_LOG_TO_NULL = 'SET_CLIENT_LOG_TO_NULL';
 
 export const ADD_TO_URL_HISTORY = 'ADD_TO_URL_HISTORY';
 
+export const GET_POSTS_NEXT = 'GET_POSTS_NEXT';
+export const GET_POSTS_NEXT_INIT = 'GET_POSTS_NEXT_INIT';
+export const GET_POSTS_NEXT_OK = 'GET_POSTS_NEXT_OK';
+export const GET_POSTS_NEXT_ERROR = 'GET_POSTS_NEXT_ERROR';
+
+export const GET_POSTS_PREVIOUS = 'GET_POSTS_PREVIOUS';
+export const GET_POSTS_PREVIOUS_INIT = 'GET_POSTS_PREVIOUS_INIT';
+export const GET_POSTS_PREVIOUS_OK = 'GET_POSTS_PREVIOUS_OK';
+export const GET_POSTS_PREVIOUS_ERROR = 'GET_POSTS_PREVIOUS_ERROR';
+
 export const actionLogoutInit = () => ({
     type: LOGOUT_INIT,
 });
@@ -207,5 +217,19 @@ export function actionAddToUrlHistory(url) {
 export function actionSetGetModelToNull() {
     return {
         type: SET_GET_MODEL_TO_NULL,
+    };
+}
+
+export function actionGetPostsNext(values) {
+    return {
+        type: GET_POSTS_NEXT,
+        values,
+    };
+}
+
+export function actionGetPostsPrevious(values) {
+    return {
+        type: GET_POSTS_PREVIOUS,
+        values,
     };
 }

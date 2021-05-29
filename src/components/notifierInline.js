@@ -32,6 +32,9 @@ const styles = (theme) => ({
                 margin: '10px 0',
             },
         },
+        '& svg': {
+            cursor: 'pointer',
+        },
     },
 });
 

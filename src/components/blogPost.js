@@ -3,6 +3,7 @@ import Image from 'next/image';
 import ReactHtmlParser from 'react-html-parser';
 import PropTypes from 'prop-types';
 import Link from 'components/link';
+import { urlWriterWithSlash } from 'tools/functions';
 
 const BlogPost = ({ post }) => {
     const [content, setContent] = useState(null);
@@ -38,9 +39,11 @@ const BlogPost = ({ post }) => {
                 if (aTag.getAttribute('href').includes('soeezauto.ma')) {
                     newElem[index] = (
                         <Link
-                            href={aTag
-                                .getAttribute('href')
-                                .replace('https://www.soeezauto.ma', '')}
+                            href={urlWriterWithSlash(
+                                aTag
+                                    .getAttribute('href')
+                                    .replace('https://www.soeezauto.ma', ''),
+                            )}
                         >
                             {aTag.innerHTML}
                         </Link>

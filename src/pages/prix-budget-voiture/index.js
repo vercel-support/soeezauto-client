@@ -42,6 +42,7 @@ import Breadcrumb from 'components/breadcrumb';
 import WidgetNav from 'components/widgetNav';
 import WidgetLaunches from 'components/widgetLaunches';
 import WidgetPromo from 'components/widgetPromotion';
+import NotifierInline from 'components/notifierInline';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -137,7 +138,7 @@ const useStyles = makeStyles((theme) => ({
     cardRoot: {
         width: 'clamp(300px, 100%, 700px)',
         backgroundColor: '#ffe082',
-        margin: '30px auto',
+        margin: '10px auto',
         color: '#29335c',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
@@ -204,6 +205,9 @@ const useStyles = makeStyles((theme) => ({
         gap: 20,
         justifyContent: 'center',
         alignContent: 'center',
+    },
+    notifier: {
+        marginLeft: 0,
     },
 }));
 
@@ -433,11 +437,14 @@ const Prices = (props) => {
                                 Envoyer
                             </Button>
                         </Box>
+                        <div className={classes.notifier}>
+                            <NotifierInline message="Résultat affiché sur le tableau en bas" />
+                        </div>
                     </CardActions>
                 </Card>
                 <Card className={classes.cardRoot}>
                     <CardHeader
-                        title="Modeles par gamme de prix et segment"
+                        title="Modèles par gamme de prix et segment"
                         subheader={
                             <div className={classes.subheader}>
                                 {selectedModels.length > 0 && (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player/youtube';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { urlWriterWithSlash } from 'tools/functions';
 
 const useStyles = makeStyles(() => ({
     wrapper: {
@@ -44,9 +45,11 @@ const BlogVideo = ({ post }) => {
                 if (el.nodeName === 'A') {
                     sections.push(
                         <a
-                            href={el
-                                .getAttribute('href')
-                                .replace('https://www.soeezauto.ma', '')}
+                            href={urlWriterWithSlash(
+                                el
+                                    .getAttribute('href')
+                                    .replace('https://www.soeezauto.ma', ''),
+                            )}
                             alt={el.alt}
                         >
                             {el.innerText}

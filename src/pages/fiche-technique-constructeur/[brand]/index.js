@@ -162,7 +162,10 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                         </CardActions>
                     </Card>
                 ) : (
-                    <NotifierInline severity="info" message="no specs" />
+                    <NotifierInline
+                        severity="info"
+                        message="Aucune fiche technique du constructeur disponible à ce moment. Nous travaillons pour en ajouter. "
+                    />
                 )}
                 {currentModel && (
                     <div className={classes.iframeContainer}>

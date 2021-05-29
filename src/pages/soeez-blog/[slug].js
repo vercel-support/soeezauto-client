@@ -14,18 +14,79 @@ import Breadcrumb from 'components/breadcrumb';
 import WidgetNav from 'components/widgetNav';
 import WidgetLaunches from 'components/widgetLaunches';
 import WidgetPromo from 'components/widgetPromotion';
+import Link from 'components/link';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+    mainContainer: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridGap: 30,
+        padding: 6,
+    },
     article: {
         width: 'clamp(320px,100%, 600px)',
         margin: '0 0 50px',
         lineHeight: 1.8,
         '& p': {
-            margin: '20px 0',
-            fontSize: 15,
+            // margin: '20px 0',
+            // fontSize: 15,
+            fontWeight: 400,
+            fontSize: '1rem !important',
+            lineHeight: '26px !important',
+            color: '#4D4D4D',
+            margin: '0 0 38px !important',
+            textAlign: 'justify',
+            textJustify: 'inter-word',
         },
         '& h2': {
             margin: '20px 0',
+        },
+        '& table': {
+            width: '100%',
+            borderCollapse: 'collapse',
+            fontSize: '.75rem',
+        },
+        '& tr:nth-of-type(odd)': {
+            background: '#eee',
+        },
+        '& th': {
+            background: theme.palette.primary.main,
+            color: 'white',
+            fontWeight: 'bold',
+        },
+        '& th, td': {
+            padding: 6,
+            border: '1px solid #ccc',
+            textAlign: 'left',
+        },
+    },
+    navLink: {
+        borderTop: '1px solid rgba(0, 0, 0, 0.1)',
+        hyphens: 'auto',
+        wordWrap: 'break-word',
+        '& a': {
+            color: '#2b2b2b',
+            display: 'block',
+            fontSize: '14px',
+            fontWeight: '700',
+            lineHeight: '1.7142857142',
+            textTransform: 'none',
+            '&:hover': {
+                color: theme.palette.primary.main,
+                textDecoration: 'none',
+            },
+        },
+        '& span': {
+            color: '#767676',
+            display: 'block',
+            fontSize: '12px',
+            fontSeight: '900',
+            lineHeight: '2',
+            textTransform: 'uppercase',
+            textDecoration: 'none',
+            '&:hover': {
+                color: 'none',
+            },
         },
     },
 }));
@@ -58,28 +119,48 @@ const Post = ({ post, postFormat, brands }) => {
                 <div className="main-title">
                     <h1>{post.title}</h1>
                 </div>
-                <article className={classes.article}>
-                    {postFormat === 'Image' && <BlogImage post={post} />}
-                    {postFormat === 'Vidéo' && <BlogVideo post={post} />}
-                    {postFormat === 'Standard' && <BlogPost post={post} />}
-                </article>
-                <WidgetNav brands={brands} />
-                <WidgetLaunches data={brands} />
-                <WidgetPromo data={brands} />
+                <div className={classes.mainContainer}>
+                    <div>
+                        <article className={classes.article}>
+                            {postFormat === 'Image' && <BlogImage post={post} />}
+                            {postFormat === 'Vidéo' && <BlogVideo post={post} />}
+                            {postFormat === 'Standard' && <BlogPost post={post} />}
+                        </article>
+                        <div className={classes.navLink}>
+                            {post?.previous && (
+                                <Link href={`/soeez-blog/${post.previous.slug}`}>
+                                    <span>Article précédent:</span>
+                                    {post.previous.title}
+                                </Link>
+                            )}
+                            {post?.next && (
+                                <Link href={`/soeez-blog/${post.next.slug}`}>
+                                    <span>Article suivant:</span>
+                                    {post.next.title}
+                                </Link>
+                            )}
+                        </div>
+                    </div>
+                    <div>
+                        <WidgetNav brands={brands} />
+                        <WidgetLaunches data={brands} />
+                        <WidgetPromo data={brands} />
+                    </div>
+                </div>
             </main>
         </div>
     );
 };
 
 Post.propTypes = {
-    post: PropTypes.object.isRequired,
-    postFormat: PropTypes.string.isRequired,
-    brands: PropTypes.array.isRequired,
+    post: PropTypes.any,
+    postFormat: PropTypes.any,
+    brands: PropTypes.any,
 };
 
 export default Post;
 
-const queryQl = `query getPost($slug: ID!){
+const queryQl = `query getPost($slug: ID!) {
     post(idType: SLUG, id: $slug) {
         date
         excerpt
@@ -90,6 +171,14 @@ const queryQl = `query getPost($slug: ID!){
             }
         }
         content
+        next {
+            slug
+            title
+        }
+        previous {
+            slug
+            title
+        }
     }
 }`;
 

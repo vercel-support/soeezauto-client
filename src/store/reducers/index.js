@@ -4,6 +4,7 @@ import brand from './brand';
 import contactEmail from './contact-email';
 import model from './model';
 import onlineStatus from './onlineStatus';
+import post from './post';
 import system from './system';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     contactEmail,
     model,
     onlineStatus,
+    post,
     system,
 });
 
