@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, Box, Divider } from '@material-ui/core';
-import { NavigateBefore, NavigateNext } from '@material-ui/icons/';
+import { NavigateBefore, NavigateNext, Image as ImageIcon } from '@material-ui/icons/';
 import ReactHtmlParser from 'react-html-parser';
 import ReactPaginate from 'react-paginate';
 import PropTypes from 'prop-types';
@@ -25,7 +25,7 @@ import NotifierDialog from 'components/notifierDialog';
 const useStyles = makeStyles(() => ({
     mainContainer: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gridGap: 30,
     },
     list: {
@@ -66,10 +66,17 @@ const useStyles = makeStyles(() => ({
         },
     },
     imgContainer: {
+        display: 'grid',
+        justifyContent: 'center',
+        alignContent: 'center',
         width: 210,
         height: 140,
-        backgroundColor: 'red',
         margin: '10px auto',
+        '& svg': {
+            height: 100,
+            width: 100,
+            color: '#FFC107',
+        },
     },
 }));
 
@@ -182,7 +189,7 @@ const SoeezBlog = (props) => {
                 />
                 {isLoading && <Loading />}
                 <div className="main-title">
-                    <h1>Actualite automobiles neuves Maroc</h1>
+                    <h1>Actualite automobile Maroc</h1>
                 </div>
                 <div className={classes.mainContainer}>
                     <div>
@@ -218,7 +225,9 @@ const SoeezBlog = (props) => {
                                                         loading="eager"
                                                         priority
                                                     />
-                                                ) : null}
+                                                ) : (
+                                                    <ImageIcon />
+                                                )}
                                             </div>
                                             <div>
                                                 {ReactHtmlParser(

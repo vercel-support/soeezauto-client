@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
 import { AUTOMATIC_GEARBOXES, CONVERSION_FUEL, PRICE_RANGES_SHORT } from 'parameters';
 import getBrandsModels from 'lib/getBrandsModels';
 import getPosts from 'lib/getPosts';
-import { urlWriter } from 'tools/functions';
+import { urlWriter, getBaseDate } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import {
     actionGetModelsWithAutomaticGearboxForBrand,
@@ -575,15 +575,10 @@ export async function getStaticProps({ params }) {
     const brandFilter = brands.filter((br) => {
         return urlWriter(br.brand) === brandParam;
     });
-    const getAfter = () => {
-        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
-        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
-    };
     const variables = {
         id: brandFilter[0].id,
         isActiveModel: true,
-        after: getAfter(),
+        after: getBaseDate(90),
     };
     const data = await apiQl(queryQl, variables, false);
     const brand = data.data.brand;

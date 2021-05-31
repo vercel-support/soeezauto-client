@@ -498,3 +498,13 @@ export function randIndex(len, max) {
     }
     return rand;
 }
+
+export function getBaseDate(daysBack) {
+    const firstOfMonth = new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        10, // base date to avoid falling into prior months
+    );
+    firstOfMonth.setDate(firstOfMonth.getDate() - daysBack);
+    return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() + 1}-1`;
+}

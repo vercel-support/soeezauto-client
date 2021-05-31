@@ -17,6 +17,7 @@ import {
     GET_MODEL_ERROR,
 } from 'store/actions';
 import { apiQl, errorParserGraphql } from 'lib/functions';
+import { getBaseDate } from 'tools/functions';
 
 function* getModelVersionsWithTrims(action) {
     const queryQl = `query getModelVersionsWithTrims(
@@ -260,15 +261,9 @@ function* getModel(action) {
         }
     }`;
 
-    const getAfter = () => {
-        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
-        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
-    };
-
     const variables = {
         id: action.modelId,
-        after: getAfter(),
+        after: getBaseDate(90),
     };
     try {
         yield put({

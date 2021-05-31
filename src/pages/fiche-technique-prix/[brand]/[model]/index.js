@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import getBrandsModels from 'lib/getBrandsModels';
 import getModels from 'lib/getModels';
 import { apiQl } from 'lib/functions';
-import { urlWriter, numberFrance } from 'tools/functions';
+import { urlWriter, numberFrance, getBaseDate } from 'tools/functions';
 import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import Loading from 'components/loading';
@@ -402,14 +402,10 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
-    const getAfter = () => {
-        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
-        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
-    };
+
     const variables = {
         id: modelFilter[0].id,
-        after: getAfter(),
+        after: getBaseDate(90),
     };
     const data = await apiQl(queryQl, variables, false);
     let brandsModels = await getBrandsModels();

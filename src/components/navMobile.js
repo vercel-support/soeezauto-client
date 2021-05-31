@@ -14,7 +14,7 @@ const NavMobile = (props) => {
                 <List className={styles.navMobile}>
                     <ListItem>
                         <Link href="/" isActivable>
-                            Home
+                            Accueil
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
@@ -24,27 +24,27 @@ const NavMobile = (props) => {
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/modeles-voiture" isActivable>
-                            modeles
+                            Modeles
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/segments-automobile" isActivable>
-                            segments
+                            Segments
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/prix-budget-voiture" isActivable>
-                            prix
+                            Prix & budget
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/promotion-voiture-neuve-au-maroc" isActivable>
-                            promotions
+                            Promotions
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/soeez-blog" isActivable>
-                            blog
+                            Blog
                         </Link>
                     </ListItem>
                     <Divider />

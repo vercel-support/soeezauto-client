@@ -19,7 +19,7 @@ import Link from 'components/link';
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
         gridGap: 30,
         padding: 6,
     },

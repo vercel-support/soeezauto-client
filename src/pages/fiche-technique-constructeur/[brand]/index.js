@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import getBrands from 'lib/getBrands';
 import getBrandsModels from 'lib/getBrandsModels';
 import { apiQl } from 'lib/functions';
-import { urlWriter } from 'tools/functions';
+import { urlWriter, getBaseDate } from 'tools/functions';
 import NotifierInline from 'components/notifierInline';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
@@ -259,14 +259,10 @@ export async function getStaticProps({ params }) {
     const brandFilter = brands.filter((brand) => {
         return urlWriter(brand.brand) === brandParam;
     });
-    const getAfter = () => {
-        const firstOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-        firstOfMonth.setDate(firstOfMonth.getDate() - 90);
-        return `${firstOfMonth.getFullYear()}-${firstOfMonth.getMonth() - 1}-1`;
-    };
+
     const variables = {
         id: brandFilter[0].id,
-        after: getAfter(),
+        after: getBaseDate(90),
     };
     const data = await apiQl(queryQl, variables, false);
     let brandsModels = await getBrandsModels();
