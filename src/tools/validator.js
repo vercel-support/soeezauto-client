@@ -1,7 +1,7 @@
 import { LANG } from '../parameters';
 
 const trans = {
-    br: {
+    fr: {
         required: 'Requerido',
         confidentialityRequired:
             'A aceitacao de nossa politica de confidentialidade eh requerida',

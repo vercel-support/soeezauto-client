@@ -24,19 +24,19 @@ import { actionPostContactEmail } from 'store/actions';
 import Breadcrumb from 'components/breadcrumb';
 
 const trans = {
-    br: {
-        success: 'Esta feito',
-        messageSent: 'Mensagem enviada',
-        somethingWrong: 'Algo deu errado',
-        tryAgain: 'Favor tentar de novo',
-        subject: 'Assunto',
-        message: 'Mensagem',
-        writeMessage: 'Escreva sua mensagem',
-        send: 'Enviar',
-        name: 'Nome',
-        contact: 'Contato',
-        messageCaption: 'Contate-nos via mensagem',
-        messageReturn: 'Nos responderemos em breve',
+    fr: {
+        success: "C'est fait",
+        messageSent: 'Votre message a ete envoyee',
+        somethingWrong: 'Il a eu une erreur',
+        tryAgain: 'Merci de ressayer',
+        subject: 'Sujet',
+        message: 'Message',
+        writeMessage: 'Votre message...',
+        send: 'Envoyer',
+        name: 'Nom',
+        contact: 'Contact',
+        messageCaption: 'Nous contacter',
+        messageReturn: 'Nous vous repondrons dans le plus bref delai',
     },
     en: {
         success: 'Success',
@@ -131,8 +131,8 @@ const ContactEmailForm = (props) => {
     return (
         <div className="container">
             <Head>
-                <title>Contato</title>
-                <meta name="description" content="formulario de contato" />
+                <title>Contact</title>
+                <meta name="description" content="formulaire contact" />
                 <meta name="robots" content="noindex follow" />
                 <meta name="googlebot" content="noindex follow" />
             </Head>

@@ -153,8 +153,34 @@ const Segment = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    {`Voitures ${segment.segment} neuves au Maroc | par budget et prix
+                    ${segment.segment} neuf au Maroc`}
+                </title>
+                <meta
+                    name="description"
+                    content={`Toutes les voitures ${segment.segment} neuves au Maroc."`}
+                />
+                <meta
+                    property="og:title"
+                    content={`Voiture ${segment.segment} au Maroc `}
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/og/segment-petit-monospace-ford-b-max.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content={`https://www.soeezauto.ma/segments-automobile/${urlWriter(
+                        segment.segment,
+                    )}`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.soeezauto.ma/segments-automobile/${urlWriter(
+                        segment.segment,
+                    )}`}
+                />
             </Head>
 
             <main>

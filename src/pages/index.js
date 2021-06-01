@@ -28,7 +28,7 @@ const useStyles = makeStyles({
             textAlign: 'center',
         },
         '& .MuiCardContent-root': {
-            height: '200px',
+            minHeight: '200px',
             '& img': {
                 border: '2px solid #fff',
             },
@@ -95,8 +95,25 @@ const Home = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    voiture neuve &amp; occasion au Maroc | actualité automobile |
+                    SoeezAuto{' '}
+                </title>
+                <meta
+                    name="description"
+                    content="Découvrez le portail voiture au Maroc, annonces voiture occasion, promotions, fiches techniques et comparatifs voiture neuve Maroc, actualité automobile. "
+                />
+                <meta
+                    property="og:title"
+                    content="soeezauto.ma - annonces occasion, voitures neuves, actualités"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/soeezauto-300-60.jpg"
+                />
+                <meta property="og:url" content="https://www.soeezauto.ma" />
+                <link rel="canonical" href="https://www.soeezauto.ma" />
+                <meta property="fb:pages" content="643004532437221" />
             </Head>
 
             <main>

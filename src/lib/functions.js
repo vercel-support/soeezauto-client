@@ -4,9 +4,9 @@ import { Now } from 'tools/functions';
 import { LANG } from 'parameters';
 
 const trans = {
-    br: {
-        accessDenied: 'Voce nao tem autorizacao para esta funcao',
-        systemError: 'Error de sistema. Tente de novo ou contate-nos',
+    fr: {
+        accessDenied: "Vous n'etes pas autorise",
+        systemError: 'Erreur de systeme. Merci de ressayer ou nous contacter',
     },
     en: {
         accessDenied: 'You do not have access to this',

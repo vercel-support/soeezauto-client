@@ -100,8 +100,19 @@ const Post = ({ post, postFormat, brands }) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>{`${post.title} - Maroc`}</title>
+                <meta name="description" content={post.excerpt} />
+                <meta property="og:type" content="article" />
+                <meta property="og:title" content={post.title} />
+                <meta property="og:description" content={post.excerpt} />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/wp/wp-content/uploads/2014/10/jeep-renegade-169-2.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content={`https://www.soeezauto.ma${router.asPath}`}
+                />
             </Head>
             <main>
                 <Breadcrumb

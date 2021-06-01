@@ -25,8 +25,27 @@ const Models = ({ allModels, filters, recentModels, randPromos }) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    {`Tous modeles voitures neuves au Maroc | guide d'achat modèles, prix,
+                    fiches techniques`}
+                </title>
+                <meta
+                    name="description"
+                    content="Tous modeles voitures neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés"
+                />
+                <meta
+                    property="og:title"
+                    content="Modeles voitures neuves au Maroc, prix, fiches techniques"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.com/images/TODO.png"
+                />
+                <meta
+                    property="og:url"
+                    content="https://www.soeezauto.ma/modeles-voiture"
+                />
+                <link rel="canonical" href="https://www.soeezauto.ma/modeles-voiture" />
             </Head>
 
             <main>

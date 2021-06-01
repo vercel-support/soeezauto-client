@@ -166,8 +166,29 @@ const SoeezBlog = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>soeez-Blog, actualite automobile du Maroc et du monde Maroc</title>
+                <meta
+                    name="robots"
+                    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+                />
+                <meta
+                    name="description"
+                    content="Toute actualité automobile, nouvelles voitures, comparatifs, budget, lancement Maroc, opinion et analyse"
+                />
+                <meta
+                    property="og:title"
+                    content="soeez-Blog, actualité automobile du Maroc et du monde"
+                />
+                <meta
+                    property="og:description"
+                    content="Toute l’actualité automobile, nouvelles voitures, comparatifs, budget, lancement Maroc, opinion et analyse"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/wp/wp-content/uploads/2014/10/soeezauto-logo-laranja-800.jpg"
+                />
+                <meta property="og:url" content="https://www.soeezauto.ma/soeez-blog/" />
+                <link rel="canonical" href="https://www.soeezauto.ma/soeez-blog/" />
             </Head>
 
             <main>

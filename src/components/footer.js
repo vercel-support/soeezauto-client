@@ -2,29 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { ButtonBase } from '@material-ui/core';
 import styles from 'styles/footer.module.scss';
-import { LANG } from 'parameters';
 import Link from './link';
-
-const trans = {
-    fr: {
-        menu: 'Menu',
-        home: 'Home',
-        createAd: 'Publicar anuncio',
-        search: 'Buscar anuncios',
-        contact: 'Contato',
-        legal: 'Legal',
-        ourMission: 'Nossa missao',
-    },
-    en: {
-        menu: 'Menu',
-        home: 'Home',
-        createAd: 'Create ad',
-        search: 'Search',
-        contact: 'Contact',
-        legal: 'Legal',
-        ourMission: 'Our mission',
-    },
-};
 
 const Footer = () => {
     return (
@@ -33,19 +11,19 @@ const Footer = () => {
                 <section className={styles.section}>
                     <div className={styles.sectionDiv}>
                         <Link className={styles.sectionDivA} href="/">
-                            {trans[LANG].home}
-                        </Link>
-                        <Link className={styles.sectionDivA} href="/">
-                            {trans[LANG].createAd}
+                            Accueil
                         </Link>
                         <Link className={styles.sectionDivA} href="/marques-voiture">
-                            {trans[LANG].search}
+                            Marques
+                        </Link>
+                        <Link className={styles.sectionDivA} href="/prix-budget-voiture">
+                            Prix et budget
                         </Link>
                         <Link className={styles.sectionDivA} href="/contact">
-                            {trans[LANG].contact}
+                            Nous contacter
                         </Link>
                         <Link className={styles.sectionDivA} href="/legal">
-                            {trans[LANG].legal}
+                            Mentions legales
                         </Link>
                     </div>
                 </section>

@@ -11,7 +11,7 @@ import {
 import { apiStd } from 'lib/functions';
 
 function* postContactEmail(action) {
-    const url = '/contact-form';
+    const url = '/api/contact-form';
     try {
         yield put({
             type: POST_CONTACT_EMAIL_INIT,

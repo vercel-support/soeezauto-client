@@ -66,8 +66,30 @@ const Segments = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    Tous segments et type voiture au Maroc | prix, comparatif automobile
+                    segments automobile au Maroc |
+                </title>
+                <meta
+                    name="description"
+                    content="Toutes les voitures neuves, tous segments et types au Maroc.  "
+                />
+                <meta
+                    property="og:title"
+                    content="Tous segments et type voiture au Maroc"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/og/segment-petit-monospace-ford-b-max.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content="https://www.soeezauto.ma/segments-automobile"
+                />
+                <link
+                    rel="canonical"
+                    href="https://www.soeezauto.ma/segments-automobile"
+                />
             </Head>
             <main>
                 <Breadcrumb

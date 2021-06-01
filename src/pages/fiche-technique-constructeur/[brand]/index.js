@@ -111,8 +111,34 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    {`Fiche technique constructeur ${brand.brand} neuves au Maroc | guide d'achat,
+                    prix, comparatif`}
+                </title>
+                <meta
+                    name="description"
+                    content={`Fiche technique ${brand.brand} neuves au Maroc, guide d'achat, prix, comparatif`}
+                />
+                <meta
+                    property="og:title"
+                    content={`Fiche technique ${brand.brand} neuves au Maroc, prix`}
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.com/images/TODO.png"
+                />
+                <meta
+                    property="og:url"
+                    content={`https://www.soeezauto.ma/fiche-technique-constructeur/${urlWriter(
+                        brand.brand,
+                    )}`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.soeezauto.ma/fiche-technique-constructeur/${urlWriter(
+                        brand.brand,
+                    )}`}
+                />
             </Head>
             <main>
                 <Breadcrumb

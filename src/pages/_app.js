@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import withReduxSaga from 'next-redux-saga';
 import PropTypes from 'prop-types';
-import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Layout from 'components/layout';
@@ -50,6 +50,7 @@ function MyApp(props) {
     return (
         <>
             <Head>
+                <meta charSet="utf-8" />
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width"

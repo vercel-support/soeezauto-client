@@ -127,8 +127,34 @@ const FicheTechnique = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    {`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc | guide d'achat,
+                    prix, comparatif`}
+                </title>
+                <meta
+                    name="description"
+                    content={`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc, guide d'achat, prix, comparatif`}
+                />
+                <meta
+                    property="og:title"
+                    content={`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc, prix`}
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.com/images/TODO.png"
+                />
+                <meta
+                    property="og:url"
+                    content={`https://www.soeezauto.ma/fiche-technique-prix/${urlWriter(
+                        model.brand.brand,
+                    )}/${urlWriter(model.model)}`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.soeezauto.ma/fiche-technique-prix/${urlWriter(
+                        model.brand.brand,
+                    )}/${urlWriter(model.model)}`}
+                />
             </Head>
 
             <main>

@@ -25,7 +25,6 @@ import { Clear, ExpandMore } from '@material-ui/icons';
 import { deepOrange } from '@material-ui/core/colors';
 import PropTypes from 'prop-types';
 import { objectToMap } from 'tools/functions';
-import { LANG } from 'parameters';
 import Loading from 'components/loading';
 import NotifierDialog from 'components/notifierDialog';
 
@@ -34,20 +33,6 @@ const ModelTable = dynamic(() => import('./modelTable'), {
     // loading: () => <div style={{ height: '35px ' }} />,
 });
 
-const trans = {
-    fr: {
-        submit: 'Enviar',
-        clear: 'Apagar',
-        somethingWrong: 'Algo deu errado',
-        reloadAndTryAgain: 'Recarregue pagina e tente de novo',
-    },
-    en: {
-        submit: 'Submit',
-        clear: 'Clear',
-        somethingWrong: 'There was an error',
-        reloadAndTryAgain: 'Reload and try again',
-    },
-};
 const useStyles = makeStyles((theme) => ({
     mainContent: {
         width: 'clamp(320px,100%, 600px)',
@@ -265,8 +250,8 @@ const ModelFilter = ({ allModels, filters }) => {
         } else {
             setNotification({
                 status: 'ok_and_dismiss',
-                title: trans[LANG].somethingWrong,
-                message: trans[LANG].reloadAndTryAgain,
+                title: 'Il a eu une erreur',
+                message: 'Merci de ressayer',
                 errors: {},
             });
         }
@@ -427,7 +412,7 @@ const ModelFilter = ({ allModels, filters }) => {
                                     color="secondary"
                                     size="small"
                                     type="reset"
-                                    aria-label={trans[LANG].clear}
+                                    aria-label="effacer"
                                 >
                                     <Clear />
                                 </Fab>
@@ -441,9 +426,9 @@ const ModelFilter = ({ allModels, filters }) => {
                                     }
                                     name="_submit"
                                     type="submit"
-                                    aria-label={trans[LANG].submit}
+                                    aria-label="envoyer"
                                 >
-                                    {trans[LANG].submit}
+                                    Envoyer
                                 </Button>
                             </FormGroup>
                         </div>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { makeStyles } from '@material-ui/core/styles';
 import localforage from 'localforage';
 import dynamic from 'next/dynamic';
@@ -60,8 +59,13 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     branding: {
-        justifySelf: 'start',
-        width: '190px',
+        width: 180,
+        height: 60,
+        fontSize: 35,
+        fontWeight: 800,
+        color: '#fff',
+        lineHeight: '60px',
+        textAlign: 'center',
     },
     menuIcon: {
         height: '60px',
@@ -110,15 +114,7 @@ export default function Header(props) {
             <header>
                 <div className={classes.headerTop}>
                     <Link href="/" aria-label="go to homepage">
-                        <Image
-                            src="/images/main-logo.png"
-                            alt="soeezauto logo"
-                            className={classes.branding}
-                            width="180"
-                            height="60"
-                            loading="eager"
-                            priority
-                        />
+                        <p className={classes.branding}>soeezAuto</p>
                     </Link>
                     <div>
                         <MobileMenuHandler

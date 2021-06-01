@@ -120,8 +120,27 @@ const Promotions = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>{`Prix promotion offres voiture neuve au Maroc - ${new Date().getFullYear()}`}</title>
+                <meta
+                    name="description"
+                    content="Découvrez toutes les voitures en promotion et offres. Prix et fiches techniques voiture neuve en promotion au Maroc. "
+                />
+                <meta
+                    property="og:title"
+                    content="Prix promotion offres voiture neuve au Maroc"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/og/segment-petit-monospace-ford-b-max.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content="https://www.soeezauto.ma/promotion-voiture-neuve-au-maroc"
+                />
+                <link
+                    rel="canonical"
+                    href="https://www.soeezauto.ma/promotion-voiture-neuve-au-maroc"
+                />
             </Head>
 
             <main>

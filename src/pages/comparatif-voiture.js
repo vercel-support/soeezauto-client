@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Head from 'next/head';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -397,115 +398,147 @@ const Comparison = (props) => {
         });
     };
     return (
-        <main>
-            {selectedVersionIds.length > modelData.length && isLoading && <Loading />}
-            <div className="main-title">
-                <h1>Comparatif voiture neueve au Maroc</h1>
-            </div>
-            {localStorage.length > 0 && (
-                <NotifierInline message="Veuillez choisir les versions souhaitees pour chaque modele" />
-            )}
-            <NotifierDialog
-                notification={notification}
-                handleNotificationDismiss={handleNotificationDismiss}
-            />
-            <div className={classes.mainContainer}>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Choisir modeles & versions</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        <div>
-                            <Clear
-                                size="small"
-                                variant="outlined"
-                                onClick={handleClearAll}
-                                disabled={selectedVersions.length === 0}
-                            />
-                        </div>
-                        <div className="selectForms">
-                            {[...Array(3).keys()].map((ind) => (
-                                <form key={ind}>
-                                    <FormControl variant="outlined">
-                                        <InputLabel id={`select-${ind}-label`}>
-                                            Choisir modele
-                                        </InputLabel>
-                                        <Select
-                                            labelId={`select-${ind}-label`}
-                                            name={`select-${ind}`}
-                                            label="Choisir modele"
-                                            value={selectedValues[ind]}
-                                            onChange={handleSelectChange}
-                                            variant="outlined"
-                                            disabled={handleSetSelectedDisabled(ind)}
-                                        >
-                                            {handleSetSelect()}
-                                        </Select>
-                                        <span id="no_cat_search" className="form_error" />
-                                    </FormControl>
-                                </form>
-                            ))}
-                        </div>
-                        {isVersionList && (
-                            <VersionList
-                                model={selectedModels[modelIndex]}
-                                handleVersionSelect={handleVersionSelect}
-                            />
-                        )}
-                        <div className="selectForms">
+        <div>
+            <Head>
+                <title>
+                    Comparatif voiture neuve au Maroc | prix, caracteristiques techniques,
+                    equipements
+                </title>
+                <meta
+                    name="description"
+                    content="Comparatif toutes les voitures neuves, tous segments et types au Maroc.  "
+                />
+                <meta
+                    property="og:title"
+                    content="Comparatif voiture neuve au Maroc, prix, caracteristiques techniques,
+                    equipements"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/og/segment-petit-monospace-ford-b-max.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content="https://www.soeezauto.ma/comparatif-voiture"
+                />
+                <link
+                    rel="canonical"
+                    href="https://www.soeezauto.ma/comparatif-voiture"
+                />
+            </Head>
+            <main>
+                {selectedVersionIds.length > modelData.length && isLoading && <Loading />}
+                <div className="main-title">
+                    <h1>Comparatif voiture neueve au Maroc</h1>
+                </div>
+                {localStorage.length > 0 && (
+                    <NotifierInline message="Veuillez choisir les versions souhaitees pour chaque modele" />
+                )}
+                <NotifierDialog
+                    notification={notification}
+                    handleNotificationDismiss={handleNotificationDismiss}
+                />
+                <div className={classes.mainContainer}>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Choisir modeles & versions</h2>} />
+                        <CardContent className={classes.cardContent}>
                             <div>
-                                {modelData[0] && (
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[0].images[0].filename}`}
-                                        alt={`${modelData[0].brand.brand}-${modelData[0].model}`}
-                                        width={150}
-                                        height={100}
-                                    />
-                                )}
+                                <Clear
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={handleClearAll}
+                                    disabled={selectedVersions.length === 0}
+                                />
                             </div>
-                            <div>
-                                {modelData[1] && (
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[1].images[0].filename}`}
-                                        alt={`${modelData[1].brand.brand}-${modelData[1].model}`}
-                                        width={150}
-                                        height={100}
-                                    />
-                                )}
+                            <div className="selectForms">
+                                {[...Array(3).keys()].map((ind) => (
+                                    <form key={ind}>
+                                        <FormControl variant="outlined">
+                                            <InputLabel id={`select-${ind}-label`}>
+                                                Choisir modele
+                                            </InputLabel>
+                                            <Select
+                                                labelId={`select-${ind}-label`}
+                                                name={`select-${ind}`}
+                                                label="Choisir modele"
+                                                value={selectedValues[ind]}
+                                                onChange={handleSelectChange}
+                                                variant="outlined"
+                                                disabled={handleSetSelectedDisabled(ind)}
+                                            >
+                                                {handleSetSelect()}
+                                            </Select>
+                                            <span
+                                                id="no_cat_search"
+                                                className="form_error"
+                                            />
+                                        </FormControl>
+                                    </form>
+                                ))}
                             </div>
-                            <div>
-                                {modelData[2] && (
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[2].images[0].filename}`}
-                                        alt={`${modelData[2].brand.brand}-${modelData[2].model}`}
-                                        width={150}
-                                        height={100}
-                                    />
-                                )}
+                            {isVersionList && (
+                                <VersionList
+                                    model={selectedModels[modelIndex]}
+                                    handleVersionSelect={handleVersionSelect}
+                                />
+                            )}
+                            <div className="selectForms">
+                                <div>
+                                    {modelData[0] && (
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[0].images[0].filename}`}
+                                            alt={`${modelData[0].brand.brand}-${modelData[0].model}`}
+                                            width={150}
+                                            height={100}
+                                        />
+                                    )}
+                                </div>
+                                <div>
+                                    {modelData[1] && (
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[1].images[0].filename}`}
+                                            alt={`${modelData[1].brand.brand}-${modelData[1].model}`}
+                                            width={150}
+                                            height={100}
+                                        />
+                                    )}
+                                </div>
+                                <div>
+                                    {modelData[2] && (
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${modelData[2].images[0].filename}`}
+                                            alt={`${modelData[2].brand.brand}-${modelData[2].model}`}
+                                            width={150}
+                                            height={100}
+                                        />
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Caracteristiques techniques</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        {selectedVersions.length > 0 ? (
-                            <ModelSpecs versions={selectedVersions} />
-                        ) : (
-                            <Chip size="small" label="Aucune version" />
-                        )}
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Equipements</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        {selectedVersions.length > 0 ? (
-                            <ModelTrims versions={selectedVersions} />
-                        ) : (
-                            <Chip size="small" label="Aucune version" />
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
-        </main>
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Caracteristiques techniques</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {selectedVersions.length > 0 ? (
+                                <ModelSpecs versions={selectedVersions} />
+                            ) : (
+                                <Chip size="small" label="Aucune version" />
+                            )}
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Equipements</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            {selectedVersions.length > 0 ? (
+                                <ModelTrims versions={selectedVersions} />
+                            ) : (
+                                <Chip size="small" label="Aucune version" />
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
+            </main>
+        </div>
     );
 };
 

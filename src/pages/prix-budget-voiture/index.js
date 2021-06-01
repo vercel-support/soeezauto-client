@@ -347,8 +347,27 @@ const Prices = (props) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>prix et budget voiture neuve au Maroc | soeezauto </title>
+                <meta
+                    name="description"
+                    content="Prix de voiture neuve au Maroc, toutes les marques et modèles,essence ou diesel"
+                />
+                <meta
+                    property="og:title"
+                    content="Prix de tous les modeles en vente au Maroc. Faites votre budget d'achat"
+                />
+                <meta
+                    property="og:image"
+                    content="https://www.soeezauto.ma/TODO/og/price-sign.jpg"
+                />
+                <meta
+                    property="og:url"
+                    content="https://www.soeezauto.ma/prix-budget-voiture"
+                />
+                <link
+                    rel="canonical"
+                    href="https://www.soeezauto.ma/prix-budget-voiture"
+                />
             </Head>
 
             <main>

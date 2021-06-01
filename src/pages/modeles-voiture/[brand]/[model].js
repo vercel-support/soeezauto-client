@@ -187,8 +187,34 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
     return (
         <div>
             <Head>
-                <title>Create Next App</title>
-                <link rel="icon" href="/favicon.ico" />
+                <title>
+                    {`${model.brand.brand} ${model.model} neuve au Maroc | guide d'achat,
+                    prix, fiches techniques`}
+                </title>
+                <meta
+                    name="description"
+                    content={`${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés`}
+                />
+                <meta
+                    property="og:title"
+                    content={`${model.brand.brand} ${model.model} neuve au Maroc, prix, fiches techniques`}
+                />
+                <meta
+                    property="og:image"
+                    content={`https://www.soeezauto.com/images/models/${model.images[0].filename}`}
+                />
+                <meta
+                    property="og:url"
+                    content={`https://www.soeezauto.ma/modeles-voiture/${urlWriter(
+                        model.brand.brand,
+                    )}/${urlWriter(model.model)}`}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://www.soeezauto.ma/modeles-voiture/${urlWriter(
+                        model.brand.brand,
+                    )}/${urlWriter(model.model)}`}
+                />
             </Head>
 
             <main className={classes.mainContainer}>
