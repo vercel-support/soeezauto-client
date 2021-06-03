@@ -53,10 +53,6 @@ const Brands = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'marques voiture',
                         },

@@ -19,15 +19,11 @@ const getMuiTheme = () =>
             },
             MUIDataTableBodyCell: {
                 root: {
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    // cursor: 'pointer',
+                    '& div:first-child': {
+                        fontSize: '.8rem',
+                    },
                     '& > p': {
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        // textTransform: 'capitalize',
+                        fontSize: '.8rem',
                     },
                     '& >svg': {
                         color: 'green',
@@ -38,6 +34,9 @@ const getMuiTheme = () =>
                 },
                 responsiveStackedSmall: {
                     height: 48,
+                },
+                stackedParent: {
+                    padding: '10px 8px',
                 },
             },
             MuiTypography: {

@@ -22,6 +22,7 @@ import WidgetPromo from 'components/widgetPromotion';
 
 const useStyles = makeStyles({
     root: {
+        contentVisibility: 'auto',
         color: '#29335c',
         backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {

@@ -141,10 +141,6 @@ const ContactEmailForm = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'contact',
                         },

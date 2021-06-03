@@ -63,7 +63,7 @@ const ModelVersions = ({ model }) => {
                         <CardHeader
                             title={
                                 <Link
-                                    href={`/fiche-technique-prix/${urlWriter(
+                                    href={`/fiches-techniques/${urlWriter(
                                         model.brand.brand,
                                     )}/${urlWriter(model.model)}`}
                                 >
@@ -132,10 +132,7 @@ const ModelVersions = ({ model }) => {
             {model.specs.edges.length > 0 && (
                 <Box className={classes.fiche}>
                     <Link
-                        href={`/fiche-technique-constructeur/${urlWriter(
-                            model.brand.brand,
-                        )}`}
-                        target="_blank"
+                        href={`/fiches-techniques/marque/${urlWriter(model.brand.brand)}`}
                     >
                         <Button variant="contained" color="secondary">
                             Fiche technique constructeur

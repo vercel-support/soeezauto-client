@@ -145,13 +145,13 @@ const FicheTechnique = (props) => {
                 />
                 <meta
                     property="og:url"
-                    content={`https://www.soeezauto.ma/fiche-technique-prix/${urlWriter(
+                    content={`https://www.soeezauto.ma/fiches-techniques/${urlWriter(
                         model.brand.brand,
                     )}/${urlWriter(model.model)}`}
                 />
                 <link
                     rel="canonical"
-                    href={`https://www.soeezauto.ma/fiche-technique-prix/${urlWriter(
+                    href={`https://www.soeezauto.ma/fiches-techniques/${urlWriter(
                         model.brand.brand,
                     )}/${urlWriter(model.model)}`}
                 />
@@ -161,14 +161,12 @@ const FicheTechnique = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: `/modeles-voiture/${urlWriter(
-                                model.brand.brand,
-                            )}/${urlWriter(model.model)}`,
-                            text: `${model.brand.brand} ${model.model}`,
+                            href: '/fiches-techniques',
+                            text: 'Fiches techniques',
                         },
                         {
                             href: null,
-                            text: `fiche technique ${model.brand.brand} ${model.model}`,
+                            text: `${model.brand.brand} ${model.model}`,
                         },
                     ]}
                 />
@@ -183,15 +181,15 @@ const FicheTechnique = (props) => {
                                     title={<h2>Versions</h2>}
                                     avatar={
                                         <Link
-                                            href={`/marques-voiture/${urlWriter(
+                                            href={`/modeles-voiture/${urlWriter(
                                                 model.brand.brand,
-                                            )}`}
+                                            )}/${urlWriter(model.model)}`}
                                         >
                                             <Image
-                                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${model.brand.image}`}
+                                                src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
                                                 alt={model.brand.brand}
-                                                width="60"
-                                                height="60"
+                                                width="105"
+                                                height="70"
                                                 loading="eager"
                                                 priority
                                             />
@@ -265,10 +263,9 @@ const FicheTechnique = (props) => {
                                     {model.specs.edges.length > 0 && (
                                         <Box className={classes.fiche}>
                                             <Link
-                                                href={`/fiche-technique-constructeur/${urlWriter(
+                                                href={`/fiches-techniques/marque/${urlWriter(
                                                     model.brand.brand,
                                                 )}`}
-                                                target="_blank"
                                             >
                                                 <Button
                                                     variant="contained"
@@ -294,7 +291,7 @@ const FicheTechnique = (props) => {
 
 FicheTechnique.propTypes = {
     model: PropTypes.any,
-    brandsModels: PropTypes.array.isRequired,
+    brandsModels: PropTypes.any,
 };
 
 export default FicheTechnique;

@@ -199,10 +199,6 @@ const SoeezBlog = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'soeez-blog',
                         },

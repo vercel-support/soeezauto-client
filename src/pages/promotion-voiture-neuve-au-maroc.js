@@ -47,6 +47,7 @@ const useStyles = makeStyles({
         hyphens: 'none',
     },
     brand: {
+        contentVisibility: 'auto',
         backgroundColor: '#ffe082',
         marginBottom: 30,
     },
@@ -147,10 +148,6 @@ const Promotions = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'promotions',
                         },
@@ -221,8 +218,8 @@ const Promotions = (props) => {
                                                 <Image
                                                     src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
                                                     alt={`${brand.brand}-${model.model}`}
-                                                    width="100"
-                                                    height="67"
+                                                    width="105"
+                                                    height="70"
                                                     loading="eager"
                                                     priority
                                                 />
@@ -249,7 +246,7 @@ const Promotions = (props) => {
                                                     <TableRow key={version.id}>
                                                         <TableCell>
                                                             <Link
-                                                                href={`/fiche-technique-prix/${urlWriter(
+                                                                href={`/fiches-techniques/${urlWriter(
                                                                     brand.brand,
                                                                 )}/${urlWriter(
                                                                     model.model,

@@ -30,6 +30,7 @@ import { actionGetModel, actionSetGetModelToNull } from 'store/actions';
 import NotifierInline from 'components/notifierInline';
 import NotifierDialog from 'components/notifierDialog';
 import Loading from 'components/loading';
+import Breadcrumb from 'components/breadcrumb';
 
 const useStylesVL = makeStyles({
     cards: {
@@ -128,7 +129,7 @@ VersionList.propTypes = {
     model: PropTypes.object.isRequired,
     handleVersionSelect: PropTypes.func.isRequired,
 };
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         contentVisibility: 'auto',
         backgroundColor: '#ffe082',
@@ -156,6 +157,9 @@ const useStyles = makeStyles({
         // justifyContent: 'space-evenly',
         // rowGap: '6px',
         // gridGap: '6px',
+        [theme.breakpoints.down('xs')]: {
+            padding: 0,
+        },
         '& >div': {
             textAlign: 'center',
         },
@@ -183,7 +187,6 @@ const useStyles = makeStyles({
     mainContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
             flex: '0 0 clamp(300px, 100%, 700px)',
@@ -205,7 +208,7 @@ const useStyles = makeStyles({
             fontSize: '.75rem',
         },
     },
-});
+}));
 
 const Comparison = (props) => {
     const classes = useStyles();
@@ -427,6 +430,14 @@ const Comparison = (props) => {
                 />
             </Head>
             <main>
+                <Breadcrumb
+                    links={[
+                        {
+                            href: null,
+                            text: 'Comparatif voitures',
+                        },
+                    ]}
+                />
                 {selectedVersionIds.length > modelData.length && isLoading && <Loading />}
                 <div className="main-title">
                     <h1>Comparatif voiture neueve au Maroc</h1>

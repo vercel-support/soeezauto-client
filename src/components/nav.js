@@ -51,6 +51,11 @@ const Nav = () => {
                             comparatif
                         </Link>
                     </MenuItem>
+                    <MenuItem disableGutters id="/">
+                        <Link href="/fiches-techniques" isActivable>
+                            fiches techniques
+                        </Link>
+                    </MenuItem>
                 </MenuList>
             )}
         </>

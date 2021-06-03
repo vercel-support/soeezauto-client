@@ -52,10 +52,6 @@ const Models = ({ allModels, filters, recentModels, randPromos }) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'modeles voiture',
                         },

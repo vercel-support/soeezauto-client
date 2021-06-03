@@ -95,10 +95,6 @@ const Segments = (props) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: '/',
-                            text: 'accueil',
-                        },
-                        {
                             href: null,
                             text: 'segments voiture',
                         },

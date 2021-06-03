@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import {
-    Box,
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
-    Button,
-    Chip,
-} from '@material-ui/core';
+import { Box, Card, CardHeader, CardContent, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getBrands from 'lib/getBrands';
@@ -22,6 +15,7 @@ import Breadcrumb from 'components/breadcrumb';
 import WidgetNav from 'components/widgetNav';
 import WidgetLaunches from 'components/widgetLaunches';
 import WidgetPromo from 'components/widgetPromotion';
+import Link from 'components/link';
 
 const useStyles = makeStyles(() => ({
     cardRoot: {
@@ -64,7 +58,7 @@ const useStyles = makeStyles(() => ({
     },
     iframeContainer: {
         position: 'relative',
-        overflow: 'hidden',
+        overflowY: 'scroll',
         width: '100%',
         paddingTop: '130%',
     },
@@ -104,7 +98,6 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
         setCurrentModel(newModel[0]);
         setSelectedModelIndex(parseInt(event.target.dataset.modelindex, 10));
     };
-
     if (!brand || router.isFallback) {
         return <Loading />;
     }
@@ -129,13 +122,13 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                 />
                 <meta
                     property="og:url"
-                    content={`https://www.soeezauto.ma/fiche-technique-constructeur/${urlWriter(
+                    content={`https://www.soeezauto.ma/fiches-techniques/marque/${urlWriter(
                         brand.brand,
                     )}`}
                 />
                 <link
                     rel="canonical"
-                    href={`https://www.soeezauto.ma/fiche-technique-constructeur/${urlWriter(
+                    href={`https://www.soeezauto.ma/fiches-techniques/marque/${urlWriter(
                         brand.brand,
                     )}`}
                 />
@@ -144,12 +137,12 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                 <Breadcrumb
                     links={[
                         {
-                            href: `/marques-voiture/${urlWriter(brand.brand)}`,
-                            text: `${brand.brand}`,
+                            href: '/fiches-techniques',
+                            text: 'Fiches techniques',
                         },
                         {
                             href: null,
-                            text: `Fiche technique constructeur - ${brand.brand}`,
+                            text: `Constructeur - ${brand.brand}`,
                         },
                     ]}
                 />
@@ -158,7 +151,21 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                 </div>
                 {models.length > 0 ? (
                     <Card className={classes.cardRoot}>
-                        <CardHeader title={<h2>Modeles</h2>} />
+                        <CardHeader
+                            title={<h2>Modeles</h2>}
+                            avatar={
+                                <Link href={`/marques-voiture/${urlWriter(brand.brand)}`}>
+                                    <Image
+                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
+                                        alt={`${brand.brand}`}
+                                        width="100"
+                                        height="100"
+                                        loading="eager"
+                                        priority
+                                    />
+                                </Link>
+                            }
+                        />
                         <CardContent className={classes.cardContent}>
                             {models.map((model, index) => (
                                 <Box key={model.model}>
@@ -179,14 +186,6 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                                 </Box>
                             ))}
                         </CardContent>
-                        <CardActions>
-                            <Chip
-                                label={
-                                    <h2>{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
-                                }
-                                color="secondary"
-                            />
-                        </CardActions>
                     </Card>
                 ) : (
                     <NotifierInline
@@ -195,11 +194,16 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                     />
                 )}
                 {currentModel && (
+                    <h2 className="main-title">{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
+                )}
+                {currentModel && (
                     <div className={classes.iframeContainer}>
                         <iframe
                             className={classes.responsiveIframe}
+                            type="application/pdf"
+                            scrolling="auto"
                             title={currentModel.specs.edges[0].node.filename}
-                            style={{ width: '100%', height: 1500 }}
+                            // style={{ width: '100%', height: 1500 }}
                             src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
                                 brand.brand,
                             )}/${new Date(
@@ -237,6 +241,7 @@ const queryQl = `query getBrandSpecs(
 ) {
     brand(id: $id) {
         brand
+        image
         models(isActive: true) {
             id
             model

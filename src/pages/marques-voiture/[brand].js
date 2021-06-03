@@ -46,7 +46,7 @@ import WidgetNav from 'components/widgetNav';
 import WidgetLaunches from 'components/widgetLaunches';
 import WidgetPromo from 'components/widgetPromotion';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         backgroundColor: '#ffe082',
         color: '#29335c',
@@ -77,6 +77,11 @@ const useStyles = makeStyles({
             paddingRight: 2,
             '& p': {
                 color: cyan[800],
+            },
+        },
+        [theme.breakpoints.down('xs')]: {
+            '& td': {
+                padding: 4,
             },
         },
     },
@@ -118,7 +123,7 @@ const useStyles = makeStyles({
             fontWeight: 700,
         },
     },
-});
+}));
 
 const Brand = (props) => {
     const {
@@ -153,7 +158,7 @@ const Brand = (props) => {
         props.actionGetModelsWithAutomaticGearboxForBrand({
             isActive: true,
             gearbox: AUTOMATIC_GEARBOXES,
-            brand: '/apiljlkj/brand/334333',
+            brand: brand.id,
         });
         props.actionGetModelsWithAirCondAutoForBrand({
             isActive: true,
@@ -437,7 +442,7 @@ const Brand = (props) => {
                                                 <TableCell colSpan={2}>
                                                     <Box className={classes.fiche}>
                                                         <Link
-                                                            href={`/fiche-technique-constructeur/${urlWriter(
+                                                            href={`/fiches-techniques/marque/${urlWriter(
                                                                 brand.brand,
                                                             )}`}
                                                         >
