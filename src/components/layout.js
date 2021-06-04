@@ -9,7 +9,9 @@ import styles from 'styles/layout.module.scss';
 import Header from './header';
 import ClientLog from './clientLog';
 
-const Footer = dynamic(() => import('./footer'), {});
+const Footer = dynamic(() => import('./footer'), {
+    ssr: false,
+});
 
 const Layout = (props) => {
     const router = useRouter();

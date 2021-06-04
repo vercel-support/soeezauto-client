@@ -113,7 +113,7 @@ export default function Header(props) {
             {isRgpd && <RgpdDialog handleCloseRgpdDialog={handleCloseRgpdDialog} />}
             <header>
                 <div className={classes.headerTop}>
-                    <Link href="/" aria-label="go to homepage">
+                    <Link href="/" aria-label="visiter page accueil">
                         <p className={classes.branding}>soeezAuto</p>
                     </Link>
                     <div>

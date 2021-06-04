@@ -71,10 +71,9 @@ const ModelTable = ({ currentModels }) => {
                 <Image
                     src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${model.images[0].filename}`}
                     alt={`${model.brand.brand || model.brand}-${model.model}`}
-                    width="100"
-                    height="67"
-                    loading="eager"
-                    priority
+                    width="105"
+                    height="70"
+                    layout="fixed"
                 />
             ),
             price:
@@ -110,7 +109,7 @@ const ModelTable = ({ currentModels }) => {
         },
         {
             name: 'model',
-            label: 'Modele',
+            label: 'Modèle',
             options: {
                 filter: false,
                 customBodyRender: (value, tableMeta) => {
@@ -170,7 +169,7 @@ const ModelTable = ({ currentModels }) => {
     return (
         <MuiThemeProvider theme={getMuiTheme()}>
             <MUIDataTable
-                title="Modeles"
+                title="Modèles"
                 data={data}
                 columns={columns}
                 options={options}

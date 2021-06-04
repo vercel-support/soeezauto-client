@@ -33,16 +33,16 @@ const Models = ({ allModels, filters, recentModels, randPromos }) => {
         <div>
             <Head>
                 <title>
-                    {`Tous modeles voitures neuves au Maroc | guide d'achat modèles, prix,
+                    {`Tous modèles voitures neuves au Maroc | guide d'achat modèles, prix,
                     fiches techniques`}
                 </title>
                 <meta
                     name="description"
-                    content="Tous modeles voitures neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés"
+                    content="Tous modèles voitures neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés"
                 />
                 <meta
                     property="og:title"
-                    content="Modeles voitures neuves au Maroc, prix, fiches techniques"
+                    content="Modèles voitures neuves au Maroc, prix, fiches techniques"
                 />
                 <meta
                     property="og:image"
@@ -60,12 +60,12 @@ const Models = ({ allModels, filters, recentModels, randPromos }) => {
                     links={[
                         {
                             href: null,
-                            text: 'modeles voiture',
+                            text: 'modèles voiture',
                         },
                     ]}
                 />
                 <div className="main-title">
-                    <h1>Modeles voiture au Maroc</h1>
+                    <h1>Modèles voiture au Maroc</h1>
                 </div>
                 <ModelFilter allModels={allModels} filters={filters} />
                 <WidgetPromo data={randPromos} />

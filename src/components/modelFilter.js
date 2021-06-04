@@ -251,7 +251,7 @@ const ModelFilter = ({ allModels, filters }) => {
             setNotification({
                 status: 'ok_and_dismiss',
                 title: 'Il a eu une erreur',
-                message: 'Merci de ressayer',
+                message: 'Veuillez ressayer',
                 errors: {},
             });
         }
@@ -337,7 +337,7 @@ const ModelFilter = ({ allModels, filters }) => {
                                                     name="automaticGearbox"
                                                 />
                                             }
-                                            label="Boite automatique"
+                                            label="Boîte automatique"
                                         />
                                         <FormControlLabel
                                             control={
@@ -349,7 +349,7 @@ const ModelFilter = ({ allModels, filters }) => {
                                                     name="displayMultimedia"
                                                 />
                                             }
-                                            label="Ecran multimedia"
+                                            label="Écran multimédia"
                                         />
                                         <FormControlLabel
                                             control={
@@ -367,7 +367,7 @@ const ModelFilter = ({ allModels, filters }) => {
                                     <span>Prix - mille DH</span>
                                     <RadioGroup
                                         row
-                                        aria-label="price"
+                                        aria-label="prix"
                                         name="price"
                                         value={filterValues.price}
                                         onChange={handleInputChange}
@@ -437,7 +437,7 @@ const ModelFilter = ({ allModels, filters }) => {
                 <CardActions className={classes.cardActions}>
                     <Card className={classes.cardRoot}>
                         <CardHeader
-                            title="Votre selection"
+                            title="Votre sélection"
                             subheader="cliquez ci-dessous pour l'afficher"
                         />
                         <CardContent className={classes.cardContent}>
@@ -460,7 +460,7 @@ const ModelFilter = ({ allModels, filters }) => {
                                                 </Avatar>
                                             </div>
                                         }
-                                        label="modeles"
+                                        label="modèles"
                                         color="primary"
                                     />
                                 </AccordionSummary>

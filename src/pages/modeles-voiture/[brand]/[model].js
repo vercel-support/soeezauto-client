@@ -182,13 +182,13 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                     <div className="form_select">
                         <FormControl variant="outlined">
                             <InputLabel id={`version${i}-select-label`}>
-                                {`Select version ${i === 0 ? 'base' : i}`}
+                                {`Choisir version ${i === 0 ? 'base' : i}`}
                             </InputLabel>
                             <Select
                                 labelId={`version${i}-select-label`}
                                 id={`version${i}-select`}
                                 name={`version${i}`}
-                                label={`Select version ${i}`}
+                                label={`Choisir version ${i}`}
                                 value={versionSelect[i]}
                                 onChange={handleVersionSelectChange}
                                 variant="outlined"
@@ -259,7 +259,7 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                     ]}
                 />
                 <div className="main-title">
-                    <h1>{`${model.brand.brand} ${model.model} neuve maroc`}</h1>
+                    <h1>{`${model.brand.brand} ${model.model} neuve au Maroc`}</h1>
                 </div>
                 <Card className={classes.root}>
                     <CardHeader title={<h2>{`Versions ${model.model}`}</h2>} />
@@ -268,25 +268,25 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title={<h2>Selectionez versions pour comparison</h2>} />
+                    <CardHeader title={<h2>Sélectionnez versions pour comparaison</h2>} />
                     <CardContent className={classes.cardContent}>
                         <div className="selectForms">{handleSetVersionSelect()}</div>
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title={<h2>Caracteristiques techniques</h2>} />
+                    <CardHeader title={<h2>Caractéristiques techniques</h2>} />
                     <CardContent className={classes.cardContent}>
                         <ModelSpecs versions={selectedVersions} />
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title={<h2>Equipements</h2>} />
+                    <CardHeader title={<h2>Équipements</h2>} />
                     <CardContent className={classes.cardContent}>
                         <ModelTrims versions={selectedVersions} />
                     </CardContent>
                 </Card>
                 <Card className={classes.root}>
-                    <CardHeader title={<h2>Evolution prix et promotion</h2>} />
+                    <CardHeader title={<h2>Évolution prix & promotion</h2>} />
                     <CardContent className={classes.chart}>
                         <ModelPrices model={model} />
                     </CardContent>
@@ -305,22 +305,7 @@ Model.propTypes = {
     randPromos: PropTypes.array.isRequired,
     brands: PropTypes.array.isRequired,
 };
-/*
-const mapStateToProps = (state) => {
-    return {};
-};
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators(
-        {
-            actionGetModelVersionsWithTrims,
-        },
-        dispatch,
-    );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Model);
-*/
 export default Model;
 
 const queryQl = `query getModel(

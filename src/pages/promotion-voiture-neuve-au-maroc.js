@@ -168,13 +168,13 @@ const Promotions = (props) => {
                         <div className="form_input form_select">
                             <FormControl variant="outlined">
                                 <InputLabel id="brand-select-label">
-                                    Select brand
+                                    Choisir marque
                                 </InputLabel>
                                 <Select
                                     labelId="brand-select-label"
                                     id="brand-select"
                                     name="item"
-                                    label="Select brand"
+                                    label="Choisir marque"
                                     value={brandSelect}
                                     onChange={handleBrandSelectChange}
                                     variant="outlined"
@@ -291,7 +291,7 @@ const Promotions = (props) => {
                                                 color="secondary"
                                                 size="small"
                                             >
-                                                Voir le modele
+                                                Afficher le modèle
                                             </Button>
                                         </Link>
                                     </CardActions>

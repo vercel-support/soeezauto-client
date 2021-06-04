@@ -24,7 +24,7 @@ const NavMobile = (props) => {
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/modeles-voiture" isActivable>
-                            Modeles
+                            Modèles
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">
@@ -49,7 +49,7 @@ const NavMobile = (props) => {
                     </ListItem>
                     <ListItem disableGutters id="/">
                         <Link href="/comparatif-voiture" isActivable>
-                            Comparatif
+                            Comparateur
                         </Link>
                     </ListItem>
                     <ListItem disableGutters id="/">

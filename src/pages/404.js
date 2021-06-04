@@ -42,15 +42,15 @@ const Custom404 = (props) => {
     return (
         <main>
             <div className="main-title">
-                <h1>Erro 404 - pagina nao encontrada</h1>
+                <h1>Erreur 404 - Page non trouvée</h1>
             </div>
             <div className={classes.notifierContainer}>
                 <NotifierInline
                     message={
                         <>
-                            <p>Ooops, a pagina abaixo parece nao existir.</p>
+                            <p>Ooops, la page ci-dessous ne semble pas exister..</p>
                             <p>{router.asPath}</p>
-                            <p>Verifique se esta toda escrita em letras minusculas</p>
+                            <p>Veuillez vérifier si tout est bien écrit en minuscules.</p>
                         </>
                     }
                     isNotClosable

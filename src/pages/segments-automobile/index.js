@@ -77,16 +77,16 @@ const Segments = (props) => {
         <div>
             <Head>
                 <title>
-                    Tous segments et type voiture au Maroc | prix, comparatif automobile
+                    Tous segments et types voiture au Maroc | prix, comparatif automobile
                     segments automobile au Maroc |
                 </title>
                 <meta
                     name="description"
-                    content="Toutes les voitures neuves, tous segments et types au Maroc.  "
+                    content="Toutes les voitures neuves, tous segments et types voitures au Maroc.  "
                 />
                 <meta
                     property="og:title"
-                    content="Tous segments et type voiture au Maroc"
+                    content="Tous segments et types voiture au Maroc"
                 />
                 <meta
                     property="og:image"
@@ -134,7 +134,7 @@ const Segments = (props) => {
                                 </Link>
                             </CardContent>
                             <CardActions>
-                                <Chip label={`${segment.models.length} modeles`} />
+                                <Chip label={`${segment.models.length} modèles`} />
                                 <Link
                                     href={`${
                                         process.env.NEXT_PUBLIC_CLIENT_HOST

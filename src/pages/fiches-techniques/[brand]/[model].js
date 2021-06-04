@@ -154,16 +154,16 @@ const FicheTechnique = (props) => {
         <div>
             <Head>
                 <title>
-                    {`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc | guide d'achat,
+                    {`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc | guide d'achat,
                     prix, comparatif`}
                 </title>
                 <meta
                     name="description"
-                    content={`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc, guide d'achat, prix, comparatif`}
+                    content={`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, comparatif`}
                 />
                 <meta
                     property="og:title"
-                    content={`Fiche technique ${model.brand.brand} ${model.model} neuves au Maroc, prix`}
+                    content={`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc, prix`}
                 />
                 <meta
                     property="og:image"
@@ -274,14 +274,14 @@ const FicheTechnique = (props) => {
                                     )}
                                     <Card className={classes.root}>
                                         <CardHeader
-                                            title={<h2>Caracteristiques techniques</h2>}
+                                            title={<h2>Caractéristiques techniques</h2>}
                                         />
                                         <CardContent className={classes.cardContent}>
                                             <ModelSpecs versions={[currentVersion]} />
                                         </CardContent>
                                     </Card>
                                     <Card className={classes.root}>
-                                        <CardHeader title={<h2>Equipements</h2>} />
+                                        <CardHeader title={<h2>Équipements</h2>} />
                                         <CardContent className={classes.cardContent}>
                                             <ModelTrims versions={[currentVersion]} />
                                         </CardContent>

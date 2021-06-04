@@ -89,7 +89,6 @@ const Home = (props) => {
         selectBrands,
         selectSegments,
         selectModels,
-        postsWithImage,
         recentModels,
         randPromos,
     } = props;
@@ -97,7 +96,7 @@ const Home = (props) => {
         <div>
             <Head>
                 <title>
-                    voiture neuve &amp; occasion au Maroc | actualité automobile |
+                    Voiture neuve &amp; occasion au Maroc | actualité automobile |
                     SoeezAuto{' '}
                 </title>
                 <meta
@@ -106,7 +105,7 @@ const Home = (props) => {
                 />
                 <meta
                     property="og:title"
-                    content="soeezauto.ma - annonces occasion, voitures neuves, actualités"
+                    content="soeezauto.ma - voitures neuves, promotions voitures, actualités"
                 />
                 <meta
                     property="og:image"
@@ -154,7 +153,7 @@ const Home = (props) => {
                     </Card>
                     <WidgetPromo data={randPromos} />
                     <Card className={classes.root}>
-                        <CardHeader title={<h2>Modeles</h2>} />
+                        <CardHeader title={<h2>Modèles</h2>} />
                         <CardContent className={classes.cardContent}>
                             {selectModels.map((model) => (
                                 <Box key={model.model}>
@@ -183,7 +182,7 @@ const Home = (props) => {
                         <CardActions>
                             <Link href="/modeles-voiture">
                                 <Button variant="contained" color="primary" size="small">
-                                    Tous les modeles
+                                    Tous les modèles
                                 </Button>
                             </Link>
                         </CardActions>
@@ -226,19 +225,6 @@ const Home = (props) => {
                             </Link>
                         </CardActions>
                     </Card>
-                    <Card className={classes.root}>
-                        <CardHeader title={<h2>Articles</h2>} />
-                        <CardContent>
-                            <Image
-                                src={postsWithImage[0].node.featuredImage.node.sourceUrl}
-                                alt={postsWithImage[0].node.slug}
-                                width="300"
-                                height="200"
-                                loading="eager"
-                                priority
-                            />
-                        </CardContent>
-                    </Card>
                 </div>
             </main>
         </div>
@@ -249,7 +235,6 @@ Home.propTypes = {
     selectBrands: PropTypes.array.isRequired,
     selectSegments: PropTypes.array.isRequired,
     selectModels: PropTypes.array.isRequired,
-    postsWithImage: PropTypes.array.isRequired,
     recentModels: PropTypes.array.isRequired,
     randPromos: PropTypes.array.isRequired,
 };

@@ -417,8 +417,8 @@ const Comparison = (props) => {
         <div>
             <Head>
                 <title>
-                    Comparatif voiture neuve au Maroc | prix, caracteristiques techniques,
-                    equipements
+                    Comparatif voiture neuve au Maroc | prix, caractéristiques techniques,
+                    équipements
                 </title>
                 <meta
                     name="description"
@@ -426,8 +426,7 @@ const Comparison = (props) => {
                 />
                 <meta
                     property="og:title"
-                    content="Comparatif voiture neuve au Maroc, prix, caracteristiques techniques,
-                    equipements"
+                    content="Comparatif voiture neuve au Maroc, prix, caractéristiques techniques, équipements"
                 />
                 <meta
                     property="og:image"
@@ -453,10 +452,10 @@ const Comparison = (props) => {
                 />
                 {selectedVersionIds.length > modelData.length && isLoading && <Loading />}
                 <div className="main-title">
-                    <h1>Comparatif voiture neueve au Maroc</h1>
+                    <h1>Comparatif voiture neuve au Maroc</h1>
                 </div>
                 {localStorage.length > 0 && (
-                    <NotifierInline message="Veuillez choisir les versions souhaitees pour chaque modele" />
+                    <NotifierInline message="Pour chaque modèle, veuillez choisir la version souhaitée" />
                 )}
                 <NotifierDialog
                     notification={notification}
@@ -464,7 +463,7 @@ const Comparison = (props) => {
                 />
                 <div className={classes.mainContainer}>
                     <Card className={classes.root}>
-                        <CardHeader title={<h2>Choisir modeles & versions</h2>} />
+                        <CardHeader title={<h2>Choisir modèles & versions</h2>} />
                         <CardContent className={classes.cardContent}>
                             <div>
                                 <Clear
@@ -479,12 +478,12 @@ const Comparison = (props) => {
                                     <form key={ind}>
                                         <FormControl variant="outlined">
                                             <InputLabel id={`select-${ind}-label`}>
-                                                Choisir modele
+                                                Choisir modèle
                                             </InputLabel>
                                             <Select
                                                 labelId={`select-${ind}-label`}
                                                 name={`select-${ind}`}
-                                                label="Choisir modele"
+                                                label="Choisir modèle"
                                                 value={selectedValues[ind]}
                                                 onChange={handleSelectChange}
                                                 variant="outlined"
@@ -541,7 +540,7 @@ const Comparison = (props) => {
                         </CardContent>
                     </Card>
                     <Card className={classes.root}>
-                        <CardHeader title={<h2>Caracteristiques techniques</h2>} />
+                        <CardHeader title={<h2>Caractéristiques techniques</h2>} />
                         <CardContent className={classes.cardContent}>
                             {selectedVersions.length > 0 ? (
                                 <ModelSpecs versions={selectedVersions} />
@@ -551,7 +550,7 @@ const Comparison = (props) => {
                         </CardContent>
                     </Card>
                     <Card className={classes.root}>
-                        <CardHeader title={<h2>Equipements</h2>} />
+                        <CardHeader title={<h2>Équipements</h2>} />
                         <CardContent className={classes.cardContent}>
                             {selectedVersions.length > 0 ? (
                                 <ModelTrims versions={selectedVersions} />

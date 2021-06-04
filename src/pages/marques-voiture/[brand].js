@@ -308,7 +308,7 @@ const Brand = (props) => {
             <Head>
                 <title>
                     {`Voitures ${brand.brand} neuves au Maroc | guide
-                    d'achat modèles, prix, fiches techniques`}
+                    d'achat, modèles, prix, fiches techniques`}
                 </title>
                 <meta
                     name="description"
@@ -357,7 +357,7 @@ const Brand = (props) => {
                 <Box className={classes.mainContent}>
                     <Card className={classes.root}>
                         <CardHeader
-                            title={<h2>Modeles</h2>}
+                            title={<h2>Modèles</h2>}
                             avatar={
                                 <Image
                                     src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
@@ -370,7 +370,7 @@ const Brand = (props) => {
                         />
                         <CardContent className={classes.cardContent}>
                             <TableContainer component={Paper}>
-                                <Table className={classes.table} aria-label="modeles">
+                                <Table className={classes.table} aria-label="modèles">
                                     <TableBody>
                                         {allModels.map((model, ind) => (
                                             <TableRow key={model.model}>

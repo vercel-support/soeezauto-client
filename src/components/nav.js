@@ -23,7 +23,7 @@ const Nav = () => {
                     </MenuItem>
                     <MenuItem disableGutters id="/">
                         <Link href="/modeles-voiture" isActivable>
-                            modeles
+                            modèles
                         </Link>
                     </MenuItem>
                     <MenuItem disableGutters id="/">
@@ -48,7 +48,7 @@ const Nav = () => {
                     </MenuItem>
                     <MenuItem disableGutters id="/">
                         <Link href="/comparatif-voiture" isActivable>
-                            comparatif
+                            comparateur
                         </Link>
                     </MenuItem>
                     <MenuItem disableGutters id="/">

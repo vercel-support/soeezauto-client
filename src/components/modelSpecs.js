@@ -142,7 +142,7 @@ const ModelSpecs = ({ versions }) => {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Cylindree(cm3)
+                                    Cylindrée(cm3)
                                 </TableCell>
                                 {versions.map((version) => (
                                     <TableCell key={version.id}>
@@ -192,7 +192,7 @@ const ModelSpecs = ({ versions }) => {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Boite vitesse
+                                    Boîte vitesse
                                 </TableCell>
                                 {versions.map((version) => (
                                     <TableCell key={version.id}>

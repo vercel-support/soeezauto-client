@@ -26,7 +26,7 @@ import Breadcrumb from 'components/breadcrumb';
 const trans = {
     fr: {
         success: "C'est fait",
-        messageSent: 'Votre message a ete envoyee',
+        messageSent: 'Votre message a bien été envoyée',
         somethingWrong: 'Il a eu une erreur',
         tryAgain: 'Merci de ressayer',
         subject: 'Sujet',
@@ -36,7 +36,7 @@ const trans = {
         name: 'Nom',
         contact: 'Contact',
         messageCaption: 'Nous contacter',
-        messageReturn: 'Nous vous repondrons dans le plus bref delai',
+        messageReturn: 'Nous vous répondrons dans le plus bref délai',
     },
     en: {
         success: 'Success',

@@ -185,7 +185,7 @@ const TreeCard = ({ item, node }) => {
                         alt={item.brand}
                         width="120"
                         height="120"
-                        loading="eager"
+                        layout="fixed"
                         priority
                     />
                 </Link>
@@ -218,10 +218,9 @@ const TreeCard = ({ item, node }) => {
                                         <Image
                                             src={`${process.env.NEXT_PUBLIC_API_HOST}/images/models/${child.images[0].filename}`}
                                             alt={child.model}
-                                            width="90"
-                                            height="60"
-                                            loading="eager"
-                                            priority
+                                            width="105"
+                                            height="70"
+                                            layout="fixed"
                                         />
                                     )}
                                     // labelInfo="90"

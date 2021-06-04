@@ -119,16 +119,16 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
         <div>
             <Head>
                 <title>
-                    {`Fiche technique constructeur ${brand.brand} neuves au Maroc | guide d'achat,
+                    {`Fiche technique constructeur ${brand.brand} neuve au Maroc | guide d'achat,
                     prix, comparatif`}
                 </title>
                 <meta
                     name="description"
-                    content={`Fiche technique ${brand.brand} neuves au Maroc, guide d'achat, prix, comparatif`}
+                    content={`Fiche technique constructeur ${brand.brand} neuve au Maroc, guide d'achat, prix, comparatif`}
                 />
                 <meta
                     property="og:title"
-                    content={`Fiche technique ${brand.brand} neuves au Maroc, prix`}
+                    content={`Fiche technique constructeur ${brand.brand} neuve au Maroc, prix`}
                 />
                 <meta
                     property="og:image"
@@ -167,7 +167,7 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                     {models.length > 0 ? (
                         <Card className={classes.cardRoot}>
                             <CardHeader
-                                title={<h2>Modeles</h2>}
+                                title={<h2>Modèles</h2>}
                                 avatar={
                                     <Link
                                         href={`/marques-voiture/${urlWriter(

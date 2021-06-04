@@ -130,10 +130,10 @@ const ModelTrims = ({ versions }) => {
         setTabValue(newValue);
     };
     const trimTypes = {
-        help: 'assistance',
-        sec: 'securite',
+        help: 'assist.',
+        sec: 'sécurité',
         ent: 'divertis.',
-        easy: 'commodite',
+        easy: 'commodité',
         sty: 'style',
         com: 'confort',
     };
@@ -144,7 +144,7 @@ const ModelTrims = ({ versions }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                Voir equipements
+                Afficher équipements
             </AccordionSummary>
             <AccordionDetails className={classes.accordion}>
                 {versions.length > 1 && (
@@ -159,7 +159,7 @@ const ModelTrims = ({ versions }) => {
                         <FormControlLabel
                             value={1}
                             control={<Radio />}
-                            label="differences"
+                            label="différences"
                         />
                     </RadioGroup>
                 )}

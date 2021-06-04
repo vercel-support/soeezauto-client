@@ -216,7 +216,7 @@ const SoeezBlog = (props) => {
                 />
                 {isLoading && <Loading />}
                 <div className="main-title">
-                    <h1>Actualite automobile Maroc</h1>
+                    <h1>Actualité automobile Maroc</h1>
                 </div>
                 <div className={classes.mainContainer}>
                     <div>

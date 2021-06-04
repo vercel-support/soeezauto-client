@@ -135,7 +135,7 @@ const WidgetNav = ({ brands }) => {
     };
     return (
         <Card className={classes.root}>
-            <CardHeader title={<h2>Acces rapide marque & modele</h2>} />
+            <CardHeader title={<h2>Accès rapide marque & modèle</h2>} />
             <CardContent className={classes.cardContent}>
                 <form>
                     <FormControl variant="outlined">
@@ -156,12 +156,12 @@ const WidgetNav = ({ brands }) => {
                 </form>
                 <form>
                     <FormControl variant="outlined">
-                        <InputLabel id="model-select-label">Choisir modele</InputLabel>
+                        <InputLabel id="model-select-label">Choisir modèle</InputLabel>
                         <Select
                             labelId="model-select-label"
                             id="model-select"
                             name="model"
-                            label="Choisir modele"
+                            label="Choisir modèle"
                             value={modelSelect}
                             onChange={handleModelSelectChange}
                             variant="outlined"

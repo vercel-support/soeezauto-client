@@ -350,7 +350,7 @@ const Prices = (props) => {
                 <Badge badgeContent={selectedModels.length} color="secondary" showZero />
                 <span>de</span>
                 <Badge badgeContent={3} color="secondary" />
-                <span>modeles choisis</span>
+                <span>modèles choisis</span>
             </>
         );
     };
@@ -364,7 +364,7 @@ const Prices = (props) => {
                 />
                 <meta
                     property="og:title"
-                    content="Prix de tous les modeles en vente au Maroc. Faites votre budget d'achat"
+                    content="Prix de tous modèles en vente au Maroc. Faites votre budget d'achat"
                 />
                 <meta
                     property="og:image"
@@ -503,7 +503,7 @@ const Prices = (props) => {
                                     onChange={handleTabChange}
                                     variant="scrollable"
                                     scrollButtons="on"
-                                    aria-label="simple tabs example"
+                                    aria-label="segments"
                                 >
                                     {currentSegments.map((segment, index) => (
                                         <Tab
@@ -544,7 +544,7 @@ const Prices = (props) => {
                                             <TableBody>
                                                 <TableRow className={classes.model}>
                                                     <TableCell component="th" scope="row">
-                                                        Modele
+                                                        Modèle
                                                     </TableCell>
                                                     {segment.models.map((model) => (
                                                         <TableCell key={model.model}>
@@ -767,29 +767,7 @@ Prices.propTypes = {
 };
 
 export default Prices;
-/*
-const queryQl = `query getRange(
-  	$isActiveModel: Boolean!
-  	$range: String
-) {
-    versions(
-        exists: {prices:true}
-        model_isActive: $isActiveModel
-    ) {
-        id
-        version
-        prices(
-            price: {between: $range}
-            _order: {updatedAt: "DESC"}
-        ) {
-            id
-            updatedAt
-            price
-            promo
-        }
-    }
-}`;
-*/
+
 export async function getStaticProps() {
     let segments = await getSegmentsModelsDetailed();
     segments = segments.data.segments;

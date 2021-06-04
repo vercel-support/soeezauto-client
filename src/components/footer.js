@@ -10,11 +10,14 @@ const Footer = () => {
             <footer className={styles.root}>
                 <section className={styles.section}>
                     <div className={styles.sectionDiv}>
-                        <Link className={styles.sectionDivA} href="/">
-                            Accueil
-                        </Link>
                         <Link className={styles.sectionDivA} href="/marques-voiture">
                             Marques
+                        </Link>
+                        <Link className={styles.sectionDivA} href="/modeles-voiture">
+                            Modèles
+                        </Link>
+                        <Link className={styles.sectionDivA} href="/segments-automobile">
+                            Segments
                         </Link>
                         <Link className={styles.sectionDivA} href="/prix-budget-voiture">
                             Prix et budget
@@ -22,41 +25,41 @@ const Footer = () => {
                         <Link className={styles.sectionDivA} href="/contact">
                             Nous contacter
                         </Link>
-                        <Link className={styles.sectionDivA} href="/legal">
-                            Mentions legales
-                        </Link>
                     </div>
                 </section>
                 <section className={styles.section}>
                     <div className={styles.social} />
-                    <ButtonBase aria-label="go to homepage">
-                        <Link href="/" aria-label="go to homepage">
+                    <ButtonBase aria-label="visiter page accueil">
+                        <Link href="/" aria-label="visiter page accueil">
                             <Image
                                 src="/images/main-logo.png"
                                 alt="soeezauto logo"
                                 className={styles.branding}
                                 width="180"
                                 height="60"
-                                loading="eager"
-                                priority
+                                layout="fixed"
                             />
                         </Link>
                     </ButtonBase>
                 </section>
                 <section className={styles.section}>
-                    <p className={styles.sectionP}>
-                        Nam sole orto magnitudine angusti gurgitis sed profundi a transitu
-                        arcebantur et dum piscatorios.
-                    </p>
-                    <p className={styles.sectionP}>
-                        Quaerunt lenunculos vel innare temere contextis cratibus parant,
-                        effusae legiones, quae hiemabant tunc apud.
-                    </p>
-                    <p className={styles.sectionP}>
-                        Siden, isdem impetu occurrere veloci. et signis prope ripam
-                        locatis ad manus comminus conserendas denseta scutorum conpage
-                        semet scientissime.
-                    </p>
+                    <div className={styles.sectionDiv}>
+                        <Link href="/promotion-voiture-neuve-au-maroc" isActivable>
+                            Promotions
+                        </Link>
+                        <Link href="/soeez-blog" isActivable>
+                            Blog
+                        </Link>
+                        <Link href="/comparatif-voiture" isActivable>
+                            Comparateur voitures
+                        </Link>
+                        <Link href="/fiches-techniques" isActivable>
+                            Fiches techniques
+                        </Link>
+                        <Link className={styles.sectionDivA} href="/legal">
+                            Mentions legales
+                        </Link>
+                    </div>
                 </section>
             </footer>
         </>

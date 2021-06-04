@@ -62,7 +62,7 @@ class NotifierDialog extends React.Component {
                         color="primary"
                         autoFocus
                     >
-                        Fechar
+                        Fermer
                     </Button>
                 );
             case 'error':
@@ -73,7 +73,7 @@ class NotifierDialog extends React.Component {
                         color="primary"
                         autoFocus
                     >
-                        Fechar
+                        Fermer
                     </Button>
                 );
             case 'show_session_expire_warning':
@@ -84,7 +84,7 @@ class NotifierDialog extends React.Component {
                             onClick={this.props.handleSessionWarning}
                             color="primary"
                         >
-                            Fechar sessao
+                            Terminer session
                         </Button>
                         <Button
                             id="session_extend"
@@ -93,7 +93,7 @@ class NotifierDialog extends React.Component {
                             color="primary"
                             autoFocus
                         >
-                            Continuar conectado
+                            Continuer session
                         </Button>
                     </>
                 );
@@ -105,7 +105,7 @@ class NotifierDialog extends React.Component {
                         color="primary"
                         autoFocus
                     >
-                        Fechar
+                        Fermer
                     </Button>
                 );
             case 'confirm':
@@ -118,7 +118,7 @@ class NotifierDialog extends React.Component {
                             color="primary"
                             onClick={this.props.handleNotificationDismiss}
                         >
-                            Cancelar
+                            Annuler
                         </Button>
                         <Button
                             id="confirmed"
@@ -126,7 +126,7 @@ class NotifierDialog extends React.Component {
                             color="primary"
                             onClick={this.props.handleNotificationDismiss}
                         >
-                            Confirmar
+                            Confirmer
                         </Button>
                     </>
                 );

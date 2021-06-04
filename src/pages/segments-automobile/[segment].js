@@ -208,10 +208,10 @@ const Segment = (props) => {
                 />
                 <div className="main-title">
                     <h1>{`Voitures ${segment.segment} neuves Maroc`}</h1>
-                    <Chip label={`${segment.modelsLength} modeles`} />
+                    <Chip label={`${segment.modelsLength} modèles`} />
                 </div>
                 <Card className={classes.cardRoot}>
-                    <CardHeader title="Modeles par gamme de prix" subheader="mille DH" />
+                    <CardHeader title="Modèles par gamme de prix" subheader="mille DH" />
                     <CardContent>
                         <div className={classes.root}>
                             <AppBar position="static">
@@ -220,7 +220,7 @@ const Segment = (props) => {
                                     onChange={handleTabChange}
                                     variant="scrollable"
                                     scrollButtons="on"
-                                    aria-label="simple tabs example"
+                                    aria-label="gammes de prix"
                                 >
                                     {priceRanges.map((priceRange, index) => (
                                         <Tab
@@ -245,7 +245,7 @@ const Segment = (props) => {
                                             <TableHead>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        Brand
+                                                        Marque
                                                     </TableCell>
                                                     {priceRange.models.map((model) => (
                                                         <TableCell key={model.model}>
@@ -257,7 +257,7 @@ const Segment = (props) => {
                                             <TableBody>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        Model
+                                                        Modèle
                                                     </TableCell>
                                                     {priceRange.models.map((model) => (
                                                         <TableCell key={model.model}>
@@ -275,7 +275,7 @@ const Segment = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        No of versions
+                                                        Qté versions
                                                     </TableCell>
                                                     {priceRange.models.map((model) => (
                                                         <TableCell key={model.id}>
@@ -324,7 +324,7 @@ const Segment = (props) => {
                                                 </TableRow>
                                                 <TableRow>
                                                     <TableCell component="th" scope="row">
-                                                        fuel
+                                                        Combustible
                                                     </TableCell>
                                                     {priceRange.models.map((model) => (
                                                         <TableCell key={model.id}>

@@ -61,7 +61,7 @@ const ModelTrimsTable = ({ data, type, versions }) => {
     const columns = [
         {
             name: 'trim',
-            label: 'Equipement',
+            label: 'Équipement',
             options: {
                 customBodyRender: (value) => {
                     return <p title={value}>{value}</p>;

@@ -152,7 +152,7 @@ const FicheTechniqueMain = ({ brands, brandsModels }) => {
                 <title>{`Fiches techniques voiture neuve au Maroc - ${new Date().getFullYear()}`}</title>
                 <meta
                     name="description"
-                    content="Fiches techniques constructeur e soeezauto "
+                    content="Fiches techniques constructeur et Soeezauto "
                 />
                 <meta
                     property="og:title"
@@ -183,20 +183,20 @@ const FicheTechniqueMain = ({ brands, brandsModels }) => {
                 </div>
                 <div className={classes.mainContainer}>
                     <Card className={classes.root}>
-                        <CardHeader title={<h2>Fiches techniques soeezauto</h2>} />
+                        <CardHeader title={<h2>Fiches techniques Soeezauto</h2>} />
                         <CardContent className={classes.cardContent}>
                             <div className={classes.selectBrand}>
                                 <form>
                                     <div className="form_input form_select">
                                         <FormControl variant="outlined">
                                             <InputLabel id="model-select-label">
-                                                Choisir modele
+                                                Choisir modèle
                                             </InputLabel>
                                             <Select
                                                 labelId="model-select-label"
                                                 id="model-select"
                                                 name="model"
-                                                label="Choisir modele"
+                                                label="Choisir modèle"
                                                 value={modelSelect}
                                                 onChange={handleModelSelectChange}
                                                 variant="outlined"
@@ -216,7 +216,7 @@ const FicheTechniqueMain = ({ brands, brandsModels }) => {
                     <Card className={classes.root}>
                         <CardHeader
                             title={<h2>Fiches techniques constructeur</h2>}
-                            subheader="Selon disponibilite"
+                            subheader="Selon disponibilité"
                         />
                         <CardContent className={classes.cardContent}>
                             <div className={classes.selectBrand}>

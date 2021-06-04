@@ -114,8 +114,7 @@ const WidgetPromotion = ({ data }) => {
                                 alt={model.model}
                                 width="90"
                                 height="60"
-                                loading="eager"
-                                priority
+                                layout="fixed"
                             />
                         </Link>
                         <span
