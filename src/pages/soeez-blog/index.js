@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,11 +17,20 @@ import Link from 'components/link';
 import stylesPagination from 'styles/pagination.module.scss';
 import { showtime } from 'tools/functions';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 import Loading from 'components/loading';
 import NotifierDialog from 'components/notifierDialog';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles(() => ({
     mainContainer: {

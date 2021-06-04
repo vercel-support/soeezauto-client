@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,12 +26,24 @@ import getBrandsModelsForComparison from 'lib/getBrandsModelsForComparison';
 import { numberFrance } from 'tools/functions';
 import { CONVERSION_FUEL } from 'parameters';
 import ModelSpecs from 'components/modelSpecs';
-import ModelTrims from 'components/modelTrims';
 import { actionGetModel, actionSetGetModelToNull } from 'store/actions';
 import NotifierInline from 'components/notifierInline';
 import NotifierDialog from 'components/notifierDialog';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
+import ModelTrims from 'components/modelTrims';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStylesVL = makeStyles({
     cards: {
@@ -548,6 +561,9 @@ const Comparison = (props) => {
                         </CardContent>
                     </Card>
                 </div>
+                <WidgetPromo data={brands} />
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
             </main>
         </div>
     );

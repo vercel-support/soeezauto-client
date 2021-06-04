@@ -1,5 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import { ExpandMore } from '@material-ui/icons';
 import {
@@ -15,7 +17,14 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { objectToMap } from 'tools/functions';
-import ModelTrimsTable from './modelTrimsTable';
+
+const ModelTrimsTable = dynamic(() => import('./modelTrimsTable'), {
+    ssr: false,
+});
+
+const ModelTrimsTableVersion = dynamic(() => import('./modelTrimsTableVersion'), {
+    ssr: false,
+});
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -63,12 +72,12 @@ const useStyles = makeStyles(() => ({
 
 const ModelTrims = ({ versions }) => {
     const classes = useStyles();
+    const router = useRouter();
     const [isDiff, setIsDiff] = useState(0);
     const [dataDiff, setDataDiff] = useState(null);
     const [dataAll, setDataAll] = useState(null);
     const [data, setData] = useState(null);
     const [tabValue, setTabValue] = useState(0);
-
     useEffect(() => {
         const trimList = {
             uniqueIds: [],
@@ -178,11 +187,20 @@ const ModelTrims = ({ versions }) => {
                         </AppBar>
                         {[...Array(Object.keys(trimTypes).length).keys()].map((type) => (
                             <TabPanel value={tabValue} key={type} index={type}>
-                                <ModelTrimsTable
-                                    data={data}
-                                    type={Object.entries(trimTypes)[type][0]}
-                                    versions={versions}
-                                />
+                                {router.pathname ===
+                                '/fiches-techniques/[brand]/[model]' ? (
+                                    <ModelTrimsTableVersion
+                                        data={data}
+                                        type={Object.entries(trimTypes)[type][0]}
+                                        versions={versions}
+                                    />
+                                ) : (
+                                    <ModelTrimsTable
+                                        data={data}
+                                        type={Object.entries(trimTypes)[type][0]}
+                                        versions={versions}
+                                    />
+                                )}
                             </TabPanel>
                         ))}
                     </>

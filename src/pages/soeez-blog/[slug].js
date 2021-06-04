@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
@@ -11,10 +12,19 @@ import BlogVideo from 'components/blogVideo';
 import BlogPost from 'components/blogPost';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 import Link from 'components/link';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
@@ -94,7 +104,7 @@ const useStyles = makeStyles((theme) => ({
 const Post = ({ post, postFormat, brands }) => {
     const router = useRouter();
     const classes = useStyles();
-    if (router.isFallback) {
+    if (!post || !brands || router.isFallback) {
         return <Loading />;
     }
     return (
@@ -215,15 +225,26 @@ export async function getStaticProps({ params }) {
         slug: params.slug,
     };
     let post = await apiWp(queryQl, variables);
-    post = post.data.post;
-    let brands = await getBrandsModels();
-    brands = brands.data.brands;
     const getPostFormat = () => {
         if (post.postFormats.nodes.length === 0) {
             return 'Standard';
         }
         return post.postFormats.nodes[0].name;
     };
+    let brands = null;
+    let notFound = true;
+
+    if (post.data.post) {
+        notFound = false;
+        post = post.data.post;
+        brands = await getBrandsModels();
+        brands = brands.data.brands;
+    }
+    if (notFound) {
+        return {
+            notFound: true,
+        };
+    }
     return {
         props: {
             post,

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -39,10 +40,19 @@ import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 import usePrevious from 'tools/hooks/usePrevious';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 import NotifierInline from 'components/notifierInline';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

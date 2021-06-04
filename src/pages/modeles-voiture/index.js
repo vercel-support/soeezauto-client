@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import getModels from 'lib/getModels';
 import getModelsWithAirCondAuto from 'lib/getModelsWithAirCondAuto';
@@ -18,8 +19,14 @@ import { CONVERSION_FUEL } from 'parameters';
 import { randIndex } from 'tools/functions';
 import ModelFilter from 'components/modelFilter';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const Models = ({ allModels, filters, recentModels, randPromos }) => {
     return (

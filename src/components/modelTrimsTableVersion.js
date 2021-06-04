@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import MUIDataTable from 'mui-datatables';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import { Check } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import { sortArrayOfObjectsByValue } from 'tools/functions';
 import { MUI_DATATABLES_TEXT_LABELS } from 'parameters';
 
+const breakpoints = createBreakpoints({});
 const getMuiTheme = () =>
     createMuiTheme({
         overrides: {
@@ -21,6 +23,14 @@ const getMuiTheme = () =>
                 root: {
                     '& div:first-child': {
                         fontSize: '.8rem',
+                        [breakpoints.down('md')]: {
+                            display: 'none',
+                        },
+                    },
+                    '& div:last-child': {
+                        [breakpoints.down('md')]: {
+                            width: '100%',
+                        },
                     },
                     '& > p': {
                         fontSize: '.8rem',
@@ -49,7 +59,7 @@ const getMuiTheme = () =>
         },
     });
 
-const ModelTrimsTable = ({ data, type, versions }) => {
+const ModelTrimsTableVersion = ({ data, type, versions }) => {
     const [localData, setLocalData] = useState(data);
     useEffect(() => {
         const filtered = data.filter((trim) => {
@@ -106,10 +116,10 @@ const ModelTrimsTable = ({ data, type, versions }) => {
     return null;
 };
 
-ModelTrimsTable.propTypes = {
+ModelTrimsTableVersion.propTypes = {
     data: PropTypes.array.isRequired,
     versions: PropTypes.array.isRequired,
     type: PropTypes.string.isRequired,
 };
 
-export default ModelTrimsTable;
+export default ModelTrimsTableVersion;

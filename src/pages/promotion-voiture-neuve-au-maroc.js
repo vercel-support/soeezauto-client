@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import {
     Table,
     TableBody,
@@ -25,8 +26,14 @@ import Link from 'components/link';
 import { urlWriter, numberFrance } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles({
     root: {
@@ -179,7 +186,7 @@ const Promotions = (props) => {
                         </div>
                     </form>
                 </div>
-                {selectedBrand.map((brand) => (
+                {selectedBrand.map((brand, index) => (
                     <div key={brand.id} className={classes.brand}>
                         <Box className={classes.image}>
                             <Link
@@ -192,8 +199,7 @@ const Promotions = (props) => {
                                     alt={brand.brand}
                                     width="100"
                                     height="100"
-                                    loading="eager"
-                                    priority
+                                    priority={index === 1}
                                 />
                             </Link>
                         </Box>
@@ -220,8 +226,7 @@ const Promotions = (props) => {
                                                     alt={`${brand.brand}-${model.model}`}
                                                     width="105"
                                                     height="70"
-                                                    loading="eager"
-                                                    priority
+                                                    priority={index === 1}
                                                 />
                                             </Link>
                                         }

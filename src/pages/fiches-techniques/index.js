@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import {
     FormControl,
@@ -12,9 +13,22 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import getBrandsModels from 'lib/getBrandsModels';
 import { getBaseDate, urlWriter } from 'tools/functions';
 import Breadcrumb from 'components/breadcrumb';
 import { apiQl } from 'lib/functions';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -57,7 +71,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const FicheTechniqueMain = ({ brands }) => {
+const FicheTechniqueMain = ({ brands, brandsModels }) => {
     const classes = useStyles();
     const router = useRouter();
     const [brandSelect, setBrandSelect] = useState('Choisir');
@@ -160,7 +174,7 @@ const FicheTechniqueMain = ({ brands }) => {
                     links={[
                         {
                             href: null,
-                            text: 'fiches-techniques',
+                            text: 'Fiches techniques',
                         },
                     ]}
                 />
@@ -234,6 +248,9 @@ const FicheTechniqueMain = ({ brands }) => {
                         </CardContent>
                     </Card>
                 </div>
+                <WidgetPromo data={brandsModels} />
+                <WidgetNav brands={brandsModels} />
+                <WidgetLaunches data={brandsModels} />
             </main>
         </div>
     );
@@ -241,6 +258,7 @@ const FicheTechniqueMain = ({ brands }) => {
 
 FicheTechniqueMain.propTypes = {
     brands: PropTypes.array.isRequired,
+    brandsModels: PropTypes.array.isRequired,
 };
 
 export default FicheTechniqueMain;
@@ -298,9 +316,12 @@ export async function getStaticProps() {
         // eslint-disable-next-line no-param-reassign
         brand.isSpecs = isSpecs;
     });
+    let brandsModels = await getBrandsModels();
+    brandsModels = brandsModels.data.brands;
     return {
         props: {
             brands,
+            brandsModels,
         },
     };
 }

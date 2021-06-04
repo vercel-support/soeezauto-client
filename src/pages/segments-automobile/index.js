@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import {
     Card,
     CardHeader,
@@ -17,9 +18,18 @@ import getPosts from 'lib/getPosts';
 import Link from 'components/link';
 import { urlWriter } from 'tools/functions';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles(() => ({
     root: {

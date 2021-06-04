@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { Box, Card, CardHeader, CardContent, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -12,12 +12,27 @@ import { urlWriter, getBaseDate } from 'tools/functions';
 import NotifierInline from 'components/notifierInline';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 import Link from 'components/link';
 
+const WidgetNav = dynamic(() => import('../../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../../components/widgetPromotion'), {
+    ssr: false,
+});
+
 const useStyles = makeStyles(() => ({
+    mainContainer: {
+        minHeight: 220,
+    },
+    currentModel: {
+        minHeight: 500,
+    },
     cardRoot: {
         backgroundColor: '#ffe082',
         width: 'clamp(300px, 100%, 700px)',
@@ -75,7 +90,6 @@ const useStyles = makeStyles(() => ({
 
 const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
     const classes = useStyles();
-    const router = useRouter();
     const [currentModel, setCurrentModel] = useState(null);
     const [models, setModels] = useState([]);
     const [selectedModelIndex, setSelectedModelIndex] = useState(0);
@@ -98,7 +112,7 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
         setCurrentModel(newModel[0]);
         setSelectedModelIndex(parseInt(event.target.dataset.modelindex, 10));
     };
-    if (!brand || router.isFallback) {
+    if (!brand) {
         return <Loading />;
     }
     return (
@@ -149,75 +163,79 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
                 <div className="main-title">
                     <h1>{`Fiche technique constructeur - ${brand.brand}`}</h1>
                 </div>
-                {models.length > 0 ? (
-                    <Card className={classes.cardRoot}>
-                        <CardHeader
-                            title={<h2>Modeles</h2>}
-                            avatar={
-                                <Link href={`/marques-voiture/${urlWriter(brand.brand)}`}>
-                                    <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
-                                        alt={`${brand.brand}`}
-                                        width="100"
-                                        height="100"
-                                        loading="eager"
-                                        priority
-                                    />
-                                </Link>
-                            }
-                        />
-                        <CardContent className={classes.cardContent}>
-                            {models.map((model, index) => (
-                                <Box key={model.model}>
-                                    <Button
-                                        data-modelindex={index}
-                                        id={model.id}
-                                        className={classes.range}
-                                        variant="contained"
-                                        color={
-                                            selectedModelIndex === index
-                                                ? 'secondary'
-                                                : 'primary'
-                                        }
-                                        onClick={handleModelSelect}
+                <div className={classes.mainContainer}>
+                    {models.length > 0 ? (
+                        <Card className={classes.cardRoot}>
+                            <CardHeader
+                                title={<h2>Modeles</h2>}
+                                avatar={
+                                    <Link
+                                        href={`/marques-voiture/${urlWriter(
+                                            brand.brand,
+                                        )}`}
                                     >
-                                        {model.model}
-                                    </Button>
-                                </Box>
-                            ))}
-                        </CardContent>
-                    </Card>
-                ) : (
-                    <NotifierInline
-                        severity="info"
-                        message="Aucune fiche technique du constructeur disponible à ce moment. Nous travaillons pour en ajouter. "
-                    />
-                )}
-                {currentModel && (
-                    <h2 className="main-title">{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
-                )}
-                {currentModel && (
-                    <div className={classes.iframeContainer}>
-                        <iframe
-                            className={classes.responsiveIframe}
-                            type="application/pdf"
-                            scrolling="auto"
-                            title={currentModel.specs.edges[0].node.filename}
-                            // style={{ width: '100%', height: 1500 }}
-                            src={`${process.env.NEXT_PUBLIC_API_HOST}/specs/${urlWriter(
-                                brand.brand,
-                            )}/${new Date(
-                                currentModel.specs.edges[0].node.updatedAt,
-                            ).getFullYear()}/${(
-                                new Date(
-                                    currentModel.specs.edges[0].node.updatedAt,
-                                ).getMonth() + 1
-                            )
-                                .toString()
-                                .padStart(2, '0')}/${
-                                currentModel.specs.edges[0].node.filename
-                            }`}
+                                        <Image
+                                            src={`${process.env.NEXT_PUBLIC_API_HOST}/images/brands/${brand.image}`}
+                                            alt={`${brand.brand}`}
+                                            width="100"
+                                            height="100"
+                                            loading="eager"
+                                            priority
+                                        />
+                                    </Link>
+                                }
+                            />
+                            <CardContent className={classes.cardContent}>
+                                {models.map((model, index) => (
+                                    <Box key={model.model}>
+                                        <Button
+                                            data-modelindex={index}
+                                            id={model.id}
+                                            className={classes.range}
+                                            variant="contained"
+                                            color={
+                                                selectedModelIndex === index
+                                                    ? 'secondary'
+                                                    : 'primary'
+                                            }
+                                            onClick={handleModelSelect}
+                                        >
+                                            {model.model}
+                                        </Button>
+                                    </Box>
+                                ))}
+                            </CardContent>
+                        </Card>
+                    ) : (
+                        <NotifierInline
+                            severity="info"
+                            message="Aucune fiche technique du constructeur disponible à ce moment. Nous travaillons pour en ajouter. "
                         />
+                    )}
+                </div>
+                {currentModel && (
+                    <div className={classes.currentModel}>
+                        <h2 className="main-title">{`Fiche technique ${brand.brand} ${currentModel.model}`}</h2>
+                        <div className={classes.iframeContainer}>
+                            <iframe
+                                className={classes.responsiveIframe}
+                                title={currentModel.specs.edges[0].node.filename}
+                                // style={{ width: '100%', height: 1500 }}
+                                src={`${
+                                    process.env.NEXT_PUBLIC_API_HOST
+                                }/specs/${urlWriter(brand.brand)}/${new Date(
+                                    currentModel.specs.edges[0].node.updatedAt,
+                                ).getFullYear()}/${(
+                                    new Date(
+                                        currentModel.specs.edges[0].node.updatedAt,
+                                    ).getMonth() + 1
+                                )
+                                    .toString()
+                                    .padStart(2, '0')}/${
+                                    currentModel.specs.edges[0].node.filename
+                                }`}
+                            />
+                        </div>
                     </div>
                 )}
                 <WidgetPromo data={brands} />
@@ -229,8 +247,8 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
 };
 
 FicheTechniqueManufacturer.propTypes = {
-    brand: PropTypes.object.isRequired,
-    brandsModels: PropTypes.array.isRequired,
+    brand: PropTypes.any,
+    brandsModels: PropTypes.any,
 };
 
 export default FicheTechniqueManufacturer;
@@ -279,7 +297,7 @@ export async function getStaticPaths() {
     });
     return {
         paths,
-        fallback: true,
+        fallback: false,
     };
 }
 

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Image from 'next/image';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Card,
@@ -42,9 +43,18 @@ import {
 import Link from 'components/link';
 import ModelFilter from 'components/modelFilter';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -345,7 +355,6 @@ const Brand = (props) => {
                                     alt={brand.brand}
                                     width="60"
                                     height="60"
-                                    loading="eager"
                                     priority
                                 />
                             }
@@ -354,7 +363,7 @@ const Brand = (props) => {
                             <TableContainer component={Paper}>
                                 <Table className={classes.table} aria-label="modeles">
                                     <TableBody>
-                                        {allModels.map((model) => (
+                                        {allModels.map((model, ind) => (
                                             <TableRow key={model.model}>
                                                 <TableCell>
                                                     <Link
@@ -371,8 +380,7 @@ const Brand = (props) => {
                                                                 alt={model.model}
                                                                 width="180"
                                                                 height="120"
-                                                                loading="eager"
-                                                                priority
+                                                                priority={ind < 3}
                                                             />
                                                             <h2>{model.model}</h2>
                                                         </div>

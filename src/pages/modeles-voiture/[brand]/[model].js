@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,15 +20,24 @@ import getBrandsModels from 'lib/getBrandsModels';
 import { urlWriter, randIndex, getBaseDate } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import ModelSpecs from 'components/modelSpecs';
-import ModelTrims from 'components/modelTrims';
 import ModelPrices from 'components/modelPrices';
 import ModelVersions from 'components/modelVersions';
+import ModelTrims from 'components/modelTrims';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 
-const useStyles = makeStyles({
+const WidgetNav = dynamic(() => import('../../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../../components/widgetPromotion'), {
+    ssr: false,
+});
+
+const useStyles = makeStyles((theme) => ({
     root: {
         contentVisibility: 'auto',
         backgroundColor: '#ffe082',
@@ -79,6 +89,9 @@ const useStyles = makeStyles({
         '& nav': {
             width: '100%',
         },
+        [theme.breakpoints.down('xs')]: {
+            padding: 0,
+        },
     },
     table: {
         '& th': {
@@ -98,7 +111,7 @@ const useStyles = makeStyles({
         margin: 5,
         padding: 0,
     },
-});
+}));
 
 const Model = ({ model, recentModels, randPromos, brands }) => {
     const classes = useStyles();

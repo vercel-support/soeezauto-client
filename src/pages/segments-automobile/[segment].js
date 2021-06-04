@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState } from 'react';
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import {
     AppBar,
     Tabs,
@@ -27,9 +28,18 @@ import { apiQl } from 'lib/functions';
 import { PRICE_RANGES, CONVERSION_FUEL } from 'parameters';
 import Link from 'components/link';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
+
+const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+    ssr: false,
+});
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

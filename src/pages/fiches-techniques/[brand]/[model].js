@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -23,16 +24,26 @@ import ModelSpecs from 'components/modelSpecs';
 import ModelTrims from 'components/modelTrims';
 import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
-import WidgetNav from 'components/widgetNav';
-import WidgetLaunches from 'components/widgetLaunches';
-import WidgetPromo from 'components/widgetPromotion';
 import Link from 'components/link';
 
-const useStyles = makeStyles(() => ({
+const WidgetNav = dynamic(() => import('../../../components/widgetNav'), {
+    ssr: false,
+});
+
+const WidgetLaunches = dynamic(() => import('../../../components/widgetLaunches'), {
+    ssr: false,
+});
+
+const WidgetPromo = dynamic(() => import('../../../components/widgetPromotion'), {
+    ssr: false,
+});
+
+const useStyles = makeStyles((theme) => ({
     mainContainer: {
         display: 'flex',
         flexWrap: 'wrap',
         padding: '10px',
+        minHeight: 700,
         justifyContent: 'space-around',
         '& > div': {
             flex: '0 0 clamp(300px,100%,700px)',
@@ -68,6 +79,18 @@ const useStyles = makeStyles(() => ({
             borderRadius: 10,
             backgroundColor: '#fff',
         },
+        '& .MUIDataTableBodyCell-root': {
+            '& div:first-child': {
+                [theme.breakpoints.down('md')]: {
+                    display: 'none',
+                },
+            },
+            '& div:last-child': {
+                [theme.breakpoints.down('md')]: {
+                    width: '100%',
+                },
+            },
+        },
     },
     cardContent: {
         overflow: 'scroll',
@@ -76,6 +99,9 @@ const useStyles = makeStyles(() => ({
         },
         '& > a button': {
             width: '100%',
+        },
+        [theme.breakpoints.down('xs')]: {
+            padding: '0 8px',
         },
     },
     versions: {
@@ -121,7 +147,7 @@ const FicheTechnique = (props) => {
         setCurrentVersion(newVersion[0]);
         setSelectedVersionIndex(parseInt(event.target.dataset.versionindex, 10));
     };
-    if (router.isFallback) {
+    if (!model || !brands || router.isFallback) {
         return <Loading />;
     }
     return (
@@ -425,17 +451,30 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
-
-    const variables = {
-        id: modelFilter[0].id,
-        after: getBaseDate(90),
-    };
-    const data = await apiQl(queryQl, variables, false);
-    let brandsModels = await getBrandsModels();
-    brandsModels = brandsModels.data.brands;
+    let model = null;
+    let brandsModels = null;
+    let notFound = true;
+    if (modelFilter.length > 0) {
+        const variables = {
+            id: modelFilter[0].id,
+            after: getBaseDate(90),
+        };
+        const data = await apiQl(queryQl, variables, false);
+        if (data.data.model) {
+            model = data.data.model;
+            notFound = false;
+            brandsModels = await getBrandsModels();
+            brandsModels = brandsModels.data.brands;
+        }
+    }
+    if (notFound) {
+        return {
+            notFound: true,
+        };
+    }
     return {
         props: {
-            model: data.data.model,
+            model,
             brandsModels,
         },
     };
