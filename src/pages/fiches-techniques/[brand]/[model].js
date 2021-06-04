@@ -469,7 +469,7 @@ export async function getStaticProps({ params }) {
     }
     if (notFound) {
         return {
-            notFound: true,
+            notFound,
         };
     }
     return {

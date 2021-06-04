@@ -33,15 +33,15 @@ import Loading from 'components/loading';
 import Breadcrumb from 'components/breadcrumb';
 import ModelTrims from 'components/modelTrims';
 
-const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+const WidgetNav = dynamic(() => import('../components/widgetNav'), {
     ssr: false,
 });
 
-const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+const WidgetLaunches = dynamic(() => import('../components/widgetLaunches'), {
     ssr: false,
 });
 
-const WidgetPromo = dynamic(() => import('../../components/widgetPromotion'), {
+const WidgetPromo = dynamic(() => import('../components/widgetPromotion'), {
     ssr: false,
 });
 

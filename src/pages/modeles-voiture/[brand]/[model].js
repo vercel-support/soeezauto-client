@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,6 +25,7 @@ import ModelPrices from 'components/modelPrices';
 import ModelVersions from 'components/modelVersions';
 import ModelTrims from 'components/modelTrims';
 import Breadcrumb from 'components/breadcrumb';
+import Loading from 'components/loading';
 
 const WidgetNav = dynamic(() => import('../../../components/widgetNav'), {
     ssr: false,
@@ -115,9 +117,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Model = ({ model, recentModels, randPromos, brands }) => {
     const classes = useStyles();
-    const [versionSelect, setVersionSelect] = useState([model.versions[0].id, '', '']);
-    const [selectedVersions, setSelectedVersions] = useState([model.versions[0]]);
+    const router = useRouter();
+    const [versionSelect, setVersionSelect] = useState([]);
+    const [selectedVersions, setSelectedVersions] = useState([]);
 
+    useEffect(() => {
+        if (model) {
+            setVersionSelect([model.versions[0].id, '', '']);
+            setSelectedVersions([model.versions[0]]);
+        }
+    }, [model]);
     const handleVersionSelectChange = (event) => {
         const index = parseInt(event.target.name.replace('version', ''), 10);
         const versionsSelected = [...versionSelect];
@@ -195,8 +204,14 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
         return selects;
     };
     useEffect(() => {
-        handleSetVersionSelect();
-    }, [versionSelect]);
+        if (model) {
+            handleSetVersionSelect();
+        }
+    }, [versionSelect, model]);
+
+    if (!model || router.isFallback) {
+        return <Loading />;
+    }
     return (
         <div>
             <Head>
@@ -421,7 +436,7 @@ export async function getStaticPaths() {
     });
     return {
         paths,
-        fallback: false,
+        fallback: true,
     };
 }
 
@@ -429,6 +444,25 @@ export async function getStaticProps({ params }) {
     const { model: modelParam } = params;
     let models = await getModels();
     models = models.data.models;
+    const modelFilter = models.filter((mod) => {
+        return urlWriter(mod.model) === urlWriter(modelParam);
+    });
+    if (modelFilter.length === 0) {
+        return {
+            notFound: true,
+        };
+    }
+    // redirect in case valid brand with capital letters
+    if (/[A-Z]/.test(modelParam)) {
+        return {
+            redirect: {
+                destination: `/modeles-voiture/${urlWriter(
+                    modelFilter[0].brand.brand,
+                )}/${urlWriter(modelParam)}`,
+                permanent: true,
+            },
+        };
+    }
     let posts = await getPosts();
     posts = posts.data.posts;
     // data for widgets
@@ -453,10 +487,6 @@ export async function getStaticProps({ params }) {
     const selectedPromos = randIndex(promos.length, 6);
     const randPromos = promos.filter((model, ind) => {
         return selectedPromos.includes(ind + 1);
-    });
-
-    const modelFilter = models.filter((mod) => {
-        return urlWriter(mod.model) === modelParam;
     });
 
     const variables = {

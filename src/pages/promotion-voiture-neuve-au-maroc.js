@@ -27,11 +27,11 @@ import { urlWriter, numberFrance } from 'tools/functions';
 import { apiQl } from 'lib/functions';
 import Breadcrumb from 'components/breadcrumb';
 
-const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
+const WidgetNav = dynamic(() => import('../components/widgetNav'), {
     ssr: false,
 });
 
-const WidgetLaunches = dynamic(() => import('../../components/widgetLaunches'), {
+const WidgetLaunches = dynamic(() => import('../components/widgetLaunches'), {
     ssr: false,
 });
 

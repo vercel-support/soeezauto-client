@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Image from 'next/image';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -43,6 +44,7 @@ import {
 import Link from 'components/link';
 import ModelFilter from 'components/modelFilter';
 import Breadcrumb from 'components/breadcrumb';
+import Loading from 'components/loading';
 
 const WidgetNav = dynamic(() => import('../../components/widgetNav'), {
     ssr: false,
@@ -151,6 +153,7 @@ const Brand = (props) => {
     } = props;
 
     const classes = useStyles();
+    const router = useRouter();
     const [filters, setFilters] = useState({
         airCondAuto: null,
         displayMultimedia: null,
@@ -165,41 +168,43 @@ const Brand = (props) => {
     });
     const [priceRangeIndex, setPriceRangeIndex] = useState(0);
     useEffect(() => {
-        props.actionGetModelsWithAutomaticGearboxForBrand({
-            isActive: true,
-            gearbox: AUTOMATIC_GEARBOXES,
-            brand: brand.id,
-        });
-        props.actionGetModelsWithAirCondAutoForBrand({
-            isActive: true,
-            brand: brand.id,
-        });
-        props.actionGetModelsWithDisplayMultimediaForBrand({
-            isActive: true,
-            brand: brand.id,
-        });
-        props.actionGetModelsWithFuelForBrand({
-            isActive: true,
-            brand: brand.id,
-            fuel: 'hybrid',
-        });
-        props.actionGetModelsWithLeatherSeatsForBrand({
-            isActive: true,
-            brand: brand.id,
-        });
-        props.actionGetModelsWithPowerRangeForBrand({
-            brand: brand.id,
-            isActive: true,
-            min: '150',
-            max: '200',
-        });
-        props.actionGetModelsWithPriceRangeForBrand({
-            brand: brand.id,
-            isActive: true,
-            min: PRICE_RANGES_SHORT[0][0],
-            max: PRICE_RANGES_SHORT[0][1],
-        });
-    }, []);
+        if (brand) {
+            props.actionGetModelsWithAutomaticGearboxForBrand({
+                isActive: true,
+                gearbox: AUTOMATIC_GEARBOXES,
+                brand: brand.id,
+            });
+            props.actionGetModelsWithAirCondAutoForBrand({
+                isActive: true,
+                brand: brand.id,
+            });
+            props.actionGetModelsWithDisplayMultimediaForBrand({
+                isActive: true,
+                brand: brand.id,
+            });
+            props.actionGetModelsWithFuelForBrand({
+                isActive: true,
+                brand: brand.id,
+                fuel: 'hybrid',
+            });
+            props.actionGetModelsWithLeatherSeatsForBrand({
+                isActive: true,
+                brand: brand.id,
+            });
+            props.actionGetModelsWithPowerRangeForBrand({
+                brand: brand.id,
+                isActive: true,
+                min: '150',
+                max: '200',
+            });
+            props.actionGetModelsWithPriceRangeForBrand({
+                brand: brand.id,
+                isActive: true,
+                min: PRICE_RANGES_SHORT[0][0],
+                max: PRICE_RANGES_SHORT[0][1],
+            });
+        }
+    }, [brand]);
     useEffect(() => {
         if (dataGetModelsWithAutomaticGearboxForBrand) {
             setFilters((prevFilters) => ({
@@ -293,6 +298,10 @@ const Brand = (props) => {
             setPriceRangeIndex((prevPriceRangeIndex) => prevPriceRangeIndex + 1);
         }
     }, [dataGetModelsWithPriceRangeForBrand]);
+
+    if (!brand || router.isFallback) {
+        return <Loading />;
+    }
 
     return (
         <div>
@@ -484,10 +493,10 @@ const Brand = (props) => {
 };
 
 Brand.propTypes = {
-    brands: PropTypes.array.isRequired,
-    brand: PropTypes.object.isRequired,
-    allModels: PropTypes.array.isRequired,
-    isSpecs: PropTypes.bool.isRequired,
+    brands: PropTypes.any,
+    brand: PropTypes.any,
+    allModels: PropTypes.any,
+    isSpecs: PropTypes.any,
     actionGetModelsWithAutomaticGearboxForBrand: PropTypes.func.isRequired,
     actionGetModelsWithAirCondAutoForBrand: PropTypes.func.isRequired,
     actionGetModelsWithDisplayMultimediaForBrand: PropTypes.func.isRequired,
@@ -603,7 +612,7 @@ export async function getStaticPaths() {
     });
     return {
         paths,
-        fallback: false,
+        fallback: true,
     };
 }
 
@@ -611,17 +620,32 @@ export async function getStaticProps({ params }) {
     const { brand: brandParam } = params;
     let brands = await getBrandsModels();
     brands = brands.data.brands;
+    const brandFilter = brands.filter((br) => {
+        return urlWriter(br.brand) === urlWriter(brandParam);
+    });
+    if (brandFilter.length === 0) {
+        return {
+            notFound: true,
+        };
+    }
+    // redirect in case valid brand with capital letters
+    if (/[A-Z]/.test(brandParam)) {
+        return {
+            redirect: {
+                destination: `/marques-voiture/${urlWriter(brandParam)}`,
+                permanent: true,
+            },
+        };
+    }
     let posts = await getPosts();
     posts = posts.data.posts;
-    const brandFilter = brands.filter((br) => {
-        return urlWriter(br.brand) === brandParam;
-    });
     const variables = {
         id: brandFilter[0].id,
         isActiveModel: true,
         after: getBaseDate(90),
     };
     const data = await apiQl(queryQl, variables, false);
+
     const brand = data.data.brand;
     // get price range, power range
     // same as /pages/modeles-voiture/index.js
