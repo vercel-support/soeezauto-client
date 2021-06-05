@@ -38,7 +38,7 @@ const Models = ({ allModels, filters, recentModels, randPromos }) => {
                 </title>
                 <meta
                     name="description"
-                    content="Tous modèles voitures neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés"
+                    content="Tous modèles voitures neuve au Maroc, guide d'achat, prix, fiches techniques, comparateur, nouveautés"
                 />
                 <meta
                     property="og:title"

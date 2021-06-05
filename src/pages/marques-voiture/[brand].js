@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Image from 'next/image';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -153,7 +152,6 @@ const Brand = (props) => {
     } = props;
 
     const classes = useStyles();
-    const router = useRouter();
     const [filters, setFilters] = useState({
         airCondAuto: null,
         displayMultimedia: null,
@@ -299,7 +297,7 @@ const Brand = (props) => {
         }
     }, [dataGetModelsWithPriceRangeForBrand]);
 
-    if (!brand || router.isFallback) {
+    if (!brand) {
         return <Loading />;
     }
 
@@ -312,7 +310,7 @@ const Brand = (props) => {
                 </title>
                 <meta
                     name="description"
-                    content={`${brand.brand} neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés`}
+                    content={`${brand.brand} neuve au Maroc, guide d'achat, prix, fiches techniques, comparateur, nouveautés`}
                 />
                 <meta
                     property="og:title"
@@ -365,6 +363,7 @@ const Brand = (props) => {
                                     width="60"
                                     height="60"
                                     priority
+                                    layout="fixed"
                                 />
                             }
                         />
@@ -612,7 +611,7 @@ export async function getStaticPaths() {
     });
     return {
         paths,
-        fallback: true,
+        fallback: false,
     };
 }
 
@@ -623,20 +622,6 @@ export async function getStaticProps({ params }) {
     const brandFilter = brands.filter((br) => {
         return urlWriter(br.brand) === urlWriter(brandParam);
     });
-    if (brandFilter.length === 0) {
-        return {
-            notFound: true,
-        };
-    }
-    // redirect in case valid brand with capital letters
-    if (/[A-Z]/.test(brandParam)) {
-        return {
-            redirect: {
-                destination: `/marques-voiture/${urlWriter(brandParam)}`,
-                permanent: true,
-            },
-        };
-    }
     let posts = await getPosts();
     posts = posts.data.posts;
     const variables = {

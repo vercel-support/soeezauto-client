@@ -77,7 +77,7 @@ const Segments = (props) => {
         <div>
             <Head>
                 <title>
-                    Tous segments et types voiture au Maroc | prix, comparatif automobile
+                    Tous segments et types voiture au Maroc | prix, comparateur automobile
                     segments automobile au Maroc |
                 </title>
                 <meta

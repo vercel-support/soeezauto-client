@@ -101,7 +101,7 @@ const Home = (props) => {
                 </title>
                 <meta
                     name="description"
-                    content="Découvrez le portail voiture au Maroc, annonces voiture occasion, promotions, fiches techniques et comparatifs voiture neuve Maroc, actualité automobile. "
+                    content="Découvrez le portail voiture au Maroc, annonces voiture occasion, promotions, fiches techniques et comparateurs voiture neuve Maroc, actualité automobile. "
                 />
                 <meta
                     property="og:title"

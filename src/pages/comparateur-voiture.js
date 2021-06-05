@@ -417,16 +417,16 @@ const Comparison = (props) => {
         <div>
             <Head>
                 <title>
-                    Comparatif voiture neuve au Maroc | prix, caractéristiques techniques,
-                    équipements
+                    Comparateur voiture neuve au Maroc | prix, caractéristiques
+                    techniques, équipements
                 </title>
                 <meta
                     name="description"
-                    content="Comparatif toutes les voitures neuves, tous segments et types au Maroc.  "
+                    content="Comparateur toutes les voitures neuves, tous segments et types au Maroc.  "
                 />
                 <meta
                     property="og:title"
-                    content="Comparatif voiture neuve au Maroc, prix, caractéristiques techniques, équipements"
+                    content="Comparateur voiture neuve au Maroc, prix, caractéristiques techniques, équipements"
                 />
                 <meta
                     property="og:image"
@@ -434,11 +434,11 @@ const Comparison = (props) => {
                 />
                 <meta
                     property="og:url"
-                    content="https://www.soeezauto.ma/comparatif-voiture"
+                    content="https://www.soeezauto.ma/comparateur-voiture"
                 />
                 <link
                     rel="canonical"
-                    href="https://www.soeezauto.ma/comparatif-voiture"
+                    href="https://www.soeezauto.ma/comparateur-voiture"
                 />
             </Head>
             <main>
@@ -446,13 +446,13 @@ const Comparison = (props) => {
                     links={[
                         {
                             href: null,
-                            text: 'Comparatif voitures',
+                            text: 'Comparateur voitures',
                         },
                     ]}
                 />
                 {selectedVersionIds.length > modelData.length && isLoading && <Loading />}
                 <div className="main-title">
-                    <h1>Comparatif voiture neuve au Maroc</h1>
+                    <h1>Comparateur voiture neuve au Maroc</h1>
                 </div>
                 {localStorage.length > 0 && (
                     <NotifierInline message="Pour chaque modèle, veuillez choisir la version souhaitée" />

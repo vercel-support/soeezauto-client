@@ -225,26 +225,22 @@ export async function getStaticProps({ params }) {
         slug: params.slug,
     };
     let post = await apiWp(queryQl, variables);
+    if (!post.data.post) {
+        return {
+            notFound: true,
+        };
+    }
     const getPostFormat = () => {
         if (post.postFormats.nodes.length === 0) {
             return 'Standard';
         }
         return post.postFormats.nodes[0].name;
     };
-    let brands = null;
-    let notFound = true;
 
-    if (post.data.post) {
-        notFound = false;
-        post = post.data.post;
-        brands = await getBrandsModels();
-        brands = brands.data.brands;
-    }
-    if (notFound) {
-        return {
-            notFound: true,
-        };
-    }
+    post = post.data.post;
+    let brands = await getBrandsModels();
+    brands = brands.data.brands;
+
     return {
         props: {
             post,

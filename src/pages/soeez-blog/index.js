@@ -183,7 +183,7 @@ const SoeezBlog = (props) => {
                 />
                 <meta
                     name="description"
-                    content="Toute actualité automobile, nouvelles voitures, comparatifs, budget, lancement Maroc, opinion et analyse"
+                    content="Toute actualité automobile, nouvelles voitures, comparateurs, budget, lancement Maroc, opinion et analyse"
                 />
                 <meta
                     property="og:title"
@@ -191,7 +191,7 @@ const SoeezBlog = (props) => {
                 />
                 <meta
                     property="og:description"
-                    content="Toute l’actualité automobile, nouvelles voitures, comparatifs, budget, lancement Maroc, opinion et analyse"
+                    content="Toute l’actualité automobile, nouvelles voitures, comparateurs, budget, lancement Maroc, opinion et analyse"
                 />
                 <meta
                     property="og:image"

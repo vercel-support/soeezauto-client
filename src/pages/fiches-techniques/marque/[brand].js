@@ -120,11 +120,11 @@ const FicheTechniqueManufacturer = ({ brand, brandsModels: brands }) => {
             <Head>
                 <title>
                     {`Fiche technique constructeur ${brand.brand} neuve au Maroc | guide d'achat,
-                    prix, comparatif`}
+                    prix, comparateur`}
                 </title>
                 <meta
                     name="description"
-                    content={`Fiche technique constructeur ${brand.brand} neuve au Maroc, guide d'achat, prix, comparatif`}
+                    content={`Fiche technique constructeur ${brand.brand} neuve au Maroc, guide d'achat, prix, comparateur`}
                 />
                 <meta
                     property="og:title"

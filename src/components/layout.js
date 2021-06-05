@@ -7,9 +7,12 @@ import PropTypes from 'prop-types';
 import { actionAddToUrlHistory } from 'store/actions';
 import styles from 'styles/layout.module.scss';
 import Header from './header';
-import ClientLog from './clientLog';
 
 const Footer = dynamic(() => import('./footer'), {
+    ssr: false,
+});
+
+const ClientLog = dynamic(() => import('./clientLog'), {
     ssr: false,
 });
 
@@ -30,10 +33,10 @@ const Layout = (props) => {
         <div className={styles.container}>
             <div>
                 <Header siteTitle="soeezauto.ma" router={router} />
-                <ClientLog />
                 <>{children}</>
             </div>
             <Footer />
+            <ClientLog />
         </div>
     );
 };

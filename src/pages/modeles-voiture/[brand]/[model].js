@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 // import { connect } from 'react-redux';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -117,7 +116,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Model = ({ model, recentModels, randPromos, brands }) => {
     const classes = useStyles();
-    const router = useRouter();
     const [versionSelect, setVersionSelect] = useState([]);
     const [selectedVersions, setSelectedVersions] = useState([]);
 
@@ -209,7 +207,7 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
         }
     }, [versionSelect, model]);
 
-    if (!model || router.isFallback) {
+    if (!model) {
         return <Loading />;
     }
     return (
@@ -221,7 +219,7 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                 </title>
                 <meta
                     name="description"
-                    content={`${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, fiches techniques, comparatif, nouveautés`}
+                    content={`${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, fiches techniques, comparateur, nouveautés`}
                 />
                 <meta
                     property="og:title"
@@ -421,7 +419,7 @@ export async function getStaticPaths() {
     });
     return {
         paths,
-        fallback: true,
+        fallback: false,
     };
 }
 
@@ -432,6 +430,7 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === urlWriter(modelParam);
     });
+    /*
     if (modelFilter.length === 0) {
         return {
             notFound: true,
@@ -448,6 +447,7 @@ export async function getStaticProps({ params }) {
             },
         };
     }
+    */
     let posts = await getPosts();
     posts = posts.data.posts;
     // data for widgets

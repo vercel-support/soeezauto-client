@@ -338,7 +338,7 @@ const Prices = (props) => {
     const handleComparison = () => {
         localforage.setItem('modelsForComparison', [...selectedModels]);
         setSelectedModels([]);
-        router.push('/comparatif-voiture');
+        router.push('/comparateur-voiture');
     };
     const handleDeleteComparison = () => {
         setSelectedModels([]);

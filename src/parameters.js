@@ -60,9 +60,9 @@ export const TRIMS_LEATHER_SEATS = ['/api/trims/115', '/api/trims/283', '/api/tr
 
 export const MUI_DATATABLES_TEXT_LABELS = {
     body: {
-        noMatch: 'Sorry, no matching records found',
-        toolTip: 'Sort',
-        columnHeaderTooltip: (column) => `Sort for ${column.label}`,
+        noMatch: 'Désolé, aucun résultat ne correspond à vos critère',
+        toolTip: 'Trier',
+        columnHeaderTooltip: (column) => `Trier par ${column.label}`,
     },
     pagination: {
         next: 'Prochaine Page',

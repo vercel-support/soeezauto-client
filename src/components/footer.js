@@ -50,7 +50,7 @@ const Footer = () => {
                         <Link href="/soeez-blog" isActivable>
                             Blog
                         </Link>
-                        <Link href="/comparatif-voiture" isActivable>
+                        <Link href="/comparateur-voiture" isActivable>
                             Comparateur voitures
                         </Link>
                         <Link href="/fiches-techniques" isActivable>

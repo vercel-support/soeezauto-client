@@ -29,7 +29,7 @@ module.exports = {
             },
             {
                 source: '/comparatif-voiture/(.*)',
-                destination: '/comparatif-voiture',
+                destination: '/comparateur-voiture',
                 permanent: true,
             },
         ];

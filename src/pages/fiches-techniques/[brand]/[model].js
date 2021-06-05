@@ -155,11 +155,11 @@ const FicheTechnique = (props) => {
             <Head>
                 <title>
                     {`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc | guide d'achat,
-                    prix, comparatif`}
+                    prix, comparateur`}
                 </title>
                 <meta
                     name="description"
-                    content={`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, comparatif`}
+                    content={`Fiche technique ${model.brand.brand} ${model.model} neuve au Maroc, guide d'achat, prix, comparateur`}
                 />
                 <meta
                     property="og:title"
@@ -216,8 +216,8 @@ const FicheTechnique = (props) => {
                                                 alt={model.brand.brand}
                                                 width="105"
                                                 height="70"
-                                                loading="eager"
                                                 priority
+                                                layout="fixed"
                                             />
                                         </Link>
                                     }
@@ -451,27 +451,21 @@ export async function getStaticProps({ params }) {
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
     });
-    let model = null;
-    let brandsModels = null;
-    let notFound = true;
-    if (modelFilter.length > 0) {
-        const variables = {
-            id: modelFilter[0].id,
-            after: getBaseDate(90),
-        };
-        const data = await apiQl(queryQl, variables, false);
-        if (data.data.model) {
-            model = data.data.model;
-            notFound = false;
-            brandsModels = await getBrandsModels();
-            brandsModels = brandsModels.data.brands;
-        }
-    }
-    if (notFound) {
+    if (modelFilter.length === 0) {
         return {
-            notFound,
+            notFound: true,
         };
     }
+
+    const variables = {
+        id: modelFilter[0].id,
+        after: getBaseDate(90),
+    };
+    const data = await apiQl(queryQl, variables, false);
+    const model = data.data.model;
+    let brandsModels = await getBrandsModels();
+    brandsModels = brandsModels.data.brands;
+
     return {
         props: {
             model,

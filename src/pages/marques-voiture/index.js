@@ -32,7 +32,7 @@ const Brands = (props) => {
                 </title>
                 <meta
                     name="description"
-                    content="Guide d'achat, prix, fiches techniques, comparatif, nouveautés voitures neuves au Maroc "
+                    content="Guide d'achat, prix, fiches techniques, comparateur, nouveautés voitures neuves au Maroc "
                 />
                 <meta
                     property="og:title"
