@@ -20,6 +20,7 @@ import {
     MenuItem,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import getPosts from 'lib/getPosts';
 import Link from 'components/link';
@@ -53,10 +54,22 @@ const useStyles = makeStyles({
         fontSize: '1rem',
         hyphens: 'none',
     },
+    /*
+    brandContainer: {
+        '& > div:not(:first-child)': {
+            contentVisibility: 'hidden',
+        },
+    },
+    */
     brand: {
-        contentVisibility: 'auto',
+        // contentVisibility: 'auto',
+        display: 'block',
         backgroundColor: '#ffe082',
         marginBottom: 30,
+    },
+    brandHidden: {
+        // contentVisibility: 'hidden',
+        display: 'none',
     },
     cardContent: {
         padding: '8px',
@@ -90,6 +103,10 @@ const useStyles = makeStyles({
         width: 300,
         margin: '0 auto',
     },
+    loadMore: {
+        display: 'grid',
+        justifyContent: 'center',
+    },
 });
 
 const Promotions = (props) => {
@@ -97,6 +114,8 @@ const Promotions = (props) => {
     const { brands } = props;
     const [brandSelect, setBrandSelect] = useState('all');
     const [selectedBrand, setSelectedBrand] = useState(brands);
+    const [isVisible, setIsVisible] = useState(false);
+
     const handleSetBrandSelect = () => {
         const options = [
             <MenuItem key={0} aria-label="Toutes" value="all">
@@ -124,6 +143,12 @@ const Promotions = (props) => {
                 }),
             );
         }
+    };
+
+    const handleSetVisible = () => {
+        setIsVisible(true);
+        setBrandSelect('all');
+        setSelectedBrand(brands);
     };
     return (
         <div>
@@ -187,7 +212,13 @@ const Promotions = (props) => {
                     </form>
                 </div>
                 {selectedBrand.map((brand, index) => (
-                    <div key={brand.id} className={classes.brand}>
+                    <div
+                        key={brand.id}
+                        className={classNames({
+                            [classes.brand]: isVisible || index === 0,
+                            [classes.brandHidden]: !isVisible && index > 0,
+                        })}
+                    >
                         <Box className={classes.image}>
                             <Link
                                 href={`${
@@ -288,7 +319,7 @@ const Promotions = (props) => {
                                         >
                                             <Button
                                                 variant="contained"
-                                                color="secondary"
+                                                color="primary"
                                                 size="small"
                                             >
                                                 Afficher le modèle
@@ -300,9 +331,20 @@ const Promotions = (props) => {
                         </div>
                     </div>
                 ))}
+                <div className={classes.loadMore}>
+                    {!isVisible && (
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSetVisible}
+                        >
+                            Afficher toutes promotions
+                        </Button>
+                    )}
+                </div>
+                <WidgetNav brands={brands} />
+                <WidgetLaunches data={brands} />
             </main>
-            <WidgetNav brands={brands} />
-            <WidgetLaunches data={brands} />
         </div>
     );
 };

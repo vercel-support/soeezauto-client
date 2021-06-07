@@ -85,7 +85,8 @@ const ModelTrimsTable = ({ data, type, versions }) => {
     const options = {
         sort: false,
         viewColumns: false,
-        filter: true,
+        search: false,
+        filter: false,
         print: false,
         download: false,
         filterType: 'dropdown',

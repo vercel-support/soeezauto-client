@@ -35,6 +35,9 @@ const styles = (theme) => ({
         '& svg': {
             cursor: 'pointer',
         },
+        '& p': {
+            lineHeight: '1.5rem',
+        },
     },
 });
 

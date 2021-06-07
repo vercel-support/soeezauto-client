@@ -433,7 +433,7 @@ const Prices = (props) => {
                     <CardActions>
                         <Box className={classes.ownBudget}>
                             <div>
-                                <h3>Faites votre propre budget</h3>
+                                <span id="range-slider">Faites votre propre budget</span>
                             </div>
                             <Slider
                                 value={sliderRange}

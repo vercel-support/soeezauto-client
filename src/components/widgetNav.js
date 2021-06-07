@@ -16,6 +16,7 @@ import { urlWriter } from 'tools/functions';
 const useStyles = makeStyles({
     root: {
         contentVisibility: 'auto',
+        containIntrinsicSize: '175px',
         backgroundColor: '#ffe082',
         color: '#29335c',
         margin: '20px auto',

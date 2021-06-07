@@ -5,9 +5,12 @@ import dynamic from 'next/dynamic';
 // import { bindActionCreators } from 'redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+    Box,
     Card,
     CardHeader,
     CardContent,
+    CardActions,
+    Button,
     Select,
     FormControl,
     InputLabel,
@@ -24,7 +27,8 @@ import ModelPrices from 'components/modelPrices';
 import ModelVersions from 'components/modelVersions';
 import ModelTrims from 'components/modelTrims';
 import Breadcrumb from 'components/breadcrumb';
-import Loading from 'components/loading';
+import Link from 'components/link';
+import NotifierInline from 'components/notifierInline';
 
 const WidgetNav = dynamic(() => import('../../../components/widgetNav'), {
     ssr: false,
@@ -40,7 +44,6 @@ const WidgetPromo = dynamic(() => import('../../../components/widgetPromotion'),
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        contentVisibility: 'auto',
         backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
@@ -81,7 +84,6 @@ const useStyles = makeStyles((theme) => ({
     mainContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        padding: '10px',
         justifyContent: 'space-around',
         '& > div': {
             flex: '0 0 clamp(300px, 100%, 700px)',
@@ -92,6 +94,22 @@ const useStyles = makeStyles((theme) => ({
         },
         [theme.breakpoints.down('xs')]: {
             padding: 0,
+        },
+        '& .MuiCard-root:nth-child(2)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '304px',
+        },
+        '& .MuiCard-root:nth-child(3)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '683px',
+        },
+        '& .MuiCard-root:nth-child(4)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '147px',
+        },
+        '& .MuiCard-root:nth-child(5)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '751px',
         },
     },
     table: {
@@ -112,19 +130,22 @@ const useStyles = makeStyles((theme) => ({
         margin: 5,
         padding: 0,
     },
+    fiche: {
+        display: 'grid',
+        marginBottom: 20,
+        gap: 20,
+        '& button': {
+            minWidth: 280,
+            fontWeight: 700,
+        },
+    },
 }));
 
 const Model = ({ model, recentModels, randPromos, brands }) => {
     const classes = useStyles();
-    const [versionSelect, setVersionSelect] = useState([]);
-    const [selectedVersions, setSelectedVersions] = useState([]);
+    const [versionSelect, setVersionSelect] = useState([model.versions[0].id, '', '']);
+    const [selectedVersions, setSelectedVersions] = useState([model.versions[0]]);
 
-    useEffect(() => {
-        if (model) {
-            setVersionSelect([model.versions[0].id, '', '']);
-            setSelectedVersions([model.versions[0]]);
-        }
-    }, [model]);
     const handleVersionSelectChange = (event) => {
         const index = parseInt(event.target.name.replace('version', ''), 10);
         const versionsSelected = [...versionSelect];
@@ -202,14 +223,9 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
         return selects;
     };
     useEffect(() => {
-        if (model) {
-            handleSetVersionSelect();
-        }
-    }, [versionSelect, model]);
+        handleSetVersionSelect();
+    }, [versionSelect]);
 
-    if (!model) {
-        return <Loading />;
-    }
     return (
         <div>
             <Head>
@@ -243,7 +259,7 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                 />
             </Head>
 
-            <main className={classes.mainContainer}>
+            <main>
                 <Breadcrumb
                     links={[
                         {
@@ -259,39 +275,91 @@ const Model = ({ model, recentModels, randPromos, brands }) => {
                 <div className="main-title">
                     <h1>{`${model.brand.brand} ${model.model} neuve au Maroc`}</h1>
                 </div>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>{`Versions ${model.model}`}</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        <ModelVersions model={model} />
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Sélectionnez versions pour comparaison</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        <div className="selectForms">{handleSetVersionSelect()}</div>
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Caractéristiques techniques</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        <ModelSpecs versions={selectedVersions} />
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Équipements</h2>} />
-                    <CardContent className={classes.cardContent}>
-                        <ModelTrims versions={selectedVersions} />
-                    </CardContent>
-                </Card>
-                <Card className={classes.root}>
-                    <CardHeader title={<h2>Évolution prix & promotion</h2>} />
-                    <CardContent className={classes.chart}>
-                        <ModelPrices model={model} />
-                    </CardContent>
-                </Card>
-                <WidgetNav brands={brands} />
-                <WidgetPromo data={randPromos} />
-                <WidgetLaunches data={recentModels} />
+                <div className={classes.mainContainer}>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>{`Versions ${model.model}`}</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            <ModelVersions model={model} />
+                        </CardContent>
+                        <CardActions>
+                            <Box className={classes.fiche}>
+                                {model.specs.edges.length > 0 && (
+                                    <Link
+                                        href={`/fiches-techniques/marque/${urlWriter(
+                                            model.brand.brand,
+                                        )}`}
+                                    >
+                                        <Button variant="contained" color="primary">
+                                            Fiche technique constructeur
+                                        </Button>
+                                    </Link>
+                                )}
+                                <Link
+                                    href={`/images/${urlWriter(
+                                        model.brand.brand,
+                                    )}/${urlWriter(model.model)}`}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                    >{`Images ${model.brand.brand} ${model.model}`}</Button>
+                                </Link>
+                            </Box>
+                        </CardActions>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader
+                            title={<h2>Sélectionnez versions pour comparaison</h2>}
+                        />
+                        <CardContent className={classes.cardContent}>
+                            <div className="selectForms">{handleSetVersionSelect()}</div>
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Caractéristiques techniques</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            <ModelSpecs versions={selectedVersions} />
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Équipements</h2>} />
+                        <CardContent className={classes.cardContent}>
+                            <ModelTrims versions={selectedVersions} />
+                        </CardContent>
+                    </Card>
+                    <Card className={classes.root}>
+                        <CardHeader title={<h2>Évolution prix & promotion</h2>} />
+                        <CardContent>
+                            <NotifierInline
+                                severity="info"
+                                message={
+                                    <>
+                                        <p>
+                                            {`Indicateur de l'évolution du prix du modèle
+                                            pendant les 12 derniers mois.`}
+                                        </p>
+                                        <p>
+                                            Les prix et promo concernent les versions de
+                                            base et haut de gamme.
+                                        </p>
+                                        <p>
+                                            {`Notez qu'il se peut que cettes versions aussi
+                                            bien que leurs caractéristiques et dotations
+                                            aient été modifiées pendant cette période.`}
+                                        </p>
+                                        <p>Utilisez ceci à titre indicatif seulement.</p>
+                                    </>
+                                }
+                            />
+                            <div className={classes.chart}>
+                                <ModelPrices model={model} />
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <WidgetNav brands={brands} />
+                    <WidgetPromo data={randPromos} />
+                    <WidgetLaunches data={recentModels} />
+                </div>
             </main>
         </div>
     );

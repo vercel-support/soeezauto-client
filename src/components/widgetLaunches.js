@@ -9,6 +9,7 @@ import Link from 'components/link';
 const useStyles = makeStyles({
     root: {
         contentVisibility: 'auto',
+        containIntrinsicSize: '275px',
         color: '#29335c',
         backgroundColor: '#ffe082',
         margin: '20px auto',

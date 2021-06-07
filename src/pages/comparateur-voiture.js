@@ -144,7 +144,6 @@ VersionList.propTypes = {
 };
 const useStyles = makeStyles((theme) => ({
     root: {
-        contentVisibility: 'auto',
         backgroundColor: '#ffe082',
         '& .MuiCardHeader-root': {
             textAlign: 'center',
@@ -207,6 +206,14 @@ const useStyles = makeStyles((theme) => ({
         },
         '& nav': {
             width: '100%',
+        },
+        '& .MuiCard-root:nth-child(2)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '143px',
+        },
+        '& .MuiCard-root:nth-child(3)': {
+            contentVisibility: 'auto',
+            containIntrinsicSize: '143px',
         },
     },
     table: {

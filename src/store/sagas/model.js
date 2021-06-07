@@ -94,6 +94,7 @@ function* getPreviousModels(action) {
             id
             model
             versions(
+                isActive: true
                 _order:{prices_price: "ASC"}
             ) {
                 id

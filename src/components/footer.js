@@ -44,16 +44,19 @@ const Footer = () => {
                 </section>
                 <section className={styles.section}>
                     <div className={styles.sectionDiv}>
-                        <Link href="/promotion-voiture-neuve-au-maroc" isActivable>
+                        <Link
+                            className={styles.sectionDivA}
+                            href="/promotion-voiture-neuve-au-maroc"
+                        >
                             Promotions
                         </Link>
-                        <Link href="/soeez-blog" isActivable>
+                        <Link className={styles.sectionDivA} href="/soeez-blog">
                             Blog
                         </Link>
-                        <Link href="/comparateur-voiture" isActivable>
+                        <Link className={styles.sectionDivA} href="/comparateur-voiture">
                             Comparateur voitures
                         </Link>
-                        <Link href="/fiches-techniques" isActivable>
+                        <Link className={styles.sectionDivA} href="/fiches-techniques">
                             Fiches techniques
                         </Link>
                         <Link className={styles.sectionDivA} href="/legal">

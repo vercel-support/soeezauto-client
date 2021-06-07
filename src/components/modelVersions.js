@@ -4,7 +4,6 @@ import {
     CardHeader,
     CardContent,
     Button,
-    Box,
     Chip,
     Avatar,
     List,
@@ -34,12 +33,6 @@ const useStyles = makeStyles({
     },
     table: {
         margin: '20px 0',
-    },
-    fiche: {
-        margin: '20px 0',
-        '& button': {
-            fontWeight: 700,
-        },
     },
     ul: {
         display: 'grid',
@@ -129,17 +122,6 @@ const ModelVersions = ({ model }) => {
                     </Card>
                 ))}
             </div>
-            {model.specs.edges.length > 0 && (
-                <Box className={classes.fiche}>
-                    <Link
-                        href={`/fiches-techniques/marque/${urlWriter(model.brand.brand)}`}
-                    >
-                        <Button variant="contained" color="secondary">
-                            Fiche technique constructeur
-                        </Button>
-                    </Link>
-                </Box>
-            )}
         </>
     );
 };
