@@ -447,6 +447,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
     const { model: modelParam } = params;
     let models = await getModels();
+    console.log('MODELS', models);
     models = models.data.models;
     const modelFilter = models.filter((mod) => {
         return urlWriter(mod.model) === modelParam;
@@ -462,8 +463,10 @@ export async function getStaticProps({ params }) {
         after: getBaseDate(90),
     };
     const data = await apiQl(queryQl, variables, false);
+    console.log('MODEL', data);
     const model = data.data.model;
     let brandsModels = await getBrandsModels();
+    console.log('BRANDS models', brandsModels);
     brandsModels = brandsModels.data.brands;
 
     return {
