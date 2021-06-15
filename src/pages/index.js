@@ -118,7 +118,7 @@ const Home = (props) => {
 
             <main>
                 <div className="main-title">
-                    <h1>Voiture neuve au Maroc</h1>
+                    <h1>Voiture neuve au Maroc ${process.env.NEXT_PUBLIC_API_GRAPHQL_URL}</h1>
                 </div>
                 <div className={classes.mainContainer}>
                     <Card className={classes.root}>
