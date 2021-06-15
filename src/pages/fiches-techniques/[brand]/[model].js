@@ -425,19 +425,19 @@ export async function getStaticPaths() {
     brands = brands.data.brands;
     const paths = [];
     // only generate static for a few brands
-    const selectedBrands = ['bmw', 'dacia', 'peugeot', 'renault', 'volkswagen'];
-    brands.forEach((brand) => {
-        if (selectedBrands.includes(urlWriter(brand.brand))) {
-            brand.models.forEach((model) => {
-                paths.push({
-                    params: {
-                        brand: urlWriter(brand.brand),
-                        model: urlWriter(model.model),
-                    },
-                });
-            });
-        }
-    });
+    // const selectedBrands = ['bmw', 'dacia', 'peugeot', 'renault', 'volkswagen'];
+    // brands.forEach((brand) => {
+    //     if (selectedBrands.includes(urlWriter(brand.brand))) {
+    //         brand.models.forEach((model) => {
+    //             paths.push({
+    //                 params: {
+    //                     brand: urlWriter(brand.brand),
+    //                     model: urlWriter(model.model),
+    //                 },
+    //             });
+    //         });
+    //     }
+    // });
     return {
         paths,
         fallback: true,
